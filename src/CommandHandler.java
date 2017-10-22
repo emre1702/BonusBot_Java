@@ -32,7 +32,7 @@ class CommandHandler {
 		AudioSourceManagers.registerRemoteSources( playerManager );
 		AudioSourceManagers.registerLocalSource( playerManager );
 		
-		commandMap.put ( "8ball", ( event, args ) -> {
+		commandMap.put ( "8ball", ( cmd, event, args ) -> {
 			try { 
 				IChannel channel = event.getChannel();
 				if ( args.size() > 0 ) {
@@ -65,7 +65,7 @@ class CommandHandler {
 		} );
 		
 		
-		commandMap.put ( "join", ( event, args ) -> {
+		commandMap.put ( "join", ( cmd, event, args ) -> {
 			try {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
@@ -81,7 +81,7 @@ class CommandHandler {
 			}
 		} );
 		
-		commandMap.put ( "leave", ( event, args ) -> {
+		commandMap.put ( "leave", ( cmd, event, args ) -> {
 			try {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
@@ -102,7 +102,7 @@ class CommandHandler {
 			}
 		} );
 		
-		Command playCommand = (event, args) -> {
+		Command playCommand = (cmd, event, args) -> {
 			if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 	            IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
 	
@@ -121,19 +121,41 @@ class CommandHandler {
 	            // Turn the args back into a string separated by space
 	            String searchStr = String.join(" ", args);
 	
-	            loadAndPlay(event.getChannel(), searchStr);
+	            boolean addtoqueue = cmd == "queue" || cmd == "qplay" || cmd == "qyt";
+	            loadAndPlay ( event.getChannel(), searchStr, addtoqueue );
 			}
         };
         commandMap.put ( "play", playCommand );
         commandMap.put ( "yt", playCommand );
+        commandMap.put ( "queue", playCommand );
+        commandMap.put ( "qplay", playCommand );
+        commandMap.put ( "qyt", playCommand );
+        
+        commandMap.put( "stop", ( cmd, event, args ) -> {
+        	try {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+					IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+					if ( channel != null ) {
+						TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
+						scheduler.getQueue().clear();
+						scheduler.nextTrack();
+					} else {
+						Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+						event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+					}
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+        });
 		
-		commandMap.put("skip", (event, args) -> {
+		commandMap.put( "skip", (cmd, event, args) -> {
 			if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 				skipTrack(event.getChannel());
 			}
 		});
 		
-		commandMap.put( "volume", (event, args) -> {
+		commandMap.put( "volume", (cmd, event, args) -> {
 			try {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					if ( args.size() > 0 ) {
@@ -157,38 +179,40 @@ class CommandHandler {
 		
 		
 		// Language-Manager //
-		commandMap.put( "deutsch", ( event, args ) -> {
+		Command requestLanguageSectionRole = ( cmd, event, args ) -> {
 			try {
 				if ( event.getChannel().getLongID() == Channels.languageChannelID ) {
-					IRole role = event.getGuild().getRoleByID( Roles.germanRoleID );
-					event.getAuthor().addRole( role );
+					IRole role = null;
+					switch ( cmd ) {
+						case "deutsch":
+							role = event.getGuild().getRoleByID( Roles.germanRoleID );
+							break;
+						case "german":
+							role = event.getGuild().getRoleByID( Roles.germanRoleID );
+							break;
+						case "türkce":
+							role = event.getGuild().getRoleByID( Roles.turkishRoleID );
+							break;
+						case "turkish":
+							role = event.getGuild().getRoleByID( Roles.turkishRoleID );
+							break;
+						case "english":
+							role = event.getGuild().getRoleByID( Roles.englishRoleID );
+							break;
+					}
+					if ( role != null )
+						event.getAuthor().addRole( role );
 				}
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		} );
+		};
+		commandMap.put( "deutsch", requestLanguageSectionRole );
+		commandMap.put( "german", requestLanguageSectionRole );
+		commandMap.put( "türkce", requestLanguageSectionRole );
+		commandMap.put( "turkish", requestLanguageSectionRole );
+		commandMap.put( "english", requestLanguageSectionRole );
 		
-		commandMap.put( "türkce", ( event, args ) -> {
-			try {
-				if ( event.getChannel().getLongID() == Channels.languageChannelID ) {
-					IRole role = event.getGuild().getRoleByID( Roles.turkishRoleID );
-					event.getAuthor().addRole( role );
-				}
-			} catch ( Exception e ) {
-				e.printStackTrace ( Logging.getPrintWrite() );
-			}
-		} );
-		
-		commandMap.put( "english", ( event, args ) -> {
-			try {
-				if ( event.getChannel().getLongID() == Channels.languageChannelID ) {
-					IRole role = event.getGuild().getRoleByID( Roles.englishRoleID );
-					event.getAuthor().addRole( role );
-				}
-			} catch ( Exception e ) {
-				e.printStackTrace ( Logging.getPrintWrite() );
-			}
-		} );
 		
 	}
 	
@@ -207,15 +231,20 @@ class CommandHandler {
         return musicManager;
     }
 	
-	private static void loadAndPlay(final IChannel channel, final String trackUrl) {
+	private static void loadAndPlay(final IChannel channel, final String trackUrl, final boolean queue ) {
 	    GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
 
 	    AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 		      @Override
 		      public void trackLoaded(AudioTrack track) {
 		        Util.sendMessage(channel, "Adding to queue " + track.getInfo().title);
-
-		        play(channel.getGuild(), musicManager, track);
+		        
+		        if ( queue ) {
+		        	queue(channel.getGuild(), musicManager, track);
+		        } else {
+		        	play(channel.getGuild(), musicManager, track);
+		        }
+		        
 		      }
 
 		      @Override
@@ -227,8 +256,13 @@ class CommandHandler {
 		        }
 
 		        Util.sendMessage(channel, "Adding to queue " + firstTrack.getInfo().title + " (first track of playlist " + playlist.getName() + ")");
-
-		        play(channel.getGuild(), musicManager, firstTrack);
+		        
+		        if ( queue ) {
+		        	queue(channel.getGuild(), musicManager, firstTrack);
+		        } else {
+		        	play(channel.getGuild(), musicManager, firstTrack);
+		        }
+		        
 		      }
 
 		      @Override
@@ -245,7 +279,12 @@ class CommandHandler {
 	  }
 
 	  private static void play(IGuild guild, GuildMusicManager musicManager, AudioTrack track) {
+		musicManager.getScheduler().getQueue().clear();
 	    musicManager.getScheduler().queue(track);
+	  }
+	  
+	  private static void queue(IGuild guild, GuildMusicManager musicManager, AudioTrack track) {
+		  musicManager.getScheduler().queue(track);
 	  }
 
 	  private static void skipTrack(IChannel channel) {
@@ -285,7 +324,7 @@ class CommandHandler {
 	
 		        // Instead of delegating the work to a switch, automatically do it via calling the mapping if it exists
 		        if(commandMap.containsKey(commandStr))
-		            commandMap.get(commandStr).runCommand(event, argsList);
+		            commandMap.get(commandStr).runCommand(commandStr, event, argsList);
 		 	} catch ( Exception e ) {
 		 		e.printStackTrace ( Logging.getPrintWrite() );
 		 	}
