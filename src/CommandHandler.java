@@ -6,6 +6,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
@@ -13,7 +14,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -26,7 +26,7 @@ class CommandHandler {
 	
 	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 	private static final Map<Long, GuildMusicManager> musicManagers  = new HashMap<>();
-	YoutubeAudioSourceManager youtube = new YoutubeAudioSourceManager ( true );
+
 	
 	static {
 		AudioSourceManagers.registerRemoteSources( playerManager );
@@ -154,6 +154,41 @@ class CommandHandler {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
 		});
+		
+		
+		// Language-Manager //
+		commandMap.put( "deutsch", ( event, args ) -> {
+			try {
+				if ( event.getChannel().getLongID() == Channels.languageChannelID ) {
+					IRole role = event.getGuild().getRoleByID( Roles.germanRoleID );
+					event.getAuthor().addRole( role );
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		} );
+		
+		commandMap.put( "türkce", ( event, args ) -> {
+			try {
+				if ( event.getChannel().getLongID() == Channels.languageChannelID ) {
+					IRole role = event.getGuild().getRoleByID( Roles.turkishRoleID );
+					event.getAuthor().addRole( role );
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		} );
+		
+		commandMap.put( "english", ( event, args ) -> {
+			try {
+				if ( event.getChannel().getLongID() == Channels.languageChannelID ) {
+					IRole role = event.getGuild().getRoleByID( Roles.englishRoleID );
+					event.getAuthor().addRole( role );
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		} );
 		
 	}
 	
