@@ -1,16 +1,22 @@
-import java.io.FileWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.PrintStream;
 
 class Logging {
 	
-	static PrintWriter getPrintWrite ( ) {
-		FileWriter filewriter = null;
+	static PrintStream getPrintWrite ( ) {
 		try {
-			filewriter = new FileWriter ( "discordbot.log", true );
+			File f = new File ( "discordbot.log" );
+			if ( !f.exists() ) {
+				f.createNewFile();
+			}
+			return new PrintStream ( f );
+		} catch ( FileNotFoundException e ) {
+			e.printStackTrace();
 		} catch ( IOException e ) {
 			e.printStackTrace();
 		}
-		return new PrintWriter ( filewriter );
+		return null;
 	}
 }
