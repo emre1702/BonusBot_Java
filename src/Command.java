@@ -4,6 +4,6 @@ import java.util.List;
 interface Command {
 
     // Interface for a command to be implemented in the command map
-    void runCommand(MessageReceivedEvent event, List<String> args);
+    void runCommand( String commandName, MessageReceivedEvent event, List<String> args );
 
 }
