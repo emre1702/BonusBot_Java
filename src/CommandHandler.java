@@ -17,6 +17,8 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+
 import lavaplayer.*;
 
 
@@ -117,12 +119,17 @@ class CommandHandler {
 						return;
 					}
 	            }
-	
-	            // Turn the args back into a string separated by space
-	            String searchStr = String.join(" ", args);
-	
-	            boolean addtoqueue = cmd == "queue" || cmd == "qplay" || cmd == "qyt";
-	            loadAndPlay ( event.getChannel(), searchStr, addtoqueue );
+	            
+	            if ( args.size() > 0 ) {
+		            // Turn the args back into a string separated by space
+		            String searchStr = String.join(" ", args);
+		
+		            boolean addtoqueue = cmd == "queue" || cmd == "qplay" || cmd == "qyt";
+		            loadAndPlay ( event.getChannel(), searchStr, addtoqueue );
+	            } else {
+	            	AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
+					player.setPaused( false );
+	            }
 			}
         };
         commandMap.put ( "play", playCommand );
@@ -130,6 +137,23 @@ class CommandHandler {
         commandMap.put ( "queue", playCommand );
         commandMap.put ( "qplay", playCommand );
         commandMap.put ( "qyt", playCommand );
+        
+        commandMap.put( "pause", ( cmd, event, args ) -> {
+        	try {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+					IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+					if ( channel != null ) {
+						AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
+						player.setPaused( !player.isPaused() );
+					} else {
+						Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+						event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+					}
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+        });
         
         commandMap.put( "stop", ( cmd, event, args ) -> {
         	try {
@@ -168,8 +192,32 @@ class CommandHandler {
 						}
 					} else {
 						AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
-						Util.sendMessage( event.getChannel(), "The current volume is: "+player.getVolume()+". Use "+Settings.prefix+"volume [0-100] to change the volume!" );
+						Util.sendMessage( event.getChannel(), "The current volume is: "+player.getVolume()+".\nUse "+Settings.prefix+"volume [0-100] to change the volume!" );
 						
+					}
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		});
+		
+		commandMap.put( "playing", ( cmd, event, args ) -> {
+			try {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+					try {
+						AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+						AudioTrack track = player.getPlayingTrack();
+						if ( track != null ) {
+							 AudioTrackInfo info = track.getInfo();
+							 String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
+							 Util.sendMessage( event.getChannel(), "**playing:**\n"+info.title+" - "+info.author+"\n"
+							 		+ "**url:**\n"+ info.uri + "\n"
+							 		+ "**length:**\n" + length + "\n" );
+						} else {
+							Util.sendMessage( event.getChannel(), "I'm not playing audio right now." );
+						}
+					} catch ( NumberFormatException e ) {
+						Util.sendMessage( event.getChannel(), "The first argument has to be an integer!" );
 					}
 				}
 			} catch ( Exception e ) {
