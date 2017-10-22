@@ -46,3 +46,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 /discordbot.log
+/target/.gitignore
