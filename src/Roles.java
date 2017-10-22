@@ -1,6 +1,21 @@
+import java.util.List;
+
+import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IRole;
+import sx.blah.discord.handle.obj.IUser;
+
 class Roles {
 	
-	static long germanRoleID = 371661286758678528l;
-	static long englishRoleID = 371661338864254978l;
-	static long turkishRoleID = 371661319365197827l;
+	static long germanRoleID;
+	static long englishRoleID;
+	static long turkishRoleID;
+	static long musicbotUserID;
+	
+	static boolean canPlayMusic ( IUser user, IGuild guild ) {
+		List<IRole> roles = user.getRolesForGuild( guild );
+		if ( roles.contains( guild.getRoleByID( musicbotUserID ) ) )
+			return true;
+		else
+			return false;
+	}
 }

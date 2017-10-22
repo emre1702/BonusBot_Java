@@ -67,7 +67,7 @@ class CommandHandler {
 		
 		commandMap.put ( "join", ( event, args ) -> {
 			try {
-				if ( Rights.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
 					if ( channel != null ) {
 						channel.join();
@@ -83,7 +83,7 @@ class CommandHandler {
 		
 		commandMap.put ( "leave", ( event, args ) -> {
 			try {
-				if ( Rights.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 					if ( channel != null ) {
 						 TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
@@ -103,7 +103,7 @@ class CommandHandler {
 		} );
 		
 		Command playCommand = (event, args) -> {
-			if ( Rights.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+			if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 	            IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
 	
 	            if(botVoiceChannel == null) {
@@ -128,14 +128,14 @@ class CommandHandler {
         commandMap.put ( "yt", playCommand );
 		
 		commandMap.put("skip", (event, args) -> {
-			if ( Rights.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+			if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 				skipTrack(event.getChannel());
 			}
 		});
 		
 		commandMap.put( "volume", (event, args) -> {
 			try {
-				if ( Rights.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					if ( args.size() > 0 ) {
 						try {
 							int volume = Integer.parseInt( args.get( 0 ) );
@@ -146,7 +146,7 @@ class CommandHandler {
 						}
 					} else {
 						AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
-						Util.sendMessage( event.getChannel(), "The current volume is: "+player.getVolume()+". Use "+Util.BOT_PREFIX+"volume [0-100] to change the volume!" );
+						Util.sendMessage( event.getChannel(), "The current volume is: "+player.getVolume()+". Use "+Settings.prefix+"volume [0-100] to change the volume!" );
 						
 					}
 				}
@@ -273,7 +273,7 @@ class CommandHandler {
 		            return;
 	
 		        // Check if the first arg (the command) starts with the prefix defined in the utils class
-		        if(!argArray[0].startsWith(Util.BOT_PREFIX))
+		        if(!argArray[0].startsWith(Settings.prefix))
 		            return;
 	
 		        // Extract the "command" part of the first arg out by just ditching the first character
