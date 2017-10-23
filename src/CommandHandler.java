@@ -1,3 +1,4 @@
+import java.awt.Event;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -41,24 +42,24 @@ class CommandHandler {
 					int rnd = ThreadLocalRandom.current().nextInt( 1, 12 + 1 );
 					
 					if ( rnd <= 3 ) 
-						Util.sendMessage ( channel, "Yes" );
+						Util.sendMessage ( channel, Language.getLang ( "yes", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd <= 6 )
-						Util.sendMessage( channel, "No" );
+						Util.sendMessage( channel, Language.getLang ( "no", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 7 )
-						Util.sendMessage( channel, "Not sure" );
+						Util.sendMessage( channel, Language.getLang ( "not_sure", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 8 )
-						Util.sendMessage( channel, "Maybe" );
+						Util.sendMessage( channel, Language.getLang ( "maybe", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 9 )
-						Util.sendMessage( channel, "Nah, don't think so" );
+						Util.sendMessage( channel, Language.getLang ( "nah", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 10 )
-						Util.sendMessage( channel, "Absolutely" );
+						Util.sendMessage( channel, Language.getLang ( "absolutely", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 11 ) {
-						Util.sendMessage( channel, "Too stupid question "+ServerEmoji.haha );
+						Util.sendMessage( channel, Language.getLang ( "stupid_question", event.getAuthor(), event.getGuild() )+ServerEmoji.haha );
 						event.getMessage().addReaction( ReactionEmoji.of( "haha", ServerEmoji.hahacode ));
 					} else 
-						Util.sendMessage( channel, "Ask again" );		
+						Util.sendMessage( channel, Language.getLang ( "ask_again", event.getAuthor(), event.getGuild() ) );		
 				} else {
-					Util.sendMessage( channel, "And what exactly is the question? Dafuq "+ServerEmoji.what );
+					Util.sendMessage( channel, Language.getLang ( "what_is_question", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 					event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
 				}
 			} catch ( Exception e ) {
@@ -75,7 +76,7 @@ class CommandHandler {
 						if ( channel != null ) {
 							channel.join();
 						} else {
-							Util.sendMessage( event.getChannel(), "You aren't even in a voice-channel "+ServerEmoji.what );
+							Util.sendMessage( event.getChannel(), Language.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
 						}
 					}
@@ -98,7 +99,7 @@ class CommandHandler {
 					         channel.leave();
 							
 						} else {
-							Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+							Util.sendMessage( event.getChannel(), Language.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
 						}
 					}
@@ -119,7 +120,7 @@ class CommandHandler {
 						if ( channel != null ) {
 							channel.join();
 						} else {
-							Util.sendMessage( event.getChannel(), "You aren't even in a voice-channel "+ServerEmoji.what );
+							Util.sendMessage( event.getChannel(), Language.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
 							return;
 						}
@@ -130,7 +131,7 @@ class CommandHandler {
 			            String searchStr = String.join(" ", args);
 			
 			            boolean addtoqueue = cmd == "queue" || cmd == "qplay" || cmd == "qyt";
-			            loadAndPlay ( event.getChannel(), searchStr, addtoqueue );
+			            loadAndPlay ( event, searchStr, addtoqueue );
 		            } else {
 		            	AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
 						player.setPaused( false );
@@ -153,7 +154,7 @@ class CommandHandler {
 							AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
 							player.setPaused( !player.isPaused() );
 						} else {
-							Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+							Util.sendMessage( event.getChannel(), Language.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
 						}
 					}
@@ -173,7 +174,7 @@ class CommandHandler {
 							scheduler.getQueue().clear();
 							scheduler.nextTrack();
 						} else {
-							Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+							Util.sendMessage( event.getChannel(), Language.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
 						}
 					}
@@ -186,7 +187,7 @@ class CommandHandler {
 		commandMap.put( "skip", (cmd, event, args) -> {
 			if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					skipTrack(event.getChannel());
+					skipTrack(event);
 				}
 			}
 		});
@@ -201,11 +202,13 @@ class CommandHandler {
 								AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
 								player.setVolume( volume );
 							} catch ( NumberFormatException e ) {
-								Util.sendMessage( event.getChannel(), "The first argument has to be an integer!" );
+								Util.sendMessage( event.getChannel(), Language.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 							}
 						} else {
 							AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
-							Util.sendMessage( event.getChannel(), "The current volume is: "+player.getVolume()+".\nUse "+Settings.prefix+"volume [0-100] to change the volume!" );
+							Util.sendMessage( event.getChannel(), Language.getLang ( "current_volume", event.getAuthor(), event.getGuild() )+player.getVolume()
+								+".\n" + Language.getLang ( "volume_usage_1", event.getAuthor(), event.getGuild() ) 
+								+ Settings.prefix+Language.getLang ( "volume_usage_2", event.getAuthor(), event.getGuild() ) );
 							
 						}
 					}
@@ -225,14 +228,14 @@ class CommandHandler {
 							if ( track != null ) {
 								 AudioTrackInfo info = track.getInfo();
 								 String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
-								 Util.sendMessage( event.getChannel(), "**playing:**\n"+info.title+" - "+info.author+"\n"
-								 		+ "**url:**\n"+ info.uri + "\n"
-								 		+ "**length:**\n" + length + "\n" );
+								 Util.sendMessage( event.getChannel(), "**"+Language.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
+								 		+ "**"+Language.getLang ( "url", event.getAuthor(), event.getGuild() ) +":**\n"+ info.uri + "\n"
+								 		+ "**"+Language.getLang ( "length", event.getAuthor(), event.getGuild() ) +":**\n" + length + "\n" );
 							} else {
-								Util.sendMessage( event.getChannel(), "I'm not playing audio right now." );
+								Util.sendMessage( event.getChannel(), Language.getLang ( "not_playing_audio", event.getAuthor(), event.getGuild() ) );
 							}
 						} catch ( NumberFormatException e ) {
-							Util.sendMessage( event.getChannel(), "The first argument has to be an integer!" );
+							Util.sendMessage( event.getChannel(), Language.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 						}
 					}
 				}
@@ -295,13 +298,14 @@ class CommandHandler {
         return musicManager;
     }
 	
-	private static void loadAndPlay(final IChannel channel, final String trackUrl, final boolean queue ) {
+	private static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
+		final IChannel channel = event.getChannel();
 	    GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
 
 	    AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 		      @Override
 		      public void trackLoaded(AudioTrack track) {
-		        Util.sendMessage(channel, "Adding to queue " + track.getInfo().title);
+		        Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
 		        
 		        if ( queue ) {
 		        	queue(channel.getGuild(), musicManager, track);
@@ -319,7 +323,8 @@ class CommandHandler {
 		          firstTrack = playlist.getTracks().get(0);
 		        }
 
-		        Util.sendMessage(channel, "Adding to queue " + firstTrack.getInfo().title + " (first track of playlist " + playlist.getName() + ")");
+		        Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title 
+		        		+ " ("+ Language.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+" " + playlist.getName() + ")");
 		        
 		        if ( queue ) {
 		        	queue(channel.getGuild(), musicManager, firstTrack);
@@ -331,12 +336,12 @@ class CommandHandler {
 
 		      @Override
 		      public void noMatches() {
-		    	  Util.sendMessage(channel, "Nothing found by " + trackUrl);
+		    	  Util.sendMessage(channel, Language.getLang ( "nothing_found_by", event.getAuthor(), event.getGuild() ) + trackUrl);
 		      }
 
 		      @Override
 		      public void loadFailed(FriendlyException exception) {
-		    	  Util.sendMessage(channel, "Could not play: " + exception.getMessage());
+		    	  Util.sendMessage(channel, Language.getLang ( "could_not_play", event.getAuthor(), event.getGuild() ) + exception.getMessage());
 		      }
 		};
 	    playerManager.loadItemOrdered(musicManager, trackUrl, handler );
@@ -351,11 +356,12 @@ class CommandHandler {
 		  musicManager.getScheduler().queue(track);
 	  }
 
-	  private static void skipTrack(IChannel channel) {
+	  private static void skipTrack ( final MessageReceivedEvent event ) {
+		  final IChannel channel = event.getChannel();
 	    GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
 	    musicManager.getScheduler().nextTrack();
 
-	    Util.sendMessage(channel, "Skipped to next track.");
+	    Util.sendMessage ( channel, Language.getLang ( "skipped", event.getAuthor(), event.getGuild() ) );
 	  }
 	
 	
