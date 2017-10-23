@@ -18,6 +18,7 @@ class Settings {
 			prefix = (String) jsonObject.get( "prefix" );
 			
 			Channels.languageChannelID = (Long) jsonObject.get( "languageChannelID" );
+			Channels.musicChannelID = (Long) jsonObject.get( "musicChannelID" );
 			Roles.musicbotUserID = (Long) jsonObject.get( "musicbotUserID" );
 			Roles.germanRoleID = (Long) jsonObject.get( "germanRoleID" );
 			Roles.englishRoleID = (Long) jsonObject.get( "englishRoleID" );

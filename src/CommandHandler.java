@@ -69,13 +69,15 @@ class CommandHandler {
 		
 		commandMap.put ( "join", ( cmd, event, args ) -> {
 			try {
-				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
-					if ( channel != null ) {
-						channel.join();
-					} else {
-						Util.sendMessage( event.getChannel(), "You aren't even in a voice-channel "+ServerEmoji.what );
-						event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+						IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						if ( channel != null ) {
+							channel.join();
+						} else {
+							Util.sendMessage( event.getChannel(), "You aren't even in a voice-channel "+ServerEmoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+						}
 					}
 				}
 			} catch ( Exception e ) {
@@ -85,18 +87,20 @@ class CommandHandler {
 		
 		commandMap.put ( "leave", ( cmd, event, args ) -> {
 			try {
-				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
-					if ( channel != null ) {
-						 TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
-				         scheduler.getQueue().clear();
-				         scheduler.nextTrack();
-				         
-				         channel.leave();
-						
-					} else {
-						Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
-						event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						if ( channel != null ) {
+							 TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
+					         scheduler.getQueue().clear();
+					         scheduler.nextTrack();
+					         
+					         channel.leave();
+							
+						} else {
+							Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+						}
 					}
 				}
 			} catch ( Exception e ) {
@@ -105,31 +109,33 @@ class CommandHandler {
 		} );
 		
 		Command playCommand = (cmd, event, args) -> {
-			if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-	            IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
-	
-	            if(botVoiceChannel == null) {
-	            	IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
-					
-					if ( channel != null ) {
-						channel.join();
-					} else {
-						Util.sendMessage( event.getChannel(), "You aren't even in a voice-channel "+ServerEmoji.what );
-						event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
-						return;
-					}
-	            }
-	            
-	            if ( args.size() > 0 ) {
-		            // Turn the args back into a string separated by space
-		            String searchStr = String.join(" ", args);
+			if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+		            IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
 		
-		            boolean addtoqueue = cmd == "queue" || cmd == "qplay" || cmd == "qyt";
-		            loadAndPlay ( event.getChannel(), searchStr, addtoqueue );
-	            } else {
-	            	AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
-					player.setPaused( false );
-	            }
+		            if(botVoiceChannel == null) {
+		            	IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						
+						if ( channel != null ) {
+							channel.join();
+						} else {
+							Util.sendMessage( event.getChannel(), "You aren't even in a voice-channel "+ServerEmoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+							return;
+						}
+		            }
+		            
+		            if ( args.size() > 0 ) {
+			            // Turn the args back into a string separated by space
+			            String searchStr = String.join(" ", args);
+			
+			            boolean addtoqueue = cmd == "queue" || cmd == "qplay" || cmd == "qyt";
+			            loadAndPlay ( event.getChannel(), searchStr, addtoqueue );
+		            } else {
+		            	AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
+						player.setPaused( false );
+		            }
+				}
 			}
         };
         commandMap.put ( "play", playCommand );
@@ -140,16 +146,18 @@ class CommandHandler {
         
         commandMap.put( "pause", ( cmd, event, args ) -> {
         	try {
-				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
-					if ( channel != null ) {
-						AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
-						player.setPaused( !player.isPaused() );
-					} else {
-						Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
-						event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+        		if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						if ( channel != null ) {
+							AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
+							player.setPaused( !player.isPaused() );
+						} else {
+							Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+						}
 					}
-				}
+        		}
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
@@ -157,43 +165,49 @@ class CommandHandler {
         
         commandMap.put( "stop", ( cmd, event, args ) -> {
         	try {
-				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
-					if ( channel != null ) {
-						TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
-						scheduler.getQueue().clear();
-						scheduler.nextTrack();
-					} else {
-						Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
-						event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+        		if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						if ( channel != null ) {
+							TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
+							scheduler.getQueue().clear();
+							scheduler.nextTrack();
+						} else {
+							Util.sendMessage( event.getChannel(), "I'm not even in a voice-channel "+ServerEmoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+						}
 					}
-				}
+        		}
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
         });
 		
 		commandMap.put( "skip", (cmd, event, args) -> {
-			if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-				skipTrack(event.getChannel());
+			if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+					skipTrack(event.getChannel());
+				}
 			}
 		});
 		
 		commandMap.put( "volume", (cmd, event, args) -> {
 			try {
-				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					if ( args.size() > 0 ) {
-						try {
-							int volume = Integer.parseInt( args.get( 0 ) );
+				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+						if ( args.size() > 0 ) {
+							try {
+								int volume = Integer.parseInt( args.get( 0 ) );
+								AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+								player.setVolume( volume );
+							} catch ( NumberFormatException e ) {
+								Util.sendMessage( event.getChannel(), "The first argument has to be an integer!" );
+							}
+						} else {
 							AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
-							player.setVolume( volume );
-						} catch ( NumberFormatException e ) {
-							Util.sendMessage( event.getChannel(), "The first argument has to be an integer!" );
+							Util.sendMessage( event.getChannel(), "The current volume is: "+player.getVolume()+".\nUse "+Settings.prefix+"volume [0-100] to change the volume!" );
+							
 						}
-					} else {
-						AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
-						Util.sendMessage( event.getChannel(), "The current volume is: "+player.getVolume()+".\nUse "+Settings.prefix+"volume [0-100] to change the volume!" );
-						
 					}
 				}
 			} catch ( Exception e ) {
@@ -203,21 +217,23 @@ class CommandHandler {
 		
 		commandMap.put( "playing", ( cmd, event, args ) -> {
 			try {
-				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					try {
-						AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
-						AudioTrack track = player.getPlayingTrack();
-						if ( track != null ) {
-							 AudioTrackInfo info = track.getInfo();
-							 String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
-							 Util.sendMessage( event.getChannel(), "**playing:**\n"+info.title+" - "+info.author+"\n"
-							 		+ "**url:**\n"+ info.uri + "\n"
-							 		+ "**length:**\n" + length + "\n" );
-						} else {
-							Util.sendMessage( event.getChannel(), "I'm not playing audio right now." );
+				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+						try {
+							AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+							AudioTrack track = player.getPlayingTrack();
+							if ( track != null ) {
+								 AudioTrackInfo info = track.getInfo();
+								 String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
+								 Util.sendMessage( event.getChannel(), "**playing:**\n"+info.title+" - "+info.author+"\n"
+								 		+ "**url:**\n"+ info.uri + "\n"
+								 		+ "**length:**\n" + length + "\n" );
+							} else {
+								Util.sendMessage( event.getChannel(), "I'm not playing audio right now." );
+							}
+						} catch ( NumberFormatException e ) {
+							Util.sendMessage( event.getChannel(), "The first argument has to be an integer!" );
 						}
-					} catch ( NumberFormatException e ) {
-						Util.sendMessage( event.getChannel(), "The first argument has to be an integer!" );
 					}
 				}
 			} catch ( Exception e ) {
@@ -229,7 +245,7 @@ class CommandHandler {
 		// Language-Manager //
 		Command requestLanguageSectionRole = ( cmd, event, args ) -> {
 			try {
-				if ( event.getChannel().getLongID() == Channels.languageChannelID ) {
+				if ( Channels.isLanguageChannel( event.getChannel().getLongID() ) ) {
 					IRole role = null;
 					switch ( cmd ) {
 						case "deutsch":
