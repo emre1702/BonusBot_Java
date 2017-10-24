@@ -9,6 +9,7 @@ public class MainRunner {
 			IDiscordClient client = Client.createClient(Settings.token, true);
 			EventDispatcher dispatcher = client.getDispatcher();
 			dispatcher.registerListener(new CommandHandler());
+			dispatcher.registerListener( new UserJoin() );
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());
 		}
