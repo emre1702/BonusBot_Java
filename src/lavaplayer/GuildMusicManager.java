@@ -18,7 +18,7 @@ public class GuildMusicManager {
    */
   public GuildMusicManager(AudioPlayerManager manager) {
     player = manager.createPlayer();
-    player.setVolume( 20 );
+    player.setVolume( 5 );
     provider = new AudioProvider(player);
     scheduler = new TrackScheduler(player);
   }
