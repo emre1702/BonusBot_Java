@@ -289,19 +289,24 @@ class CommandHandler {
 					IRole role = null;
 					switch ( cmd ) {
 						case "deutsch":
-							role = event.getGuild().getRoleByID( Roles.germanRoleID );
+							if ( Roles.germanRoleID != -1 )
+								role = event.getGuild().getRoleByID( Roles.germanRoleID );
 							break;
 						case "german":
-							role = event.getGuild().getRoleByID( Roles.germanRoleID );
+							if ( Roles.germanRoleID != -1 )
+								role = event.getGuild().getRoleByID( Roles.germanRoleID );
 							break;
 						case "türkce":
-							role = event.getGuild().getRoleByID( Roles.turkishRoleID );
+							if ( Roles.turkishRoleID != -1 )
+								role = event.getGuild().getRoleByID( Roles.turkishRoleID );
 							break;
 						case "turkish":
-							role = event.getGuild().getRoleByID( Roles.turkishRoleID );
+							if ( Roles.turkishRoleID != -1 )
+								role = event.getGuild().getRoleByID( Roles.turkishRoleID );
 							break;
 						case "english":
-							role = event.getGuild().getRoleByID( Roles.englishRoleID );
+							if ( Roles.englishRoleID != -1 )
+								role = event.getGuild().getRoleByID( Roles.englishRoleID );
 							break;
 					}
 					if ( role != null )
