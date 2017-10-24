@@ -19,6 +19,7 @@ class Settings {
 			
 			Channels.languageChannelID = (Long) jsonObject.get( "languageChannelID" );
 			Channels.musicChannelID = (Long) jsonObject.get( "musicChannelID" );
+			Channels.greetUserChannelID = (Long) jsonObject.get( "greetUserChannelID" );
 			Roles.musicbotUserID = (Long) jsonObject.get( "musicbotUserID" );
 			Roles.germanRoleID = (Long) jsonObject.get( "germanRoleID" );
 			Roles.englishRoleID = (Long) jsonObject.get( "englishRoleID" );
@@ -27,6 +28,8 @@ class Settings {
 			ServerEmoji.what  = "<:what:"+ServerEmoji.whatcode+">";
 			ServerEmoji.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
 			ServerEmoji.haha = "<:haha:"+ServerEmoji.hahacode+">";
+			ServerEmoji.tadacode = (Long) jsonObject.get( "tadaEmojiID" );
+			ServerEmoji.tada = "<:tada:"+ServerEmoji.tadacode+">";
 			
 		} catch ( Exception e ) {
 			e.printStackTrace ( Logging.getPrintWrite() );
