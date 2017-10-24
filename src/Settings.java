@@ -9,7 +9,7 @@ class Settings {
 	
 	/**
 	 * Loads the settings from discordbot.log.
-	 * To disable a settings just delete it or change the value to 0.
+	 * To disable a settings just delete it or change the value to -1.
 	 */
 	static void loadSettings ( ) {
 		JSONParser parser = new JSONParser();
