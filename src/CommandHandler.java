@@ -221,23 +221,42 @@ class CommandHandler {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-						try {
-							AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
-							AudioTrack track = player.getPlayingTrack();
-							if ( track != null ) {
-								 AudioTrackInfo info = track.getInfo();
-								 String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
-								 Util.sendMessage( event.getChannel(), "**"+Language.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
-								 		+ "**"+Language.getLang ( "url", event.getAuthor(), event.getGuild() ) +":**\n"+ info.uri + "\n"
-								 		+ "**"+Language.getLang ( "length", event.getAuthor(), event.getGuild() ) +":**\n" + length + "\n" );
-							} else {
-								Util.sendMessage( event.getChannel(), Language.getLang ( "not_playing_audio", event.getAuthor(), event.getGuild() ) );
-							}
-						} catch ( NumberFormatException e ) {
-							Util.sendMessage( event.getChannel(), Language.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
+						AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+						AudioTrack track = player.getPlayingTrack();
+						if ( track != null ) {
+							 AudioTrackInfo info = track.getInfo();
+							 String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
+							 Util.sendMessage( event.getChannel(), "**"+Language.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
+							 		+ "**"+Language.getLang ( "url", event.getAuthor(), event.getGuild() ) +":**\n"+ info.uri + "\n"
+							 		+ "**"+Language.getLang ( "length", event.getAuthor(), event.getGuild() ) +":**\n" + length + "\n" );
+						} else {
+							Util.sendMessage( event.getChannel(), Language.getLang ( "not_playing_audio", event.getAuthor(), event.getGuild() ) );
 						}
 					}
 				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		});
+		
+		commandMap.put("position", ( cmd, event, args ) -> {
+			try {
+				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
+					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
+						if ( args.size() > 0 ) {
+							try {
+								double trackpospercent = Integer.parseInt( args.get( 0 ) );
+								AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+								AudioTrack track = player.getPlayingTrack();
+								if ( track != null ) {
+									track.setPosition( (long) ( track.getDuration() * ( trackpospercent / 100 ) ) );
+								}
+							} catch ( NumberFormatException e ) {
+								Util.sendMessage( event.getChannel(), Language.getLang ( "first_has_to_be_floating_number", event.getAuthor(), event.getGuild() ) );
+							}
+						}
+					}
+				}	
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
@@ -296,9 +315,7 @@ class CommandHandler {
 		commandMap.put( "german", requestLanguageSectionRole );
 		commandMap.put( "türkce", requestLanguageSectionRole );
 		commandMap.put( "turkish", requestLanguageSectionRole );
-		commandMap.put( "english", requestLanguageSectionRole );
-		
-		
+		commandMap.put( "english", requestLanguageSectionRole );	
 	}
 	
 	
@@ -323,12 +340,13 @@ class CommandHandler {
 	    AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 		      @Override
 		      public void trackLoaded(AudioTrack track) {
-		        Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
 		        
 		        if ( queue ) {
-		        	queue(channel.getGuild(), musicManager, track);
+		        	Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
+		        	queue(musicManager, track);
 		        } else {
-		        	play(channel.getGuild(), musicManager, track);
+		        	Util.sendMessage(channel, Language.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": "+ track.getInfo().title);
+		        	play(musicManager, track);
 		        }
 		        
 		      }
@@ -341,13 +359,15 @@ class CommandHandler {
 		          firstTrack = playlist.getTracks().get(0);
 		        }
 
-		        Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title 
-		        		+ " ("+ Language.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+" " + playlist.getName() + ")");
 		        
 		        if ( queue ) {
-		        	queue(channel.getGuild(), musicManager, firstTrack);
+		        	Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title 
+			        		+ " ("+ Language.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+ " " + playlist.getName() + ")");
+		        	queue(musicManager, firstTrack);
 		        } else {
-		        	play(channel.getGuild(), musicManager, firstTrack);
+		        	Util.sendMessage(channel, Language.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": " + firstTrack.getInfo().title 
+			        		+ " ("+ Language.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+" " + playlist.getName() + ")");
+		        	play(musicManager, firstTrack);
 		        }
 		        
 		      }
@@ -366,21 +386,26 @@ class CommandHandler {
 	    playerManager.loadItemOrdered(musicManager, trackUrl, handler );
 	  }
 
-	  private static void play(IGuild guild, GuildMusicManager musicManager, AudioTrack track) {
-		musicManager.getScheduler().getQueue().clear();
-	    musicManager.getScheduler().queue(track);
+	  private static void play(GuildMusicManager musicManager, AudioTrack track) {
+	    musicManager.getPlayer().playTrack( track );
 	  }
 	  
-	  private static void queue(IGuild guild, GuildMusicManager musicManager, AudioTrack track) {
+	  private static void queue(GuildMusicManager musicManager, AudioTrack track) {
 		  musicManager.getScheduler().queue(track);
 	  }
 
 	  private static void skipTrack ( final MessageReceivedEvent event ) {
-		  final IChannel channel = event.getChannel();
+		final IChannel channel = event.getChannel();
 	    GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
-	    musicManager.getScheduler().nextTrack();
-
-	    Util.sendMessage ( channel, Language.getLang ( "skipped", event.getAuthor(), event.getGuild() ) );
+	    int size = musicManager.getScheduler().getQueue().size();
+	    AudioTrack oldtrack = musicManager.getScheduler().nextTrack();
+	    
+	    if ( oldtrack != null || size > 0 ) {
+		    if ( size > 0 ) 
+		    	Util.sendMessage ( channel, Language.getLang ( "skipped", event.getAuthor(), event.getGuild() ) );
+		    else 
+		    	Util.sendMessage ( channel, Language.getLang ( "skipped_nothing_left", event.getAuthor(), event.getGuild() ) );
+	    }
 	  }
 	
 	
