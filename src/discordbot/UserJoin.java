@@ -1,3 +1,4 @@
+package discordbot;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
 import sx.blah.discord.handle.obj.IGuild;

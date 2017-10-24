@@ -1,3 +1,4 @@
+package discordbot;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import java.util.List;
 

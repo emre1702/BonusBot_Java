@@ -1,3 +1,4 @@
+package discordbot;
 class ServerEmoji {
 	static long whatcode;
 	static long hahacode;
