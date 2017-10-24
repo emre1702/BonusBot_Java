@@ -6,7 +6,7 @@ class UserJoin implements IListener<UserJoinEvent> {
 
 	@Override
 	public void handle ( UserJoinEvent event ) {
-		if ( Channels.greetUserChannelID != 0 ) {
+		if ( Channels.greetUserChannelID != -1 ) {
 			IGuild guild = event.getGuild();
 			int amountonserver = guild.getTotalMemberCount();
 			String suffix = amountonserver == 1 ? "st" : 
