@@ -100,6 +100,13 @@ class Language {
 
 	}
 	
+	/**
+	 * Get language-string for specific user in the specific guild.
+	 * @param str The index for the value.
+	 * @param user The user who will get the message (needed for checking the language)
+	 * @param guild Your guild where you want to send the message.
+	 * @return The string for the users language.
+	 */
 	final static String getLang ( String str, IUser user, IGuild guild ) {
 		String language = "english";
 		List<IRole> roles = user.getRolesForGuild( guild );
