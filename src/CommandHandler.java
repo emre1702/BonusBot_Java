@@ -1,4 +1,3 @@
-import java.awt.Event;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -130,7 +129,7 @@ class CommandHandler {
 			            // Turn the args back into a string separated by space
 			            String searchStr = String.join(" ", args);
 			
-			            boolean addtoqueue = cmd == "queue" || cmd == "qplay" || cmd == "qyt";
+			            boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
 			            loadAndPlay ( event, searchStr, addtoqueue );
 		            } else {
 		            	AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
@@ -244,6 +243,25 @@ class CommandHandler {
 			}
 		});
 		
+		/*commandMap.put( "testit", ( cmd, event, args ) -> {
+			try {
+				if ( args.size() > 0 ) {
+					if ( args.get ( 0 ).equals( "infos" ) ) {
+						Util.sendMessage( event.getChannel(), event.getAuthor().getAvatar() );
+						Util.sendMessage( event.getChannel(), event.getAuthor().getAvatarURL() );
+						Util.sendMessage( event.getChannel(), event.getAuthor().getClient().getApplicationName() );
+						Util.sendMessage( event.getChannel(), event.getAuthor().getClient().getApplicationDescription() );
+						Util.sendMessage( event.getChannel(), event.getAuthor().getDiscriminator() );
+						Util.sendMessage( event.getChannel(), event.getAuthor().mention() );
+					} else 
+						Util.sendMessage( event.getChannel(), "Nothing to test here" );
+				} else 
+					Util.sendMessage( event.getChannel(), "No args" );
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		});*/
+		
 		
 		// Language-Manager //
 		Command requestLanguageSectionRole = ( cmd, event, args ) -> {
@@ -343,6 +361,7 @@ class CommandHandler {
 		      public void loadFailed(FriendlyException exception) {
 		    	  Util.sendMessage(channel, Language.getLang ( "could_not_play", event.getAuthor(), event.getGuild() ) + exception.getMessage());
 		      }
+		      
 		};
 	    playerManager.loadItemOrdered(musicManager, trackUrl, handler );
 	  }
