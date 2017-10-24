@@ -1,9 +1,12 @@
-class Channels {
+package discordbot;
+
+public class Channels {
 	
 	/* The channel where you will be able to add yourself the rights 
 	 * to read, write and talk in your language channels */
 	static long languageChannelID = -1;
 	static long musicChannelID = -1;
+	public static long musicChannelInfoID = -1;
 	static long greetUserChannelID = -1;
 	
 	/**
