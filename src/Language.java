@@ -23,6 +23,7 @@ class Language {
 		english.put( "You_not_in_voice_channel", "You aren't even in a voice-channel " );
 		english.put( "I_not_in_voice_channel", "I'm not even in a voice-channel " );
 		english.put( "first_has_to_be_int", "The first argument has to be an integer!" );
+		english.put( "first_has_to_be_floating_number", "The first argument has to be a decimal number!" );
 		english.put( "current_volume", "The current volume is: " );
 		english.put( "volume_usage_1", "Use '" );
 		english.put( "volume_usage_2", "volume [0-200]' to change the volume!" );
@@ -31,7 +32,8 @@ class Language {
 		english.put( "first_track_of_playlist", "first track of playlist" );
 		english.put( "nothing_found_by", "Nothing found by " );
 		english.put( "could_not_play", "Could not play: " );
-		english.put( "skipped", "Skipped to next track." );
+		english.put( "skipped", "Skipped this track." );
+		english.put( "skipped_nothing_left", "Skipped this track, nothing left." );
 		english.put( "playing", "playing" );
 		english.put( "url", "url" );
 		english.put( "length", "length" );
@@ -49,6 +51,7 @@ class Language {
 		german.put( "You_not_in_voice_channel", "Bist nicht einmal in einem Channel " );
 		german.put( "I_not_in_voice_channel", "Bin nicht einmal in einem Channel " );
 		german.put( "first_has_to_be_int", "Das erste Argument muss eine ganze Zahl sein!" );
+		german.put( "first_has_to_be_floating_number", "Das erste Argument muss eine Dezimalzahl sein!" );
 		german.put( "current_volume", "Die jetzige Lautstärke ist: " );
 		german.put( "volume_usage_1", "Benutze '" );
 		german.put( "volume_usage_2", "volume [0-200]' um die Lautstärke zu veränden." );
@@ -57,7 +60,8 @@ class Language {
 		german.put( "first_track_of_playlist", "Erster Song der Playliste" );
 		german.put( "nothing_found_by", "Nichts gefunden bei " );
 		german.put( "could_not_play", "Konnte nicht abspielen: " );
-		german.put( "skipped", "Überspringe zum nächsten Audio." );
+		german.put( "skipped", "Überspringe das jetzige Audio." );
+		german.put( "skipped_nothing_left", "Überspringe das jetzige Audio, nichts ist mehr übrig." );
 		german.put( "playing", "Spiele ab" );
 		german.put( "url", "Link" );
 		german.put( "length", "Länge" );
@@ -75,6 +79,7 @@ class Language {
 		turkish.put( "You_not_in_voice_channel", "Bir kanal'da bile degilsin " );
 		turkish.put( "I_not_in_voice_channel", "Bir kanal'da bile degilim" );
 		turkish.put( "first_has_to_be_int", "Tam sayi olmasi lazim!" );
+		turkish.put( "first_has_to_be_floating_number", "Ondalik sayi olmasi lazim!" );
 		turkish.put( "current_volume", "Simdiki hacim: " );
 		turkish.put( "volume_usage_1", "Hacim'i degistirmek icin '" );
 		turkish.put( "volume_usage_2", "volume [0-200]' kullan!" );
@@ -83,7 +88,8 @@ class Language {
 		turkish.put( "first_track_of_playlist", "calma listesinin ilk sesi" );
 		turkish.put( "nothing_found_by", "Bisey bulunamadi: " );
 		turkish.put( "could_not_play", "Oynanamadi: " );
-		turkish.put( "skipped", "Sonraki sese atladim" );
+		turkish.put( "skipped", "Bu sesi atladim" );
+		turkish.put( "skipped_nothing_left", "Bu sesi atladim, baska kalmadi." );
 		turkish.put( "playing", "oynaniyor" );
 		turkish.put( "url", "url" );
 		turkish.put( "length", "uzunlugu" );
