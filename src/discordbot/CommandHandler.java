@@ -1,23 +1,30 @@
 package discordbot;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import sx.blah.discord.api.events.EventSubscriber;
+import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
+import sx.blah.discord.util.MessageHistory;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import lavaplayer.*;
@@ -135,6 +142,7 @@ class CommandHandler {
 		            } else {
 		            	AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
 						player.setPaused( false );
+						Util.changeMusicInfoStatus( event.getGuild(), "playing" );
 		            }
 				}
 			}
@@ -153,6 +161,7 @@ class CommandHandler {
 						if ( channel != null ) {
 							AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
 							player.setPaused( !player.isPaused() );
+							Util.changeMusicInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
 						} else {
 							Util.sendMessage( event.getChannel(), Language.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
@@ -173,6 +182,7 @@ class CommandHandler {
 							TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
 							scheduler.getQueue().clear();
 							scheduler.nextTrack();
+							Util.changeMusicInfoStatus( event.getGuild(), "stopped" );
 						} else {
 							Util.sendMessage( event.getChannel(), Language.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
@@ -332,6 +342,50 @@ class CommandHandler {
         if (musicManager == null) {
             musicManager = new GuildMusicManager(playerManager);
             musicManagers.put(guildId, musicManager);
+            
+            final GuildMusicManager managerForInnerScope = musicManager;
+            
+            musicManager.getPlayer().addListener(new AudioEventAdapter() {
+            	/*@Override
+            	public void onPlayerPause ( AudioPlayer player ) {
+            		
+            	}
+            	
+            	@Override
+            	public void onPlayerResume ( AudioPlayer player ) {
+            		
+            	}*/
+            	
+            	@Override
+            	public void onTrackStart ( AudioPlayer player, AudioTrack track ) {
+            		try {
+	            		if ( Channels.musicInfoChannelID != -1 ) {
+	            			TrackScheduler scheduler = managerForInnerScope.getScheduler();
+	            			EmbedObject object = Util.getMusicInfo ( track, scheduler.userqueue.remove( 0 ), guild, scheduler.datequeue.remove( 0 ) );
+	            			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
+	            			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
+	            			if ( msghist.isEmpty() ) {
+	            				Util.sendMessage( musicinfochannel, object );
+	            			} else {
+	            				msghist.getEarliestMessage().edit( object );
+	            			}
+	            		}
+            		} catch ( Exception e ) {
+            	 		e.printStackTrace ( Logging.getPrintWrite() );
+            	 	}
+            	}
+            	
+            	@Override
+            	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+                // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
+            		if(endReason.mayStartNext) {
+            			managerForInnerScope.getScheduler().nextTrack();
+            		}
+            		if ( Channels.musicInfoChannelID != -1 ) {
+            			Util.changeMusicInfoStatus( guild, "ended" );
+            		}
+            	}
+            } );
         }
 
         guild.getAudioManager().setAudioProvider(musicManager.getAudioProvider());
@@ -349,10 +403,10 @@ class CommandHandler {
 		        
 		        if ( queue ) {
 		        	Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
-		        	queue(musicManager, track);
+		        	queue(musicManager, track, event.getAuthor());
 		        } else {
 		        	Util.sendMessage(channel, Language.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": "+ track.getInfo().title);
-		        	play(musicManager, track);
+		        	play(musicManager, track, event.getAuthor());
 		        }
 		        
 		      }
@@ -369,11 +423,11 @@ class CommandHandler {
 		        if ( queue ) {
 		        	Util.sendMessage(channel, Language.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title 
 			        		+ " ("+ Language.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+ " " + playlist.getName() + ")");
-		        	queue(musicManager, firstTrack);
+		        	queue(musicManager, firstTrack, event.getAuthor());
 		        } else {
 		        	Util.sendMessage(channel, Language.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": " + firstTrack.getInfo().title 
 			        		+ " ("+ Language.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+" " + playlist.getName() + ")");
-		        	play(musicManager, firstTrack);
+		        	play(musicManager, firstTrack, event.getAuthor());
 		        }
 		        
 		      }
@@ -392,13 +446,27 @@ class CommandHandler {
 	    playerManager.loadItemOrdered(musicManager, trackUrl, handler );
 	  }
 
-	  private static void play(GuildMusicManager musicManager, AudioTrack track) {
-	    musicManager.getPlayer().playTrack( track );
-	  }
+	private static void play(GuildMusicManager musicManager, AudioTrack track, IUser user ) {
+		try {
+			TrackScheduler scheduler = musicManager.getScheduler();
+			scheduler.userqueue.add( user );
+			scheduler.datequeue.add( LocalDateTime.now( ZoneId.of( "Europe/Paris" ) ) );
+			musicManager.getPlayer().playTrack( track );
+		} catch ( Exception e ) {
+	 		e.printStackTrace ( Logging.getPrintWrite() );
+	 	}
+	}
 	  
-	  private static void queue(GuildMusicManager musicManager, AudioTrack track) {
-		  musicManager.getScheduler().queue(track);
-	  }
+	private static void queue(GuildMusicManager musicManager, AudioTrack track, IUser user ) {
+		try {
+			TrackScheduler scheduler = musicManager.getScheduler();
+			scheduler.userqueue.add( user );
+			scheduler.datequeue.add( LocalDateTime.now( ZoneId.of( "Europe/Paris" ) ) );
+			scheduler.queue(track);
+		} catch ( Exception e ) {
+	 		e.printStackTrace ( Logging.getPrintWrite() );
+	 	}
+	}
 
 	  private static void skipTrack ( final MessageReceivedEvent event ) {
 		final IChannel channel = event.getChannel();
@@ -409,8 +477,10 @@ class CommandHandler {
 	    if ( oldtrack != null || size > 0 ) {
 		    if ( size > 0 ) 
 		    	Util.sendMessage ( channel, Language.getLang ( "skipped", event.getAuthor(), event.getGuild() ) );
-		    else 
+		    else {
 		    	Util.sendMessage ( channel, Language.getLang ( "skipped_nothing_left", event.getAuthor(), event.getGuild() ) );
+		    	Util.changeMusicInfoStatus( event.getGuild(), "skipped" );
+		    }
 	    }
 	  }
 	
