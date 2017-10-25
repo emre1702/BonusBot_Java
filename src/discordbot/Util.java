@@ -3,10 +3,20 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
+import lavaplayer.GuildMusicManager;
+import lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmbed;
@@ -15,9 +25,18 @@ import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.EmbedBuilder;
+import sx.blah.discord.util.MessageHistory;
 import sx.blah.discord.util.RequestBuffer;
 
 class Util {
+	private static final Map<Long, GuildMusicManager> musicManagers  = new HashMap<>();
+	static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
+	
+	static {
+		AudioSourceManagers.registerRemoteSources( playerManager );
+		AudioSourceManagers.registerLocalSource( playerManager );
+	}
+	
 	
 	/**
 	 * Send a message to the specific channel.
@@ -55,6 +74,64 @@ class Util {
 	 	}
 	}
 	
+	static synchronized GuildMusicManager getGuildMusicManager(IGuild guild) {
+        long guildId = guild.getLongID();
+        GuildMusicManager musicManager = musicManagers.get(guildId);
+
+        if (musicManager == null) {
+            musicManager = new GuildMusicManager(playerManager);
+            musicManagers.put(guildId, musicManager);
+            
+            final GuildMusicManager managerForInnerScope = musicManager;
+            
+            musicManager.getPlayer().addListener(new AudioEventAdapter() {
+            	/*@Override
+            	public void onPlayerPause ( AudioPlayer player ) {
+            		
+            	}
+            	
+            	@Override
+            	public void onPlayerResume ( AudioPlayer player ) {
+            		
+            	}*/
+            	
+            	@Override
+            	public void onTrackStart ( AudioPlayer player, AudioTrack track ) {
+            		try {
+	            		if ( Channels.musicInfoChannelID != -1 ) {
+	            			TrackScheduler scheduler = managerForInnerScope.getScheduler();
+	            			EmbedObject object = Util.getMusicInfo ( track, scheduler.userqueue.remove( 0 ), guild, scheduler.datequeue.remove( 0 ) );
+	            			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
+	            			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
+	            			if ( msghist.isEmpty() ) {
+	            				Util.sendMessage( musicinfochannel, object );
+	            			} else {
+	            				msghist.getEarliestMessage().edit( object );
+	            			}
+	            		}
+            		} catch ( Exception e ) {
+            	 		e.printStackTrace ( Logging.getPrintWrite() );
+            	 	}
+            	}
+            	
+            	@Override
+            	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
+                // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
+            		if(endReason.mayStartNext) {
+            			managerForInnerScope.getScheduler().nextTrack();
+            		}
+            		if ( Channels.musicInfoChannelID != -1 ) {
+            			Util.changeMusicInfoStatus( guild, "ended" );
+            		}
+            	}
+            } );
+        }
+
+        guild.getAudioManager().setAudioProvider(musicManager.getAudioProvider());
+
+        return musicManager;
+    }
+	
 	static EmbedObject getMusicInfo ( AudioTrack audiotrack, IUser user, IGuild guild, LocalDateTime dateadded ) {
 		try {
 			EmbedBuilder builder = new EmbedBuilder();
@@ -74,6 +151,7 @@ class Util {
 			int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
 			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
 			builder.appendField( "Added:", dateadded.format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString(), false );
+			builder.appendField( "Volume:", String.valueOf( getGuildMusicManager(guild).getPlayer().getVolume() ), false );
 			builder.appendField( "Status:", "playing", false );
 			
 			return builder.build();

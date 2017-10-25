@@ -9,22 +9,15 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
-import sx.blah.discord.util.MessageHistory;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import lavaplayer.*;
@@ -34,13 +27,10 @@ class CommandHandler {
 	
 	private static Map<String, Command> commandMap = new HashMap<String, Command>();
 	
-	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
-	private static final Map<Long, GuildMusicManager> musicManagers  = new HashMap<>();
+	
 
 	
 	static {
-		AudioSourceManagers.registerRemoteSources( playerManager );
-		AudioSourceManagers.registerLocalSource( playerManager );
 		
 		commandMap.put ( "8ball", ( cmd, event, args ) -> {
 			try { 
@@ -99,7 +89,7 @@ class CommandHandler {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
-							 TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
+							 TrackScheduler scheduler = Util.getGuildMusicManager(event.getGuild()).getScheduler();
 					         scheduler.getQueue().clear();
 					         scheduler.nextTrack();
 					         
@@ -140,7 +130,7 @@ class CommandHandler {
 			            boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
 			            loadAndPlay ( event, searchStr, addtoqueue );
 		            } else {
-		            	AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
+		            	AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
 						player.setPaused( false );
 						Util.changeMusicInfoStatus( event.getGuild(), "playing" );
 		            }
@@ -159,7 +149,7 @@ class CommandHandler {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
-							AudioPlayer player = getGuildAudioPlayer ( event.getGuild() ).getPlayer();
+							AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
 							player.setPaused( !player.isPaused() );
 							Util.changeMusicInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
 						} else {
@@ -179,7 +169,7 @@ class CommandHandler {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
-							TrackScheduler scheduler = getGuildAudioPlayer(event.getGuild()).getScheduler();
+							TrackScheduler scheduler = Util.getGuildMusicManager(event.getGuild()).getScheduler();
 							scheduler.getQueue().clear();
 							scheduler.nextTrack();
 							Util.changeMusicInfoStatus( event.getGuild(), "stopped" );
@@ -209,13 +199,13 @@ class CommandHandler {
 						if ( args.size() > 0 ) {
 							try {
 								int volume = Integer.parseInt( args.get( 0 ) );
-								AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+								AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 								player.setVolume( volume );
 							} catch ( NumberFormatException e ) {
 								Util.sendMessage( event.getChannel(), Language.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 							}
 						} else {
-							AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+							AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 							Util.sendMessage( event.getChannel(), Language.getLang ( "current_volume", event.getAuthor(), event.getGuild() )+player.getVolume()
 								+".\n" + Language.getLang ( "volume_usage_1", event.getAuthor(), event.getGuild() ) 
 								+ Settings.prefix+Language.getLang ( "volume_usage_2", event.getAuthor(), event.getGuild() ) );
@@ -232,7 +222,7 @@ class CommandHandler {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-						AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+						AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 						AudioTrack track = player.getPlayingTrack();
 						if ( track != null ) {
 							 AudioTrackInfo info = track.getInfo();
@@ -257,7 +247,7 @@ class CommandHandler {
 						if ( args.size() > 0 ) {
 							try {
 								double trackpospercent = Integer.parseInt( args.get( 0 ) );
-								AudioPlayer player = getGuildAudioPlayer(event.getGuild()).getPlayer();
+								AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 								AudioTrack track = player.getPlayingTrack();
 								if ( track != null ) {
 									track.setPosition( (long) ( track.getDuration() * ( trackpospercent / 100 ) ) );
@@ -335,67 +325,11 @@ class CommandHandler {
 	}
 	
 	
-	private static synchronized GuildMusicManager getGuildAudioPlayer(IGuild guild) {
-        long guildId = guild.getLongID();
-        GuildMusicManager musicManager = musicManagers.get(guildId);
-
-        if (musicManager == null) {
-            musicManager = new GuildMusicManager(playerManager);
-            musicManagers.put(guildId, musicManager);
-            
-            final GuildMusicManager managerForInnerScope = musicManager;
-            
-            musicManager.getPlayer().addListener(new AudioEventAdapter() {
-            	/*@Override
-            	public void onPlayerPause ( AudioPlayer player ) {
-            		
-            	}
-            	
-            	@Override
-            	public void onPlayerResume ( AudioPlayer player ) {
-            		
-            	}*/
-            	
-            	@Override
-            	public void onTrackStart ( AudioPlayer player, AudioTrack track ) {
-            		try {
-	            		if ( Channels.musicInfoChannelID != -1 ) {
-	            			TrackScheduler scheduler = managerForInnerScope.getScheduler();
-	            			EmbedObject object = Util.getMusicInfo ( track, scheduler.userqueue.remove( 0 ), guild, scheduler.datequeue.remove( 0 ) );
-	            			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
-	            			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
-	            			if ( msghist.isEmpty() ) {
-	            				Util.sendMessage( musicinfochannel, object );
-	            			} else {
-	            				msghist.getEarliestMessage().edit( object );
-	            			}
-	            		}
-            		} catch ( Exception e ) {
-            	 		e.printStackTrace ( Logging.getPrintWrite() );
-            	 	}
-            	}
-            	
-            	@Override
-            	public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-                // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
-            		if(endReason.mayStartNext) {
-            			managerForInnerScope.getScheduler().nextTrack();
-            		}
-            		if ( Channels.musicInfoChannelID != -1 ) {
-            			Util.changeMusicInfoStatus( guild, "ended" );
-            		}
-            	}
-            } );
-        }
-
-        guild.getAudioManager().setAudioProvider(musicManager.getAudioProvider());
-
-        return musicManager;
-    }
+	
 	
 	private static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
 		final IChannel channel = event.getChannel();
-	    GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+	    GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
 
 	    AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 		      @Override
@@ -443,7 +377,7 @@ class CommandHandler {
 		      }
 		      
 		};
-	    playerManager.loadItemOrdered(musicManager, trackUrl, handler );
+	    Util.playerManager.loadItemOrdered(musicManager, trackUrl, handler );
 	  }
 
 	private static void play(GuildMusicManager musicManager, AudioTrack track, IUser user ) {
@@ -470,7 +404,7 @@ class CommandHandler {
 
 	  private static void skipTrack ( final MessageReceivedEvent event ) {
 		final IChannel channel = event.getChannel();
-	    GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
+	    GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
 	    int size = musicManager.getScheduler().getQueue().size();
 	    AudioTrack oldtrack = musicManager.getScheduler().nextTrack();
 	    
