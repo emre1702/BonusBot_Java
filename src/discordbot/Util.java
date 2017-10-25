@@ -189,11 +189,19 @@ class Util {
 	static void changeMusicInfoStatus ( IGuild guild, String status ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
-			IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
-			IEmbed embed = msg.getEmbeds().get ( 0 );
-			EmbedObject obj = new EmbedObject ( embed );
-			obj.fields[0].value = status;
-			msg.edit( obj );
+			if ( musicinfochannel != null ) {
+				IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+				if ( msg != null ) {
+					IEmbed embed = msg.getEmbeds().get ( 0 );
+					if ( embed != null ) {
+						EmbedObject obj = new EmbedObject ( embed );
+						if ( obj.fields.length > 0 ) {
+							obj.fields[0].value = status;
+							msg.edit( obj );
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -205,11 +213,19 @@ class Util {
 	static void changeMusicInfoVolume ( IGuild guild, int volume ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
-			IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
-			IEmbed embed = msg.getEmbeds().get ( 0 );
-			EmbedObject obj = new EmbedObject ( embed );
-			obj.fields[1].value = String.valueOf( volume );
-			msg.edit( obj );
+			if ( musicinfochannel != null ) {
+				IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+				if ( msg != null ) {
+					IEmbed embed = msg.getEmbeds().get ( 0 );
+					if ( embed != null ) {
+						EmbedObject obj = new EmbedObject ( embed );
+						if ( obj.fields.length > 0 ) {
+							obj.fields[1].value = String.valueOf( volume );
+							msg.edit( obj );
+						}
+					}
+				}
+			}
 		}
 	}
 	
