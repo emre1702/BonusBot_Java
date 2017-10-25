@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import sx.blah.discord.api.events.EventSubscriber;
-import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
@@ -26,9 +25,6 @@ import lavaplayer.*;
 class CommandHandler {
 	
 	private static Map<String, Command> commandMap = new HashMap<String, Command>();
-	
-	
-
 	
 	static {
 		
@@ -201,6 +197,7 @@ class CommandHandler {
 								int volume = Integer.parseInt( args.get( 0 ) );
 								AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 								player.setVolume( volume );
+								Util.changeMusicInfoVolume( event.getGuild(), volume );
 							} catch ( NumberFormatException e ) {
 								Util.sendMessage( event.getChannel(), Language.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 							}
