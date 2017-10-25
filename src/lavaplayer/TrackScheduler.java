@@ -1,10 +1,11 @@
 package lavaplayer;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
-import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
+import sx.blah.discord.handle.obj.IUser;
+
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  */
 public class TrackScheduler {
   private final List<AudioTrack> queue;
+  public final List<IUser> userqueue;
+  public final List<LocalDateTime> datequeue;
   private final AudioPlayer player;
 
   public TrackScheduler(AudioPlayer player) {
@@ -21,18 +24,9 @@ public class TrackScheduler {
     // since all elements won't have to be shifted after removing. Additionally, choosing to add in between the queue
     // will similarly not cause many elements to shift and wil only require a couple of node changes.
     queue = Collections.synchronizedList(new LinkedList<>());
+    userqueue = Collections.synchronizedList( new LinkedList<>() );
+    datequeue = Collections.synchronizedList( new LinkedList<>() );
     this.player = player;
-
-    // For encapsulation, keep the listener anonymous.
-    player.addListener(new AudioEventAdapter() {
-      @Override
-      public void onTrackEnd(AudioPlayer player, AudioTrack track, AudioTrackEndReason endReason) {
-        // Only start the next track if the end reason is suitable for it (FINISHED or LOAD_FAILED)
-        if(endReason.mayStartNext) {
-          nextTrack();
-        }
-      }
-    });
   }
 
   /**
