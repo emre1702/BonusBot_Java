@@ -59,6 +59,12 @@ class Util {
 	 	}
     }
 	
+	/**
+	 * Send a EmbedObject to the specific channel.
+	 * Uses RequestBuffer.
+	 * @param channel The channel where we want to have the EmbedObject.
+	 * @param object The EmbedObject we want to send.
+	 */
 	public static void sendMessage ( IChannel channel, EmbedObject object ) {
 		try {
 	        // This might look weird but it'll be explained in another page.
@@ -74,6 +80,11 @@ class Util {
 	 	}
 	}
 	
+	/**
+	 * Get the GuildMusicManager for the specific guild.
+	 * @param guild The guild of which we want to get the GuildMusicManager.
+	 * @return The GuildMusicManager of the guild.
+	 */
 	static synchronized GuildMusicManager getGuildMusicManager(IGuild guild) {
         long guildId = guild.getLongID();
         GuildMusicManager musicManager = musicManagers.get(guildId);
@@ -132,6 +143,14 @@ class Util {
         return musicManager;
     }
 	
+	/**
+	 * Gets the EmbedObject with informations the audiotrack for music-info channel.
+	 * @param audiotrack The audiotrack we want to get the infos of.
+	 * @param user User who added the audiotrack.
+	 * @param guild Guild where all happenes.
+	 * @param dateadded Date when the audio got added.
+	 * @return EmbedObject with infos for the music-info channel.
+	 */
 	static EmbedObject getMusicInfo ( AudioTrack audiotrack, IUser user, IGuild guild, LocalDateTime dateadded ) {
 		try {
 			EmbedBuilder builder = new EmbedBuilder();
@@ -161,6 +180,11 @@ class Util {
 	 	}
 	}
 	
+	/**
+	 * Change the status in the EmbedObject in music-info channel.
+	 * @param guild Guild where you want to change the EmbedObject.
+	 * @param status The new status.
+	 */
 	static void changeMusicInfoStatus ( IGuild guild, String status ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
@@ -172,6 +196,11 @@ class Util {
 		}
 	}
 	
+	/**
+	 * Change the volume-info in the EmbedObject in music-info channel.
+	 * @param guild Guild where you want to change the EmbedObject.
+	 * @param status The new volume-info.
+	 */
 	static void changeMusicInfoVolume ( IGuild guild, int volume ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
