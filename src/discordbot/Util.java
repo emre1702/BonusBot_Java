@@ -167,10 +167,22 @@ class Util {
 			IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
 			IEmbed embed = msg.getEmbeds().get ( 0 );
 			EmbedObject obj = new EmbedObject ( embed );
-			obj.fields[2].value = status;
+			obj.fields[3].value = status;
 			msg.edit( obj );
 		}
 	}
+	
+	static void changeMusicInfoVolume ( IGuild guild, int volume ) {
+		if ( Channels.musicInfoChannelID != -1 ) {
+			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
+			IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+			IEmbed embed = msg.getEmbeds().get ( 0 );
+			EmbedObject obj = new EmbedObject ( embed );
+			obj.fields[2].value = String.valueOf( volume );
+			msg.edit( obj );
+		}
+	}
+	
 
 	
 	
