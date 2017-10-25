@@ -28,6 +28,8 @@ class Settings {
 				Channels.languageChannelID = (Long) jsonObject.get( "languageChannelID" );
 			if ( jsonObject.containsKey( "musicChannelID" ) )
 				Channels.musicChannelID = (Long) jsonObject.get( "musicChannelID" );
+			if ( jsonObject.containsKey( "musicInfoChannelID" ) )
+				Channels.musicInfoChannelID = (Long) jsonObject.get( "musicInfoChannelID" );
 			if ( jsonObject.containsKey( "greetUserChannelID" ) )
 				Channels.greetUserChannelID = (Long) jsonObject.get( "greetUserChannelID" );
 			if ( jsonObject.containsKey( "musicbotUserID" ) )
