@@ -168,10 +168,11 @@ class Util {
 			builder.withUrl( info.uri );
 			int minutes = (int) (Math.floor( info.length / 60000 ));
 			int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
+			builder.appendField( "Status:", "playing", false );
+			builder.appendField( "Volume:", String.valueOf( getGuildMusicManager(guild).getPlayer().getVolume() ), false );
 			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
 			builder.appendField( "Added:", dateadded.format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString(), false );
-			builder.appendField( "Volume:", String.valueOf( getGuildMusicManager(guild).getPlayer().getVolume() ), false );
-			builder.appendField( "Status:", "playing", false );
+			
 			
 			return builder.build();
 		} catch ( Exception e ) {
@@ -191,7 +192,7 @@ class Util {
 			IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
 			IEmbed embed = msg.getEmbeds().get ( 0 );
 			EmbedObject obj = new EmbedObject ( embed );
-			obj.fields[3].value = status;
+			obj.fields[0].value = status;
 			msg.edit( obj );
 		}
 	}
@@ -207,7 +208,7 @@ class Util {
 			IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
 			IEmbed embed = msg.getEmbeds().get ( 0 );
 			EmbedObject obj = new EmbedObject ( embed );
-			obj.fields[2].value = String.valueOf( volume );
+			obj.fields[1].value = String.valueOf( volume );
 			msg.edit( obj );
 		}
 	}
