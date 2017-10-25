@@ -84,12 +84,14 @@ class Util {
 	}
 	
 	static void changeMusicInfoStatus ( IGuild guild, String status ) {
-		IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
-		IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
-		IEmbed embed = msg.getEmbeds().get ( 0 );
-		EmbedObject obj = new EmbedObject ( embed );
-		obj.fields[2].value = status;
-		msg.edit( obj );
+		if ( Channels.musicInfoChannelID != -1 ) {
+			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
+			IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+			IEmbed embed = msg.getEmbeds().get ( 0 );
+			EmbedObject obj = new EmbedObject ( embed );
+			obj.fields[2].value = status;
+			msg.edit( obj );
+		}
 	}
 
 	
