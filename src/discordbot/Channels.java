@@ -6,7 +6,7 @@ public class Channels {
 	 * to read, write and talk in your language channels */
 	static long languageChannelID = -1;
 	static long musicChannelID = -1;
-	public static long musicChannelInfoID = -1;
+	public static long musicInfoChannelID = -1;
 	static long greetUserChannelID = -1;
 	
 	/**
