@@ -111,7 +111,7 @@ class Util {
             		try {
 	            		if ( Channels.musicInfoChannelID != -1 ) {
 	            			TrackScheduler scheduler = managerForInnerScope.getScheduler();
-	            			EmbedObject object = Util.getMusicInfo ( track, scheduler.userqueue.remove( 0 ), guild, scheduler.datequeue.remove( 0 ) );
+	            			EmbedObject object = Util.getMusicInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
 	            			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 	            			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
 	            			if ( msghist.isEmpty() ) {

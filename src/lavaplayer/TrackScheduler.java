@@ -6,26 +6,24 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import sx.blah.discord.handle.obj.IUser;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This class schedules tracks for the audio player. It contains the queue of tracks.
  */
 public class TrackScheduler {
-  private final List<AudioTrack> queue;
-  public final List<IUser> userqueue;
-  public final List<LocalDateTime> datequeue;
+  private final ConcurrentLinkedQueue<AudioTrack> queue;
+  public final ConcurrentLinkedQueue<IUser> userqueue;
+  public final ConcurrentLinkedQueue<LocalDateTime> datequeue;
   private final AudioPlayer player;
 
   public TrackScheduler(AudioPlayer player) {
     // Because we will be removing from the "head" of the queue frequently, a LinkedList is a better implementation
     // since all elements won't have to be shifted after removing. Additionally, choosing to add in between the queue
     // will similarly not cause many elements to shift and wil only require a couple of node changes.
-    queue = Collections.synchronizedList(new LinkedList<>());
-    userqueue = Collections.synchronizedList( new LinkedList<>() );
-    datequeue = Collections.synchronizedList( new LinkedList<>() );
+    queue = new ConcurrentLinkedQueue<>();
+    userqueue = new ConcurrentLinkedQueue<>();
+    datequeue = new ConcurrentLinkedQueue<>();
     this.player = player;
   }
 
@@ -53,7 +51,7 @@ public class TrackScheduler {
    */
   public synchronized AudioTrack nextTrack() {
     AudioTrack currentTrack = player.getPlayingTrack();
-    AudioTrack nextTrack = queue.isEmpty() ? null : queue.remove(0);
+    AudioTrack nextTrack = queue.poll();
 
     // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
     // giving null to startTrack, which is a valid argument and will simply stop the player.
@@ -68,7 +66,7 @@ public class TrackScheduler {
    * @apiNote To iterate over this queue, use a synchronized block. For example:
    * {@code synchronize (getQueue()) { // iteration code } }
    */
-  public List<AudioTrack> getQueue() {
+  public ConcurrentLinkedQueue<AudioTrack> getQueue() {
     return this.queue;
   }
 }
