@@ -7,14 +7,18 @@ import discordbot.server.Emoji;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IVoiceChannel;
+
+import java.util.List;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public class Music {
 	
 	static {
-		Handler.commandMap.put ( "join", ( cmd, event, args ) -> {
+		Handler.commandMap.put ( "join", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
@@ -32,7 +36,7 @@ public class Music {
 			}
 		} );
 		
-		Handler.commandMap.put ( "leave", ( cmd, event, args ) -> {
+		Handler.commandMap.put ( "leave", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
@@ -92,7 +96,7 @@ public class Music {
         Handler.commandMap.put ( "qplay", playCommand );
         Handler.commandMap.put ( "qyt", playCommand );
         
-        Handler.commandMap.put( "pause", ( cmd, event, args ) -> {
+        Handler.commandMap.put( "pause", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
         	try {
         		if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
@@ -112,7 +116,7 @@ public class Music {
 			}
         });
         
-        Handler.commandMap.put( "stop", ( cmd, event, args ) -> {
+        Handler.commandMap.put( "stop", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
         	try {
         		if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
@@ -168,7 +172,7 @@ public class Music {
 			}
 		});
 		
-        Handler.commandMap.put( "playing", ( cmd, event, args ) -> {
+        Handler.commandMap.put( "playing", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
@@ -190,7 +194,7 @@ public class Music {
 			}
 		});
 		
-        Handler.commandMap.put("position", ( cmd, event, args ) -> {
+        Handler.commandMap.put("position", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {

@@ -1,14 +1,17 @@
 package discordbot.commands;
 
+import java.util.List;
+
 import discordbot.Logging;
 import discordbot.server.Channels;
 import discordbot.server.Roles;
 import sx.blah.discord.handle.obj.IRole;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public class Language {
 	
 	static {
-		final Command requestLanguageSectionRole = ( cmd, event, args ) -> {
+		final Command requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isLanguageChannel( event.getChannel().getLongID() ) ) {
 					IRole role = null;

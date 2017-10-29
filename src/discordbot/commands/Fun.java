@@ -1,5 +1,6 @@
 package discordbot.commands;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import discordbot.Lang;
@@ -8,11 +9,12 @@ import discordbot.Util;
 import discordbot.server.Emoji;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 public class Fun {
 	
 	static {	
-		Handler.commandMap.put ( "8ball", ( cmd, event, args ) -> {
+		Handler.commandMap.put ( "8ball", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try { 
 				final IChannel channel = event.getChannel();
 				if ( args.size() > 0 ) {
