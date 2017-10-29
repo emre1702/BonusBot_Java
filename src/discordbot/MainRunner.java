@@ -1,5 +1,4 @@
 package discordbot;
-import discordbot.commands.Handler;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 
@@ -14,12 +13,10 @@ public class MainRunner {
 		try {
 			Settings.loadSettings();
 			final IDiscordClient client = Client.createClient(Settings.token, true);
-			client.changeUsername( Settings.name );
-			client.changePlayingText( Settings.playing );
 			
 			final EventDispatcher dispatcher = client.getDispatcher();
-			dispatcher.registerListener(new Handler());
-			dispatcher.registerListener( new UserJoin() );
+			dispatcher.registerListener(new discordbot.commands.Handler());
+			dispatcher.registerListener( new EventsListener() );
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());
 		}
