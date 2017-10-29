@@ -1,9 +1,7 @@
 package discordbot;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 /**
  * Here is the logger.
@@ -17,15 +15,14 @@ public class Logging {
 	 * so the error gets written in discordbot.log file
 	 * @return The PrintWriter for printStackTrace
 	 */
-	public final static PrintWriter getPrintWrite ( ) {
+	public final static PrintStream getPrintWrite ( ) {
 		try {
-			final FileWriter f = new FileWriter ( "discordbot.log", true );
-			f.write( Util.getTimestamp()+": " );
-			return new PrintWriter ( new BufferedWriter ( f ) );
+			final FileOutputStream f = new FileOutputStream ( "discordbot.log", true );
+			PrintStream stream = new PrintStream ( f );
+			stream.print( Util.getTimestamp()+": " );
+			return stream;
 		} catch ( FileNotFoundException e ) {
 			e.printStackTrace ();
-		} catch ( IOException e ) {
-			e.printStackTrace();
 		}
 		return null;
 	}
