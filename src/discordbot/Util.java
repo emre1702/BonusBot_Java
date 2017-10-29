@@ -47,7 +47,7 @@ public class Util {
 	 * Get LocalDateTime now for Europe/Paris timezone.
 	 * @return LocalDateTime.now for Europe/Paris timezone.
 	 */
-	static final LocalDateTime getLocalDateTime ( ) {
+	final static LocalDateTime getLocalDateTime ( ) {
 		return LocalDateTime.now( ZoneId.of( "Europe/Paris" ) );
 	}
 	
@@ -55,7 +55,7 @@ public class Util {
 	 * Get custom timestamp for now.
 	 * @return timestamp at current time.
 	 */
-	private final static String getTimestamp ( ) {
+	final static String getTimestamp ( ) {
 		return getLocalDateTime().format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString();
 	}
 	
