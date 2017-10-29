@@ -13,7 +13,8 @@ It can play audio from:
 * Vimeo
 * Twitch streams
 * Local files
-* HTTP URLs
+* HTTP URLs  
+
 More informations about the audio:  
 [LavaPlayer GitHub](https://github.com/sedmelluq/lavaplayer/tree/5019bd8173a0d8b99ff5fc53149774d77792702c)
 
@@ -21,7 +22,8 @@ Also it can manage the languages of the user.
 Currently supported are:  
 * English
 * German
-* Turkish
+* Turkish  
+
 If you understand a little bit of Java, you can add other languages by yourself (and maybe do a pull request).
 
 Oh and there is the command "8ball", just test it out.
