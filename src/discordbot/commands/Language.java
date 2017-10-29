@@ -14,17 +14,11 @@ public class Language {
 					IRole role = null;
 					switch ( cmd ) {
 						case "deutsch":
-							if ( Roles.germanRoleID != -1 )
-								role = event.getGuild().getRoleByID( Roles.germanRoleID );
-							break;
 						case "german":
 							if ( Roles.germanRoleID != -1 )
 								role = event.getGuild().getRoleByID( Roles.germanRoleID );
 							break;
 						case "türkce":
-							if ( Roles.turkishRoleID != -1 )
-								role = event.getGuild().getRoleByID( Roles.turkishRoleID );
-							break;
 						case "turkish":
 							if ( Roles.turkishRoleID != -1 )
 								role = event.getGuild().getRoleByID( Roles.turkishRoleID );
