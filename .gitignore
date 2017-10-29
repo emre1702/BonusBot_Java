@@ -47,3 +47,4 @@ Temporary Items
 .apdisk
 /discordbot.log
 /target/.gitignore
+*.class
