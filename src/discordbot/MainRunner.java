@@ -9,6 +9,9 @@ public class MainRunner {
 		try {
 			Settings.loadSettings();
 			final IDiscordClient client = Client.createClient(Settings.token, true);
+			client.changeUsername( Settings.name );
+			client.changePlayingText( Settings.playing );
+			
 			final EventDispatcher dispatcher = client.getDispatcher();
 			dispatcher.registerListener(new Handler());
 			dispatcher.registerListener( new UserJoin() );

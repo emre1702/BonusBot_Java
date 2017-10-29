@@ -11,6 +11,8 @@ import discordbot.server.Roles;
 public class Settings {
 	static String token;
 	public static String prefix = "!";
+	static String name = "Bonus-Bot";
+	static String playing = "Bonus-community";
 	
 	/**
 	 * Loads the settings from discordbot.log.
@@ -27,6 +29,10 @@ public class Settings {
 			
 			if ( jsonObject.containsKey( "prefix" ) )
 				prefix = (String) jsonObject.get( "prefix" );
+			if ( jsonObject.containsKey( "name" ) ) 
+				name = (String) jsonObject.get( "name" );
+			if ( jsonObject.containsKey( "playing" ) ) 
+				playing = (String) jsonObject.get( "playing" );
 			
 			if ( jsonObject.containsKey( "languageChannelID" ) )
 				Channels.languageChannelID = (Long) jsonObject.get( "languageChannelID" );
