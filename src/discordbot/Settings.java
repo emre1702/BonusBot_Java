@@ -4,9 +4,9 @@ import java.io.FileReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-class Settings {
+public class Settings {
 	static String token;
-	static String prefix = "!";
+	public static String prefix = "!";
 	
 	/**
 	 * Loads the settings from discordbot.log.

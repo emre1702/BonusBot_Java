@@ -7,7 +7,7 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
-class Language {
+public class Lang {
 	
 	private static Map<String, Map<String, String>> languageMap = new HashMap<String, Map<String, String>>();
 	static {
@@ -108,7 +108,7 @@ class Language {
 	 * @param guild Your guild where you want to send the message.
 	 * @return The string for the users language.
 	 */
-	final static String getLang ( String str, IUser user, IGuild guild ) {
+	public final static String getLang ( String str, IUser user, IGuild guild ) {
 		String language = "english";
 		List<IRole> roles = user.getRolesForGuild( guild );
 		IRole germanrole = guild.getRoleByID( Roles.germanRoleID );

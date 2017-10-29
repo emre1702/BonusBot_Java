@@ -28,7 +28,7 @@ import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.MessageHistory;
 import sx.blah.discord.util.RequestBuffer;
 
-class Util {
+public class Util {
 	private static final Map<Long, GuildMusicManager> musicManagers  = new HashMap<>();
 	static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 	
@@ -44,7 +44,7 @@ class Util {
 	 * @param channel The channel where we want to have the message.
 	 * @param message The message we want to send.
 	 */
-	static void sendMessage ( IChannel channel, String message ) {
+	public static void sendMessage ( IChannel channel, String message ) {
 		try {
 	        // This might look weird but it'll be explained in another page.
 	        RequestBuffer.request(() -> {
@@ -85,7 +85,7 @@ class Util {
 	 * @param guild The guild of which we want to get the GuildMusicManager.
 	 * @return The GuildMusicManager of the guild.
 	 */
-	static synchronized GuildMusicManager getGuildMusicManager(IGuild guild) {
+	public static synchronized GuildMusicManager getGuildMusicManager(IGuild guild) {
         long guildId = guild.getLongID();
         GuildMusicManager musicManager = musicManagers.get(guildId);
 
@@ -186,7 +186,7 @@ class Util {
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param status The new status.
 	 */
-	static void changeMusicInfoStatus ( IGuild guild, String status ) {
+	public static void changeMusicInfoStatus ( IGuild guild, String status ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 			if ( musicinfochannel != null ) {
@@ -210,7 +210,7 @@ class Util {
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param status The new volume-info.
 	 */
-	static void changeMusicInfoVolume ( IGuild guild, int volume ) {
+	public static void changeMusicInfoVolume ( IGuild guild, int volume ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 			if ( musicinfochannel != null ) {
@@ -228,8 +228,4 @@ class Util {
 			}
 		}
 	}
-	
-
-	
-	
 }

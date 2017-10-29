@@ -14,7 +14,7 @@ public class Channels {
 	 * @param ID The ID to be checked.
 	 * @return If the ID is the languageChannelID. Returns true if languageChannelID is not defined in discordconf.log.
 	 */
-	static boolean isLanguageChannel ( final long ID ) {
+	public static boolean isLanguageChannel ( final long ID ) {
 		return ( languageChannelID == -1 || ID == languageChannelID );
 	}
 	
@@ -23,7 +23,7 @@ public class Channels {
 	 * @param ID The ID to be checked.
 	 * @return If the ID is the musicChannelID. Returns true if musicChannelID is not defined in discordconf.log.
 	 */
-	static boolean isMusicChannel ( final long ID ) {
+	public static boolean isMusicChannel ( final long ID ) {
 		return ( musicChannelID == -1 || ID == musicChannelID );
 	}
 }

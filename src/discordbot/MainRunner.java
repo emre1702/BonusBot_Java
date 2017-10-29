@@ -1,4 +1,5 @@
 package discordbot;
+import discordbot.commands.Handler;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 
@@ -9,7 +10,7 @@ public class MainRunner {
 			Settings.loadSettings();
 			IDiscordClient client = Client.createClient(Settings.token, true);
 			EventDispatcher dispatcher = client.getDispatcher();
-			dispatcher.registerListener(new CommandHandler());
+			dispatcher.registerListener(new Handler());
 			dispatcher.registerListener( new UserJoin() );
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());

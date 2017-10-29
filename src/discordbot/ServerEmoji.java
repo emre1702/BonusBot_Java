@@ -1,10 +1,11 @@
 package discordbot;
-class ServerEmoji {
-	static long whatcode;
-	static long hahacode;
-	static long tadacode;
+
+public class ServerEmoji {
+	public static long whatcode;
+	public static long hahacode;
+	public static long tadacode;
 	
-	static String what;
-	static String haha;
-	static String tada;
+	public static String what;
+	public static String haha;
+	public static String tada;
 }
