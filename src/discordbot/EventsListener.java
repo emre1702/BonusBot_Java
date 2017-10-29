@@ -10,6 +10,12 @@ import sx.blah.discord.handle.obj.IGuild;
 class EventsListener {
 	
 	@EventSubscriber
+	public final void onReady ( final ReadyEvent event ) {
+		event.getClient().changeUsername( Settings.name );
+		event.getClient().changePlayingText( Settings.playing );
+	}
+	
+	@EventSubscriber
 	public final void onUserJoinedGuild ( final UserJoinEvent event ) {
 		if ( Channels.greetUserChannelID != -1 ) {
 			final IGuild guild = event.getGuild();
