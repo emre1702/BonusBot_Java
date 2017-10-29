@@ -1,4 +1,4 @@
-# DiscordBot
+# BonusBot
 
 This is a bot for Discord, written in Java.  
 It uses LavaPlayer and Discord4J.  
