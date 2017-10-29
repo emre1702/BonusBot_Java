@@ -1,6 +1,6 @@
-package discordbot;
+package discordbot.server;
 
-public class ServerEmoji {
+public class Emoji {
 	public static long whatcode;
 	public static long hahacode;
 	public static long tadacode;

@@ -1,8 +1,8 @@
 package discordbot.commands;
 
-import discordbot.Channels;
 import discordbot.Logging;
-import discordbot.Roles;
+import discordbot.server.Channels;
+import discordbot.server.Roles;
 import sx.blah.discord.handle.obj.IRole;
 
 public class Language {

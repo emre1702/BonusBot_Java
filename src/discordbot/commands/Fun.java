@@ -4,8 +4,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import discordbot.Lang;
 import discordbot.Logging;
-import discordbot.ServerEmoji;
 import discordbot.Util;
+import discordbot.server.Emoji;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
 
@@ -31,13 +31,13 @@ public class Fun {
 					else if ( rnd == 10 )
 						Util.sendMessage( channel, Lang.getLang ( "absolutely", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 11 ) {
-						Util.sendMessage( channel, Lang.getLang ( "stupid_question", event.getAuthor(), event.getGuild() )+ServerEmoji.haha );
-						event.getMessage().addReaction( ReactionEmoji.of( "haha", ServerEmoji.hahacode ));
+						Util.sendMessage( channel, Lang.getLang ( "stupid_question", event.getAuthor(), event.getGuild() )+Emoji.haha );
+						event.getMessage().addReaction( ReactionEmoji.of( "haha", Emoji.hahacode ));
 					} else 
 						Util.sendMessage( channel, Lang.getLang ( "ask_again", event.getAuthor(), event.getGuild() ) );		
 				} else {
-					Util.sendMessage( channel, Lang.getLang ( "what_is_question", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
-					event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+					Util.sendMessage( channel, Lang.getLang ( "what_is_question", event.getAuthor(), event.getGuild() )+Emoji.what );
+					event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
 				}
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );

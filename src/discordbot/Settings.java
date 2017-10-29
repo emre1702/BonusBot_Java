@@ -4,6 +4,10 @@ import java.io.FileReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import discordbot.server.Channels;
+import discordbot.server.Emoji;
+import discordbot.server.Roles;
+
 public class Settings {
 	static String token;
 	public static String prefix = "!";
@@ -12,7 +16,7 @@ public class Settings {
 	 * Loads the settings from discordbot.log.
 	 * To disable a settings just delete it or change the value to -1.
 	 */
-	static void loadSettings ( ) {
+	public static void loadSettings ( ) {
 		JSONParser parser = new JSONParser();
 		
 		try {
@@ -41,12 +45,12 @@ public class Settings {
 			if ( jsonObject.containsKey( "turkishRoleID" ) )
 				Roles.turkishRoleID = (Long) jsonObject.get( "turkishRoleID" );
 			
-			ServerEmoji.whatcode = (Long) jsonObject.get( "whatEmojiID" );
-			ServerEmoji.what  = "<:what:"+ServerEmoji.whatcode+">";
-			ServerEmoji.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
-			ServerEmoji.haha = "<:haha:"+ServerEmoji.hahacode+">";
-			ServerEmoji.tadacode = (Long) jsonObject.get( "tadaEmojiID" );
-			ServerEmoji.tada = "<:tada:"+ServerEmoji.tadacode+">";
+			Emoji.whatcode = (Long) jsonObject.get( "whatEmojiID" );
+			Emoji.what  = "<:what:"+Emoji.whatcode+">";
+			Emoji.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
+			Emoji.haha = "<:haha:"+Emoji.hahacode+">";
+			Emoji.tadacode = (Long) jsonObject.get( "tadaEmojiID" );
+			Emoji.tada = "<:tada:"+Emoji.tadacode+">";
 			
 		} catch ( Exception e ) {
 			e.printStackTrace ( Logging.getPrintWrite() );

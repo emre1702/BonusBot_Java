@@ -1,6 +1,9 @@
 package discordbot.commands;
 
 import discordbot.*;
+import discordbot.server.Channels;
+import discordbot.server.Roles;
+import discordbot.server.Emoji;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IVoiceChannel;
@@ -19,8 +22,8 @@ public class Music {
 						if ( channel != null ) {
 							channel.join();
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
 						}
 					}
 				}
@@ -42,8 +45,8 @@ public class Music {
 					         channel.leave();
 							
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
 						}
 					}
 				}
@@ -63,8 +66,8 @@ public class Music {
 						if ( channel != null ) {
 							channel.join();
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
 							return;
 						}
 		            }
@@ -99,8 +102,8 @@ public class Music {
 							player.setPaused( !player.isPaused() );
 							Util.changeMusicInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
 						}
 					}
         		}
@@ -120,8 +123,8 @@ public class Music {
 							scheduler.nextTrack();
 							Util.changeMusicInfoStatus( event.getGuild(), "stopped" );
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+ServerEmoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", ServerEmoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
 						}
 					}
         		}

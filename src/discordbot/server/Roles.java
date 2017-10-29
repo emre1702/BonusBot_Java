@@ -1,4 +1,4 @@
-package discordbot;
+package discordbot.server;
 import java.util.List;
 
 import sx.blah.discord.handle.obj.IGuild;
