@@ -22,3 +22,8 @@ public class MainRunner {
 		}
 	}
 }
+
+// Invitation-Link://
+// https://discordapp.com/api/oauth2/authorize?client_id=356578515472089089&scope=bot&permissions=70618192
+// Infos: https://discordapp.com/developers/docs/topics/oauth2
+// Permissions: https://discordapp.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
