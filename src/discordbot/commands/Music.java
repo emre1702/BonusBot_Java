@@ -59,7 +59,7 @@ public class Music {
 			}
 		} );
 		
-		final Command playCommand = (cmd, event, args) -> {
+		final Command playCommand = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					final IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
@@ -137,7 +137,7 @@ public class Music {
 			}
         });
 		
-        Handler.commandMap.put( "skip", (cmd, event, args) -> {
+        Handler.commandMap.put( "skip", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 					discordbot.Music.skipTrack(event);
@@ -145,7 +145,7 @@ public class Music {
 			}
 		});
 		
-        Handler.commandMap.put( "volume", (cmd, event, args) -> {
+        Handler.commandMap.put( "volume", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
