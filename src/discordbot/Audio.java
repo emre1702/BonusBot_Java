@@ -126,7 +126,7 @@ public class Audio {
 		    	Util.sendMessage ( channel, Lang.getLang ( "skipped", event.getAuthor(), event.getGuild() ) );
 		    else {
 		    	Util.sendMessage ( channel, Lang.getLang ( "skipped_nothing_left", event.getAuthor(), event.getGuild() ) );
-		    	AudioInfo.changeMusicInfoStatus( event.getGuild(), "skipped" );
+		    	AudioInfo.changeAudioInfoStatus( event.getGuild(), "skipped" );
 		    }
 	    }
 	}

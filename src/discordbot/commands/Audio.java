@@ -96,7 +96,7 @@ public class Audio {
 		            } else {
 		            	final AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
 						player.setPaused( false );
-						AudioInfo.changeMusicInfoStatus( event.getGuild(), "playing" );
+						AudioInfo.changeAudioInfoStatus( event.getGuild(), "playing" );
 		            }
 				}
 			}
@@ -115,7 +115,7 @@ public class Audio {
 						if ( channel != null ) {
 							final AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
 							player.setPaused( !player.isPaused() );
-							AudioInfo.changeMusicInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
+							AudioInfo.changeAudioInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
 						} else {
 							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
@@ -136,7 +136,7 @@ public class Audio {
 							final TrackScheduler scheduler = Util.getGuildMusicManager(event.getGuild()).getScheduler();
 							scheduler.getQueue().clear();
 							scheduler.nextTrack();
-							AudioInfo.changeMusicInfoStatus( event.getGuild(), "stopped" );
+							AudioInfo.changeAudioInfoStatus( event.getGuild(), "stopped" );
 						} else {
 							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
 							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
@@ -165,7 +165,7 @@ public class Audio {
 								final int volume = Integer.parseInt( args.get( 0 ) );
 								final AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 								player.setVolume( volume );
-								AudioInfo.changeMusicInfoVolume( event.getGuild(), volume );
+								AudioInfo.changeAudioInfoVolume( event.getGuild(), volume );
 							} catch ( NumberFormatException e ) {
 								Util.sendMessage( event.getChannel(), Lang.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 							}

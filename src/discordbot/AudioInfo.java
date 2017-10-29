@@ -17,14 +17,14 @@ import sx.blah.discord.util.EmbedBuilder;
 public class AudioInfo {
 	
 	/**
-	 * Gets the EmbedObject with informations the audiotrack for music-info channel.
+	 * Gets the EmbedObject with informations the audiotrack for audio-info channel.
 	 * @param audiotrack The audiotrack we want to get the infos of.
 	 * @param user User who added the audiotrack.
 	 * @param guild Guild where all happenes.
 	 * @param dateadded Date when the audio got added.
-	 * @return EmbedObject with infos for the music-info channel.
+	 * @return EmbedObject with infos for the audio-info channel.
 	 */
-	static final EmbedObject getMusicInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
+	static final EmbedObject getAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
 		try {
 			final EmbedBuilder builder = new EmbedBuilder();
 			final AudioTrackInfo info = audiotrack.getInfo();
@@ -33,7 +33,7 @@ public class AudioInfo {
 			builder.withAuthorIcon( user.getAvatarURL() );
 			builder.withColor( 0, 0, 150 );
 			builder.withDescription( info.uri );
-			builder.withFooterText( "Music-info" );
+			builder.withFooterText( "Audio-info" );
 			//builder.withImage( "https://www.youtube.com/yts/img/yt_1200-vfl4C3T0K.png" );
 			builder.withThumbnail( "https://lh3.googleusercontent.com/Ned_Tu_ge6GgJZ_lIO_5mieIEmjDpq9kfgD05wapmvzcInvT4qQMxhxq_hEazf8ZsqA=w300" );
 			builder.withTitle( info.title );
@@ -57,11 +57,11 @@ public class AudioInfo {
 	}
 	
 	/**
-	 * Change the status in the EmbedObject in music-info channel.
+	 * Change the status in the EmbedObject in audio-info channel.
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param status The new status.
 	 */
-	public final static void changeMusicInfoStatus ( final IGuild guild, final String status ) {
+	public final static void changeAudioInfoStatus ( final IGuild guild, final String status ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			final IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 			if ( musicinfochannel != null ) {
@@ -82,11 +82,11 @@ public class AudioInfo {
 	}
 	
 	/**
-	 * Change the volume-info in the EmbedObject in music-info channel.
+	 * Change the volume-info in the EmbedObject in audio-info channel.
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param volume The new volume-info.
 	 */
-	public final static void changeMusicInfoVolume ( final IGuild guild, final int volume ) {
+	public final static void changeAudioInfoVolume ( final IGuild guild, final int volume ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
 			final IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 			if ( musicinfochannel != null ) {

@@ -151,7 +151,7 @@ public class Util {
             		try {
 	            		if ( Channels.musicInfoChannelID != -1 ) {
 	            			TrackScheduler scheduler = managerForInnerScope.getScheduler();
-	            			EmbedObject object = AudioInfo.getMusicInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
+	            			EmbedObject object = AudioInfo.getAudioInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
 	            			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 	            			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
 	            			if ( msghist.isEmpty() ) {
@@ -172,7 +172,7 @@ public class Util {
             			managerForInnerScope.getScheduler().nextTrack();
             		}
             		if ( Channels.musicInfoChannelID != -1 ) {
-            			AudioInfo.changeMusicInfoStatus( guild, "ended" );
+            			AudioInfo.changeAudioInfoStatus( guild, "ended" );
             		}
             	}
             } );
