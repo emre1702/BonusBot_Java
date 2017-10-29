@@ -15,7 +15,7 @@ public class Logging {
 	/**
 	 * PrintStream for Exception.printStackTrace, 
 	 * so the error gets written in discordbot.log file
-	 * @return The PrintStream for printStackTrace
+	 * @return The PrintWriter for printStackTrace
 	 */
 	public final static PrintWriter getPrintWrite ( ) {
 		try {
