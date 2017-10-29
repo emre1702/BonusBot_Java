@@ -38,6 +38,31 @@ public class Util {
 		AudioSourceManagers.registerLocalSource( playerManager );
 	}
 	
+	/**
+	 * Get LocalDateTime now for Europe/Paris timezone.
+	 * @return LocalDateTime.now for Europe/Paris timezone.
+	 */
+	static LocalDateTime getLocalDateTime ( ) {
+		return LocalDateTime.now( ZoneId.of( "Europe/Paris" ) );
+	}
+	
+	/**
+	 * Get custom timestamp for now.
+	 * @return timestamp at current time.
+	 */
+	private static String getTimestamp ( ) {
+		return getLocalDateTime().format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString();
+	}
+	
+	/**
+	 * Get custom timestamp for a specific LocalDateTime.
+	 * @param datetime The LocalDateTime we want to get the timestamp of.
+	 * @return timestamp at the time of the LocalDateTime.
+	 */
+	private static String getTimestamp ( LocalDateTime datetime ) {
+		return datetime.format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString();
+	}
+	
 	
 	/**
 	 * Send a message to the specific channel.
@@ -164,7 +189,6 @@ public class Util {
 			builder.withFooterText( "Music-info" );
 			//builder.withImage( "https://www.youtube.com/yts/img/yt_1200-vfl4C3T0K.png" );
 			builder.withThumbnail( "https://lh3.googleusercontent.com/Ned_Tu_ge6GgJZ_lIO_5mieIEmjDpq9kfgD05wapmvzcInvT4qQMxhxq_hEazf8ZsqA=w300" );
-			builder.withTimestamp( Timestamp.valueOf( LocalDateTime.now( ZoneId.of( "Europe/Paris" ) ) ).getTime() );
 			builder.withTitle( info.title );
 			builder.withUrl( info.uri );
 			int minutes = (int) (Math.floor( info.length / 60000 ));
@@ -172,8 +196,11 @@ public class Util {
 			builder.appendField( "Status:", "playing", false );
 			builder.appendField( "Volume:", String.valueOf( getGuildMusicManager(guild).getPlayer().getVolume() ), false );
 			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
-			builder.appendField( "Added:", dateadded.format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString(), false );
+			builder.appendField( "Added:", getTimestamp ( dateadded ), false );
 			
+			EmbedObject obj = builder.build();
+			
+			obj.timestamp = getTimestamp();
 			
 			return builder.build();
 		} catch ( Exception e ) {

@@ -1,8 +1,5 @@
 package discordbot;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -73,7 +70,7 @@ public class Music {
 		try {
 			TrackScheduler scheduler = musicManager.getScheduler();
 			scheduler.userqueue.add( user );
-			scheduler.datequeue.add( LocalDateTime.now( ZoneId.of( "Europe/Paris" ) ) );
+			scheduler.datequeue.add( Util.getLocalDateTime() );
 			musicManager.getPlayer().playTrack( track );
 		} catch ( Exception e ) {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
@@ -84,7 +81,7 @@ public class Music {
 		try {
 			TrackScheduler scheduler = musicManager.getScheduler();
 			scheduler.userqueue.add( user );
-			scheduler.datequeue.add( LocalDateTime.now( ZoneId.of( "Europe/Paris" ) ) );
+			scheduler.datequeue.add( Util.getLocalDateTime() );
 			scheduler.queue(track);
 		} catch ( Exception e ) {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
