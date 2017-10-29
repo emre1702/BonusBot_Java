@@ -1,22 +1,16 @@
 package discordbot;
+
 import discordbot.server.Channels;
 import discordbot.server.Emojis;
-import sx.blah.discord.api.events.IListener;
+import sx.blah.discord.api.events.EventSubscriber;
+import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
 import sx.blah.discord.handle.obj.IGuild;
 
-/**
- * Handler for user-join to the guild.
- * @author emre1702
- *
- */
-class UserJoin implements IListener<UserJoinEvent> {
-
-	@Override
-	/**
-	 * handle when the user joins the guild.
-	 */
-	public void handle ( UserJoinEvent event ) {
+class EventsListener {
+	
+	@EventSubscriber
+	public final void onUserJoinedGuild ( final UserJoinEvent event ) {
 		if ( Channels.greetUserChannelID != -1 ) {
 			final IGuild guild = event.getGuild();
 			final int amountonserver = guild.getTotalMemberCount();
@@ -28,7 +22,5 @@ class UserJoin implements IListener<UserJoinEvent> {
 					+"\nPlease read 'informations' in 'important' category." );
 			
 		}
-		
 	}
-
 }
