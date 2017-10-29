@@ -56,7 +56,16 @@ public class Util {
 	 * @return timestamp at current time.
 	 */
 	final static String getTimestamp ( ) {
-		return getLocalDateTime().format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString();
+		return getLocalDateTime().format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) );
+	}
+	
+	/**
+	 * Get custom timestamp to use in the embed in Discord.
+	 * Discord only accepts ISO-8601 format.
+	 * @return timestamp at current time for embed.
+	 */
+	final static String getTimestampForDiscord ( ) {
+		return LocalDateTime.now ( ZoneId.of( "Z" )).toString();
 	}
 	
 	/**
@@ -205,7 +214,7 @@ public class Util {
 			
 			final EmbedObject obj = builder.build();
 			
-			obj.timestamp = getTimestamp();
+			obj.timestamp = getTimestampForDiscord();
 			
 			return obj;
 		} catch ( Exception e ) {
@@ -230,7 +239,7 @@ public class Util {
 						final EmbedObject obj = new EmbedObject ( embed );
 						if ( obj.fields.length > 0 ) {
 							obj.fields[0].value = status;
-							obj.timestamp = getTimestamp();
+							obj.timestamp = getTimestampForDiscord();
 							msg.edit( obj );
 						}
 					}
@@ -255,7 +264,7 @@ public class Util {
 						final EmbedObject obj = new EmbedObject ( embed );
 						if ( obj.fields.length > 0 ) {
 							obj.fields[1].value = String.valueOf( volume );
-							obj.timestamp = getTimestamp();
+							obj.timestamp = getTimestampForDiscord();
 							msg.edit( obj );
 						}
 					}
