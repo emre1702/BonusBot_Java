@@ -25,6 +25,7 @@ public class GuildMusicManager {
 
   /**
    * Adds a listener to be registered for audio events.
+   * @param listener The AudioEventListener you want to add.
    */
   public void addAudioListener(AudioEventListener listener) {
     player.addListener(listener);
@@ -32,6 +33,7 @@ public class GuildMusicManager {
 
   /**
    * Removes a listener that was registered for audio events.
+   * @param listener The AudioEventListener you want to remove.
    */
   public void removeAudioListener(AudioEventListener listener) {
     player.removeListener(listener);
@@ -51,6 +53,10 @@ public class GuildMusicManager {
     return provider;
   }
   
+  /**
+   * Get the AudioPlayer.
+   * @return AudioPlayer
+   */
   public AudioPlayer getPlayer() {
 	  return this.player;
   }

@@ -5,6 +5,11 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
+/**
+ * Server-roles informations
+ * @author emre1702
+ *
+ */
 public class Roles {
 	
 	public static long germanRoleID = -1;

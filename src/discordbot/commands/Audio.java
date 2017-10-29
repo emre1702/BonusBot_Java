@@ -3,7 +3,7 @@ package discordbot.commands;
 import discordbot.*;
 import discordbot.server.Channels;
 import discordbot.server.Roles;
-import discordbot.server.Emoji;
+import discordbot.server.Emojis;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IVoiceChannel;
@@ -15,7 +15,12 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
-public class Music {
+/** 
+ * Commands for audio
+ * @author emre1702
+ *
+ */
+public class Audio {
 	
 	/**
 	 * Create the music-commands.
@@ -31,8 +36,8 @@ public class Music {
 						if ( channel != null ) {
 							channel.join();
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
 						}
 					}
 				}
@@ -54,8 +59,8 @@ public class Music {
 					         channel.leave();
 							
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
 						}
 					}
 				}
@@ -75,8 +80,8 @@ public class Music {
 						if ( channel != null ) {
 							channel.join();
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
 							return;
 						}
 		            }
@@ -86,7 +91,7 @@ public class Music {
 		            	final String searchStr = String.join(" ", args);
 			
 		            	final boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
-			            discordbot.Music.loadAndPlay ( event, searchStr, addtoqueue );
+			            discordbot.Audio.loadAndPlay ( event, searchStr, addtoqueue );
 		            } else {
 		            	final AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
 						player.setPaused( false );
@@ -111,8 +116,8 @@ public class Music {
 							player.setPaused( !player.isPaused() );
 							Util.changeMusicInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
 						}
 					}
         		}
@@ -132,8 +137,8 @@ public class Music {
 							scheduler.nextTrack();
 							Util.changeMusicInfoStatus( event.getGuild(), "stopped" );
 						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emoji.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", Emoji.whatcode ));
+							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
+							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
 						}
 					}
         		}
@@ -145,7 +150,7 @@ public class Music {
         Handler.commandMap.put( "skip", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-					discordbot.Music.skipTrack(event);
+					discordbot.Audio.skipTrack(event);
 				}
 			}
 		});

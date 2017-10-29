@@ -4,6 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 
+/**
+ * Here is the logger.
+ * @author emre1702
+ *
+ */
 public class Logging {
 	
 	/**

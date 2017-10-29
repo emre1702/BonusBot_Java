@@ -1,6 +1,11 @@
 package discordbot.server;
 
-public class Emoji {
+/**
+ * Server-emojis
+ * @author emre1702
+ *
+ */
+public class Emojis {
 	public static long whatcode;
 	public static long hahacode;
 	public static long tadacode;

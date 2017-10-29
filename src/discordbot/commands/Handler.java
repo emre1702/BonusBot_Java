@@ -7,6 +7,11 @@ import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 
+/** 
+ * Command-handler.
+ * @author emre1702
+ *
+ */
 public class Handler {
 	
 	final static Map<String, Command> commandMap = new HashMap<String, Command>();
@@ -19,7 +24,7 @@ public class Handler {
 	public Handler () {
 		Fun.createFunCommands();
 		Language.createLanguageCommands();
-		Music.createMusicCommands();
+		Audio.createMusicCommands();
 	}
 	
 	 @EventSubscriber

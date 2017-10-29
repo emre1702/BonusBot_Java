@@ -3,6 +3,11 @@ import discordbot.commands.Handler;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 
+/**
+ * Main-method
+ * @author emre1702
+ *
+ */
 public class MainRunner {
   
 	public static void main ( String[] args ) {

@@ -1,5 +1,6 @@
 package discordbot;
 import java.time.LocalDateTime;
+
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -28,6 +29,11 @@ import sx.blah.discord.util.EmbedBuilder;
 import sx.blah.discord.util.MessageHistory;
 import sx.blah.discord.util.RequestBuffer;
 
+/**
+ * Some important and useful stuff.
+ * @author emre1702
+ *
+ */
 public class Util {
 	private static final Map<Long, GuildMusicManager> musicManagers  = new HashMap<>();
 	static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
@@ -236,7 +242,7 @@ public class Util {
 	/**
 	 * Change the volume-info in the EmbedObject in music-info channel.
 	 * @param guild Guild where you want to change the EmbedObject.
-	 * @param status The new volume-info.
+	 * @param volume The new volume-info.
 	 */
 	public final static void changeMusicInfoVolume ( final IGuild guild, final int volume ) {
 		if ( Channels.musicInfoChannelID != -1 ) {

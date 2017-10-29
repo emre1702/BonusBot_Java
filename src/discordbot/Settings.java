@@ -5,10 +5,20 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import discordbot.server.Channels;
-import discordbot.server.Emoji;
+import discordbot.server.Emojis;
 import discordbot.server.Roles;
 
+/**
+ * Load and manage settings.
+ * @author emre1702
+ *
+ */
 public class Settings {
+	/**
+	 * Token of the bot.
+	 * Can be found here:
+	 * https://discordapp.com/developers/applications/me
+	 */
 	static String token;
 	public static String prefix = "!";
 	static String name = "Bonus-Bot";
@@ -51,12 +61,12 @@ public class Settings {
 			if ( jsonObject.containsKey( "turkishRoleID" ) )
 				Roles.turkishRoleID = (Long) jsonObject.get( "turkishRoleID" );
 			
-			Emoji.whatcode = (Long) jsonObject.get( "whatEmojiID" );
-			Emoji.what  = "<:what:"+Emoji.whatcode+">";
-			Emoji.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
-			Emoji.haha = "<:haha:"+Emoji.hahacode+">";
-			Emoji.tadacode = (Long) jsonObject.get( "tadaEmojiID" );
-			Emoji.tada = "<:tada:"+Emoji.tadacode+">";
+			Emojis.whatcode = (Long) jsonObject.get( "whatEmojiID" );
+			Emojis.what  = "<:what:"+Emojis.whatcode+">";
+			Emojis.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
+			Emojis.haha = "<:haha:"+Emojis.hahacode+">";
+			Emojis.tadacode = (Long) jsonObject.get( "tadaEmojiID" );
+			Emojis.tada = "<:tada:"+Emojis.tadacode+">";
 			
 		} catch ( Exception e ) {
 			e.printStackTrace ( Logging.getPrintWrite() );

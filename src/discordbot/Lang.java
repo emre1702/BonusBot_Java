@@ -8,6 +8,11 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
+/**
+ * This class contains the language-strings for english, german and turkish.
+ * @author emre1702
+ *
+ */
 public class Lang {
 	
 	private final static Map<String, Map<String, String>> languageMap = new HashMap<String, Map<String, String>>();

@@ -11,8 +11,19 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IUser;
 
-public class Music {
+/**
+ * Audio-class.
+ * @author emre1702
+ *
+ */
+public class Audio {
 	
+	/**
+	 * Loads an audio and plays it afterwards.
+	 * @param event The event to determine the channel (information-output), guild and the author (for language).
+	 * @param trackUrl URL of the audio the author want to have played.
+	 * @param queue If it should be added to the queue or played right now.
+	 */
 	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
 		final IChannel channel = event.getChannel();
 		final GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
@@ -66,6 +77,12 @@ public class Music {
 	    Util.playerManager.loadItemOrdered(musicManager, trackUrl, handler );
 	  }
 
+	/**
+	 * Play the AudioTrack
+	 * @param musicManager The GuildMusicManager of the guild.
+	 * @param track AudioTrack the user want to have played.
+	 * @param user User who added the track (used later for language).
+	 */
 	private final static void play ( final GuildMusicManager musicManager, final AudioTrack track, final IUser user ) {
 		try {
 			final TrackScheduler scheduler = musicManager.getScheduler();
@@ -76,7 +93,13 @@ public class Music {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
 	 	}
 	}
-	  
+	
+	/**
+	 * Puts the AudioTrack into the queue.
+	 * @param musicManager The GuildMusicManager of the guild.
+	 * @param track AudioTrack the user want to have played.
+	 * @param user User who added the track (used later for language).
+	 */
 	private final static void queue ( final GuildMusicManager musicManager, final AudioTrack track, final IUser user ) {
 		try {
 			final TrackScheduler scheduler = musicManager.getScheduler();
@@ -88,6 +111,10 @@ public class Music {
 	 	}
 	}
 	
+	/**
+	 * Skips the current track.
+	 * @param event Event from command, used for channel (output), guild and author (language).
+	 */
 	public final static void skipTrack ( final MessageReceivedEvent event ) {
 		final IChannel channel = event.getChannel();
 		final GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());

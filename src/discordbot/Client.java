@@ -4,6 +4,11 @@ import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.util.DiscordException; 
 
+/**
+ * This class creates the discord-client for the bot.
+ * @author emre1702
+ *
+ */
 class Client {
 	
 	/**

@@ -1,5 +1,10 @@
 package discordbot.server;
 
+/**
+ * Server-channel informations
+ * @author emre1702
+ *
+ */
 public class Channels {
 	
 	/* The channel where you will be able to add yourself the rights 
