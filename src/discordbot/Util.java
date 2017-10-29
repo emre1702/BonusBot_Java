@@ -1,5 +1,4 @@
 package discordbot;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -225,6 +224,7 @@ public class Util {
 						EmbedObject obj = new EmbedObject ( embed );
 						if ( obj.fields.length > 0 ) {
 							obj.fields[0].value = status;
+							obj.timestamp = getTimestamp();
 							msg.edit( obj );
 						}
 					}
@@ -249,6 +249,7 @@ public class Util {
 						EmbedObject obj = new EmbedObject ( embed );
 						if ( obj.fields.length > 0 ) {
 							obj.fields[1].value = String.valueOf( volume );
+							obj.timestamp = getTimestamp();
 							msg.edit( obj );
 						}
 					}
