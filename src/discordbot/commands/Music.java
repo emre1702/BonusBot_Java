@@ -18,7 +18,7 @@ public class Music {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-						IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						final IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
 							channel.join();
 						} else {
@@ -36,9 +36,9 @@ public class Music {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
-							 TrackScheduler scheduler = Util.getGuildMusicManager(event.getGuild()).getScheduler();
+							final TrackScheduler scheduler = Util.getGuildMusicManager(event.getGuild()).getScheduler();
 					         scheduler.getQueue().clear();
 					         scheduler.nextTrack();
 					         
@@ -55,13 +55,13 @@ public class Music {
 			}
 		} );
 		
-		Command playCommand = (cmd, event, args) -> {
+		final Command playCommand = (cmd, event, args) -> {
 			if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 				if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-		            IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
+					final IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
 		
 		            if(botVoiceChannel == null) {
-		            	IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
+		            	final IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						
 						if ( channel != null ) {
 							channel.join();
@@ -74,12 +74,12 @@ public class Music {
 		            
 		            if ( args.size() > 0 ) {
 			            // Turn the args back into a string separated by space
-			            String searchStr = String.join(" ", args);
+		            	final String searchStr = String.join(" ", args);
 			
-			            boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
+		            	final boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
 			            discordbot.Music.loadAndPlay ( event, searchStr, addtoqueue );
 		            } else {
-		            	AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
+		            	final AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
 						player.setPaused( false );
 						Util.changeMusicInfoStatus( event.getGuild(), "playing" );
 		            }
@@ -96,9 +96,9 @@ public class Music {
         	try {
         		if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
-							AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
+							final AudioPlayer player = Util.getGuildMusicManager ( event.getGuild() ).getPlayer();
 							player.setPaused( !player.isPaused() );
 							Util.changeMusicInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
 						} else {
@@ -116,9 +116,9 @@ public class Music {
         	try {
         		if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-						IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
-							TrackScheduler scheduler = Util.getGuildMusicManager(event.getGuild()).getScheduler();
+							final TrackScheduler scheduler = Util.getGuildMusicManager(event.getGuild()).getScheduler();
 							scheduler.getQueue().clear();
 							scheduler.nextTrack();
 							Util.changeMusicInfoStatus( event.getGuild(), "stopped" );
@@ -147,15 +147,15 @@ public class Music {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 						if ( args.size() > 0 ) {
 							try {
-								int volume = Integer.parseInt( args.get( 0 ) );
-								AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
+								final int volume = Integer.parseInt( args.get( 0 ) );
+								final AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 								player.setVolume( volume );
 								Util.changeMusicInfoVolume( event.getGuild(), volume );
 							} catch ( NumberFormatException e ) {
 								Util.sendMessage( event.getChannel(), Lang.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 							}
 						} else {
-							AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
+							final AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
 							Util.sendMessage( event.getChannel(), Lang.getLang ( "current_volume", event.getAuthor(), event.getGuild() )+player.getVolume()
 								+".\n" + Lang.getLang ( "volume_usage_1", event.getAuthor(), event.getGuild() ) 
 								+ Settings.prefix+Lang.getLang ( "volume_usage_2", event.getAuthor(), event.getGuild() ) );
@@ -172,12 +172,12 @@ public class Music {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
-						AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
-						AudioTrack track = player.getPlayingTrack();
+						final AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
+						final AudioTrack track = player.getPlayingTrack();
 						if ( track != null ) {
-							 AudioTrackInfo info = track.getInfo();
-							 String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
-							 Util.sendMessage( event.getChannel(), "**"+Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
+							final AudioTrackInfo info = track.getInfo();
+							final String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
+							Util.sendMessage( event.getChannel(), "**"+Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
 							 		+ "**"+Lang.getLang ( "url", event.getAuthor(), event.getGuild() ) +":**\n"+ info.uri + "\n"
 							 		+ "**"+Lang.getLang ( "length", event.getAuthor(), event.getGuild() ) +":**\n" + length + "\n" );
 						} else {
@@ -196,9 +196,9 @@ public class Music {
 					if ( Roles.canPlayMusic ( event.getAuthor(), event.getGuild() ) ) {
 						if ( args.size() > 0 ) {
 							try {
-								double trackpospercent = Integer.parseInt( args.get( 0 ) );
-								AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
-								AudioTrack track = player.getPlayingTrack();
+								final double trackpospercent = Integer.parseInt( args.get( 0 ) );
+								final AudioPlayer player = Util.getGuildMusicManager(event.getGuild()).getPlayer();
+								final AudioTrack track = player.getPlayingTrack();
 								if ( track != null ) {
 									track.setPosition( (long) ( track.getDuration() * ( trackpospercent / 100 ) ) );
 								}

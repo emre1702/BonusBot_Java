@@ -8,7 +8,7 @@ import sx.blah.discord.handle.obj.IRole;
 public class Language {
 	
 	static {
-		Command requestLanguageSectionRole = ( cmd, event, args ) -> {
+		final Command requestLanguageSectionRole = ( cmd, event, args ) -> {
 			try {
 				if ( Channels.isLanguageChannel( event.getChannel().getLongID() ) ) {
 					IRole role = null;

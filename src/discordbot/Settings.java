@@ -16,13 +16,13 @@ public class Settings {
 	 * Loads the settings from discordbot.log.
 	 * To disable a settings just delete it or change the value to -1.
 	 */
-	public static void loadSettings ( ) {
-		JSONParser parser = new JSONParser();
+	public final static void loadSettings ( ) {
+		final JSONParser parser = new JSONParser();
 		
 		try {
-			Object obj = parser.parse( new FileReader ( "discordbot.conf" ) );
+			final Object obj = parser.parse( new FileReader ( "discordbot.conf" ) );
 			
-			JSONObject jsonObject = (JSONObject) obj;
+			final JSONObject jsonObject = (JSONObject) obj;
 			token = (String) jsonObject.get( "token" );
 			
 			if ( jsonObject.containsKey( "prefix" ) )

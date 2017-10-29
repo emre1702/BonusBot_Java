@@ -18,9 +18,9 @@ public class Roles {
 	 * @param guild The guild where the user wants to play music.
 	 * @return If the user has the right to play music. Returns true if musicbotUserID is not defined in discordbot.conf.
 	 */
-	public static boolean canPlayMusic ( IUser user, IGuild guild ) {
+	public final static boolean canPlayMusic ( IUser user, IGuild guild ) {
 		if ( musicbotUserID != -1 ) {
-			List<IRole> roles = user.getRolesForGuild( guild );
+			final List<IRole> roles = user.getRolesForGuild( guild );
 			if ( roles.contains( guild.getRoleByID( musicbotUserID ) ) )
 				return true;
 			else

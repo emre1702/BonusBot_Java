@@ -10,7 +10,7 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class Lang {
 	
-	private static Map<String, Map<String, String>> languageMap = new HashMap<String, Map<String, String>>();
+	private final static Map<String, Map<String, String>> languageMap = new HashMap<String, Map<String, String>>();
 	static {
 		Map<String, String> english = new HashMap<String, String>();
 		english.put( "yes", "Yes" );
@@ -109,15 +109,15 @@ public class Lang {
 	 * @param guild Your guild where you want to send the message.
 	 * @return The string for the users language.
 	 */
-	public final static String getLang ( String str, IUser user, IGuild guild ) {
+	public final static String getLang ( final String str, final IUser user, final IGuild guild ) {
 		String language = "english";
-		List<IRole> roles = user.getRolesForGuild( guild );
-		IRole germanrole = guild.getRoleByID( Roles.germanRoleID );
+		final List<IRole> roles = user.getRolesForGuild( guild );
+		final IRole germanrole = guild.getRoleByID( Roles.germanRoleID );
 		
 		if ( roles.contains( germanrole ) ) {
 			language = "german";
 		} else {
-			IRole turkishrole = guild.getRoleByID( Roles.turkishRoleID );
+			final IRole turkishrole = guild.getRoleByID( Roles.turkishRoleID );
 			if ( roles.contains( turkishrole ) ) {
 				language = "turkish";
 			} 

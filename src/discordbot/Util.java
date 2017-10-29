@@ -41,7 +41,7 @@ public class Util {
 	 * Get LocalDateTime now for Europe/Paris timezone.
 	 * @return LocalDateTime.now for Europe/Paris timezone.
 	 */
-	static LocalDateTime getLocalDateTime ( ) {
+	static final LocalDateTime getLocalDateTime ( ) {
 		return LocalDateTime.now( ZoneId.of( "Europe/Paris" ) );
 	}
 	
@@ -49,7 +49,7 @@ public class Util {
 	 * Get custom timestamp for now.
 	 * @return timestamp at current time.
 	 */
-	private static String getTimestamp ( ) {
+	private final static String getTimestamp ( ) {
 		return getLocalDateTime().format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString();
 	}
 	
@@ -58,7 +58,7 @@ public class Util {
 	 * @param datetime The LocalDateTime we want to get the timestamp of.
 	 * @return timestamp at the time of the LocalDateTime.
 	 */
-	private static String getTimestamp ( LocalDateTime datetime ) {
+	private final static String getTimestamp ( LocalDateTime datetime ) {
 		return datetime.format( DateTimeFormatter.ofPattern( "HH:mm:ss - dd.MM.yyyy" ) ).toString();
 	}
 	
@@ -69,7 +69,7 @@ public class Util {
 	 * @param channel The channel where we want to have the message.
 	 * @param message The message we want to send.
 	 */
-	public static void sendMessage ( IChannel channel, String message ) {
+	public final static void sendMessage ( final IChannel channel, final String message ) {
 		try {
 	        // This might look weird but it'll be explained in another page.
 	        RequestBuffer.request(() -> {
@@ -90,7 +90,7 @@ public class Util {
 	 * @param channel The channel where we want to have the EmbedObject.
 	 * @param object The EmbedObject we want to send.
 	 */
-	public static void sendMessage ( IChannel channel, EmbedObject object ) {
+	public final static void sendMessage ( final IChannel channel, final EmbedObject object ) {
 		try {
 	        // This might look weird but it'll be explained in another page.
 	        RequestBuffer.request(() -> {
@@ -110,9 +110,9 @@ public class Util {
 	 * @param guild The guild of which we want to get the GuildMusicManager.
 	 * @return The GuildMusicManager of the guild.
 	 */
-	public static synchronized GuildMusicManager getGuildMusicManager(IGuild guild) {
-        long guildId = guild.getLongID();
-        GuildMusicManager musicManager = musicManagers.get(guildId);
+	public final static synchronized GuildMusicManager getGuildMusicManager ( final IGuild guild ) {
+		final long guildId = guild.getLongID();
+		GuildMusicManager musicManager = musicManagers.get(guildId);
 
         if (musicManager == null) {
             musicManager = new GuildMusicManager(playerManager);
@@ -176,10 +176,10 @@ public class Util {
 	 * @param dateadded Date when the audio got added.
 	 * @return EmbedObject with infos for the music-info channel.
 	 */
-	static EmbedObject getMusicInfo ( AudioTrack audiotrack, IUser user, IGuild guild, LocalDateTime dateadded ) {
+	static final EmbedObject getMusicInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
 		try {
-			EmbedBuilder builder = new EmbedBuilder();
-			AudioTrackInfo info = audiotrack.getInfo();
+			final EmbedBuilder builder = new EmbedBuilder();
+			final AudioTrackInfo info = audiotrack.getInfo();
 			
 			builder.withAuthorName( user.getDisplayName( guild ) );
 			builder.withAuthorIcon( user.getAvatarURL() );
@@ -190,18 +190,18 @@ public class Util {
 			builder.withThumbnail( "https://lh3.googleusercontent.com/Ned_Tu_ge6GgJZ_lIO_5mieIEmjDpq9kfgD05wapmvzcInvT4qQMxhxq_hEazf8ZsqA=w300" );
 			builder.withTitle( info.title );
 			builder.withUrl( info.uri );
-			int minutes = (int) (Math.floor( info.length / 60000 ));
-			int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
+			final int minutes = (int) (Math.floor( info.length / 60000 ));
+			final int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
 			builder.appendField( "Status:", "playing", false );
 			builder.appendField( "Volume:", String.valueOf( getGuildMusicManager(guild).getPlayer().getVolume() ), false );
 			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
 			builder.appendField( "Added:", getTimestamp ( dateadded ), false );
 			
-			EmbedObject obj = builder.build();
+			final EmbedObject obj = builder.build();
 			
 			obj.timestamp = getTimestamp();
 			
-			return builder.build();
+			return obj;
 		} catch ( Exception e ) {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
 	 		return null;
@@ -213,15 +213,15 @@ public class Util {
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param status The new status.
 	 */
-	public static void changeMusicInfoStatus ( IGuild guild, String status ) {
+	public final static void changeMusicInfoStatus ( final IGuild guild, final String status ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
-			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
+			final IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 			if ( musicinfochannel != null ) {
-				IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+				final IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
 				if ( msg != null ) {
-					IEmbed embed = msg.getEmbeds().get ( 0 );
+					final IEmbed embed = msg.getEmbeds().get ( 0 );
 					if ( embed != null ) {
-						EmbedObject obj = new EmbedObject ( embed );
+						final EmbedObject obj = new EmbedObject ( embed );
 						if ( obj.fields.length > 0 ) {
 							obj.fields[0].value = status;
 							obj.timestamp = getTimestamp();
@@ -238,15 +238,15 @@ public class Util {
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param status The new volume-info.
 	 */
-	public static void changeMusicInfoVolume ( IGuild guild, int volume ) {
+	public final static void changeMusicInfoVolume ( final IGuild guild, final int volume ) {
 		if ( Channels.musicInfoChannelID != -1 ) {
-			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
+			final IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
 			if ( musicinfochannel != null ) {
-				IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+				final IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
 				if ( msg != null ) {
-					IEmbed embed = msg.getEmbeds().get ( 0 );
+					final IEmbed embed = msg.getEmbeds().get ( 0 );
 					if ( embed != null ) {
-						EmbedObject obj = new EmbedObject ( embed );
+						final EmbedObject obj = new EmbedObject ( embed );
 						if ( obj.fields.length > 0 ) {
 							obj.fields[1].value = String.valueOf( volume );
 							obj.timestamp = getTimestamp();

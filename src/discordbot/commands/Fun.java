@@ -14,9 +14,9 @@ public class Fun {
 	static {	
 		Handler.commandMap.put ( "8ball", ( cmd, event, args ) -> {
 			try { 
-				IChannel channel = event.getChannel();
+				final IChannel channel = event.getChannel();
 				if ( args.size() > 0 ) {
-					int rnd = ThreadLocalRandom.current().nextInt( 1, 12 + 1 );
+					final int rnd = ThreadLocalRandom.current().nextInt( 1, 12 + 1 );
 					
 					if ( rnd <= 3 ) 
 						Util.sendMessage ( channel, Lang.getLang ( "yes", event.getAuthor(), event.getGuild() ) );

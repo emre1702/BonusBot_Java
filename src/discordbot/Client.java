@@ -12,9 +12,9 @@ class Client {
 	 * @param login If the bot should login.
 	 * @return The client of the bot.
 	 */
-	static IDiscordClient createClient ( String token, boolean login ) {
+	final static IDiscordClient createClient ( final String token, final boolean login ) {
         try {
-        	ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
+        	final ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
             clientBuilder.withToken(token); // Adds the login info to the builder
             if (login) {
                 return clientBuilder.login(); // Creates the client instance and logs the client in

@@ -10,9 +10,9 @@ class UserJoin implements IListener<UserJoinEvent> {
 	@Override
 	public void handle ( UserJoinEvent event ) {
 		if ( Channels.greetUserChannelID != -1 ) {
-			IGuild guild = event.getGuild();
-			int amountonserver = guild.getTotalMemberCount();
-			String suffix = amountonserver == 1 ? "st" : 
+			final IGuild guild = event.getGuild();
+			final int amountonserver = guild.getTotalMemberCount();
+			final String suffix = amountonserver == 1 ? "st" : 
 				( amountonserver == 2 ? "nd" :
 				( amountonserver == 3 ? "rd" : "th" ) );
 			Util.sendMessage( guild.getChannelByID( Channels.greetUserChannelID ), "Welcome "+event.getUser().mention()

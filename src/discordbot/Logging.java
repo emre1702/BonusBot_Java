@@ -11,9 +11,9 @@ public class Logging {
 	 * so the error gets written in discordbot.log file
 	 * @return The PrintStream for printStackTrace
 	 */
-	public static PrintStream getPrintWrite ( ) {
+	public final static PrintStream getPrintWrite ( ) {
 		try {
-			File f = new File ( "discordbot.log" );
+			final File f = new File ( "discordbot.log" );
 			if ( !f.exists() ) {
 				f.createNewFile();
 			}

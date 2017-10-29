@@ -13,11 +13,11 @@ import sx.blah.discord.handle.obj.IUser;
 
 public class Music {
 	
-	public static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
+	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
 		final IChannel channel = event.getChannel();
-	    GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
+		final GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
 
-	    AudioLoadResultHandler handler = new AudioLoadResultHandler() {
+		final AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 		      @Override
 		      public void trackLoaded(AudioTrack track) {
 		        
@@ -66,9 +66,9 @@ public class Music {
 	    Util.playerManager.loadItemOrdered(musicManager, trackUrl, handler );
 	  }
 
-	private static void play(GuildMusicManager musicManager, AudioTrack track, IUser user ) {
+	private final static void play ( final GuildMusicManager musicManager, final AudioTrack track, final IUser user ) {
 		try {
-			TrackScheduler scheduler = musicManager.getScheduler();
+			final TrackScheduler scheduler = musicManager.getScheduler();
 			scheduler.userqueue.add( user );
 			scheduler.datequeue.add( Util.getLocalDateTime() );
 			musicManager.getPlayer().playTrack( track );
@@ -77,9 +77,9 @@ public class Music {
 	 	}
 	}
 	  
-	private static void queue(GuildMusicManager musicManager, AudioTrack track, IUser user ) {
+	private final static void queue ( final GuildMusicManager musicManager, final AudioTrack track, final IUser user ) {
 		try {
-			TrackScheduler scheduler = musicManager.getScheduler();
+			final TrackScheduler scheduler = musicManager.getScheduler();
 			scheduler.userqueue.add( user );
 			scheduler.datequeue.add( Util.getLocalDateTime() );
 			scheduler.queue(track);
@@ -88,11 +88,11 @@ public class Music {
 	 	}
 	}
 	
-	public static void skipTrack ( final MessageReceivedEvent event ) {
+	public final static void skipTrack ( final MessageReceivedEvent event ) {
 		final IChannel channel = event.getChannel();
-		GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
-	    int size = musicManager.getScheduler().getQueue().size();
-	    AudioTrack oldtrack = musicManager.getScheduler().nextTrack();
+		final GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
+		final int size = musicManager.getScheduler().getQueue().size();
+		final AudioTrack oldtrack = musicManager.getScheduler().nextTrack();
 	    
 	    if ( oldtrack != null || size > 0 ) {
 		    if ( size > 0 ) 
