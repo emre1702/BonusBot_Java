@@ -6,11 +6,10 @@ package discordbot.server;
  *
  */
 public class Emojis {
-	public static long whatcode;
-	public static long hahacode;
-	public static long tadacode;
+	public static long whatcode = -1;
+	public static long hahacode = -1;
 	
-	public static String what;
-	public static String haha;
-	public static String tada;
+	public static String what = "";
+	public static String haha = "";
+	public static String tada = "";
 }

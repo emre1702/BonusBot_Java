@@ -61,12 +61,17 @@ public class Settings {
 			if ( jsonObject.containsKey( "turkishRoleID" ) )
 				Roles.turkishRoleID = (Long) jsonObject.get( "turkishRoleID" );
 			
-			Emojis.whatcode = (Long) jsonObject.get( "whatEmojiID" );
-			Emojis.what  = "<:what:"+Emojis.whatcode+">";
-			Emojis.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
-			Emojis.haha = "<:haha:"+Emojis.hahacode+">";
-			Emojis.tadacode = (Long) jsonObject.get( "tadaEmojiID" );
-			Emojis.tada = "<:tada:"+Emojis.tadacode+">";
+			if ( jsonObject.containsKey( "whatEmojiID" ) ) {
+				Emojis.whatcode = (Long) jsonObject.get( "whatEmojiID" );
+				Emojis.what  = "<:what:"+Emojis.whatcode+">";
+			}
+			if ( jsonObject.containsKey( "hahaEmojiID" ) ) {
+				Emojis.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
+				Emojis.haha = "<:haha:"+Emojis.hahacode+">";
+			}
+			if ( jsonObject.containsKey( "tadaEmojiID" ) ) {
+				Emojis.tada = "<:tada:"+ (Long) jsonObject.get( "tadaEmojiID" ) +">";
+			}
 			
 		} catch ( Exception e ) {
 			e.printStackTrace ( Logging.getPrintWrite() );

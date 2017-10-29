@@ -44,12 +44,14 @@ public class Fun {
 						Util.sendMessage( channel, Lang.getLang ( "absolutely", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 11 ) {
 						Util.sendMessage( channel, Lang.getLang ( "stupid_question", event.getAuthor(), event.getGuild() )+Emojis.haha );
-						event.getMessage().addReaction( ReactionEmoji.of( "haha", Emojis.hahacode ));
+						if ( Emojis.hahacode != -1 )
+							event.getMessage().addReaction( ReactionEmoji.of( "haha", Emojis.hahacode ));
 					} else 
 						Util.sendMessage( channel, Lang.getLang ( "ask_again", event.getAuthor(), event.getGuild() ) );		
 				} else {
 					Util.sendMessage( channel, Lang.getLang ( "what_is_question", event.getAuthor(), event.getGuild() )+Emojis.what );
-					event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
+					if ( Emojis.whatcode != -1 )
+						event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
 				}
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );

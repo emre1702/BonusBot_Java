@@ -60,7 +60,8 @@ public class Audio {
 							
 						} else {
 							Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Emojis.what );
-							event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
+							if ( Emojis.whatcode != -1 )
+								event.getMessage().addReaction( ReactionEmoji.of( "what", Emojis.whatcode ));
 						}
 					}
 				}
