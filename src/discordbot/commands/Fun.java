@@ -13,7 +13,12 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 
 public class Fun {
 	
-	static {	
+	/**
+	 * Create the music-commands.
+	 */
+	// Load that way so Handler is first fully loaded before creating the commands.
+	static void createFunCommands ( ) {	
+		
 		Handler.commandMap.put ( "8ball", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try { 
 				final IChannel channel = event.getChannel();

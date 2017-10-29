@@ -17,7 +17,12 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 
 public class Music {
 	
-	static {
+	/**
+	 * Create the music-commands.
+	 */
+	// Load that way so Handler is first fully loaded before creating the commands.
+	static void createMusicCommands () {
+		
 		Handler.commandMap.put ( "join", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isMusicChannel ( event.getChannel().getLongID() ) ) {

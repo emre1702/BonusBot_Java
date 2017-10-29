@@ -10,7 +10,12 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 
 public class Language {
 	
-	static {
+	/**
+	 * Create the language-commands.
+	 */
+	// Load that way so Handler is first fully loaded before creating the commands.
+	static void createLanguageCommands () {
+		
 		final Command requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				if ( Channels.isLanguageChannel( event.getChannel().getLongID() ) ) {

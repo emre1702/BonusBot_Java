@@ -11,6 +11,17 @@ public class Handler {
 	
 	final static Map<String, Command> commandMap = new HashMap<String, Command>();
 	
+	/**
+	 * Create all the commands.
+	 * Use this handler for the clients dispatcher as a listener.
+	 */
+	// Load that way so Handler is first fully loaded before creating the commands.
+	public Handler () {
+		Fun.createFunCommands();
+		Language.createLanguageCommands();
+		Music.createMusicCommands();
+	}
+	
 	 @EventSubscriber
 	 public void onMessageReceived ( MessageReceivedEvent event ) {
 		 	try {
