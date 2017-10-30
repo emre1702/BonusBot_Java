@@ -46,14 +46,14 @@ Head over to the releases-tab:
 
 Here you can choose between:  
 - BonusBot_vX_X.jar  
--- Choose this if you are just lazy or don't want to download the future updates. This file contains every package, even when they won't change in future updates. The main-program is not even 100 KB big. 
--- If you chose this, also download bonusbot.conf.
-- BonusBot_vX_X_SingleOnly.jar
--- Choose this if you already got all the packages and only want to update your bot.
--- If you chose this, you should also download bonusbot.conf.
-- BonusBot_vX_X_SingleAll.jar
--- Choose this if it's the first time you are downloading the packages and want to download the updates in the future easily.
--- Contains everything you need.
+  - Choose this if you are just lazy or don't want to download the future updates. This file contains every package, even when they won't change in future updates. The main-program is not even 100 KB big.    
+  - If you chose this, also download bonusbot.conf.  
+- BonusBot_vX_X_SingleOnly.jar  
+  - Choose this if you already got all the packages and only want to update your bot.  
+  - If you chose this, you should also download bonusbot.conf.  
+- BonusBot_vX_X_SingleAll.jar  
+  - Choose this if it's the first time you are downloading the packages and want to download the updates in the future easily.  
+  - Contains everything you need.  
 
 ### Settings
 Now you can change the settings in bonusbot.conf.  
