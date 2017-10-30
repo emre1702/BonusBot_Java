@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import discordbot.server.Roles;
+import discordbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
@@ -117,13 +117,14 @@ public class Lang {
 	public final static String getLang ( final String str, final IUser user, final IGuild guild ) {
 		String language = "english";
 		final List<IRole> roles = user.getRolesForGuild( guild );
-		final IRole germanrole = guild.getRoleByID( Roles.germanRoleID );
+		final GuildExtends guildext = GuildExtends.get( guild );
+		final Long germanRoleID = guildext.getGermanRoleID(); 
 		
-		if ( roles.contains( germanrole ) ) {
+		if ( germanRoleID != null && roles.contains( guild.getRoleByID( germanRoleID ) ) ) {
 			language = "german";
 		} else {
-			final IRole turkishrole = guild.getRoleByID( Roles.turkishRoleID );
-			if ( roles.contains( turkishrole ) ) {
+			final Long turkishRoleID = guildext.getTurkishRoleID(); 
+			if ( turkishRoleID != null && roles.contains( guild.getRoleByID( turkishRoleID ) ) ) {
 				language = "turkish";
 			} 
 		}

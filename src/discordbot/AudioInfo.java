@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import discordbot.server.Channels;
+import discordbot.guild.GuildExtends;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmbed;
@@ -24,7 +24,7 @@ public class AudioInfo {
 	 * @param dateadded Date when the audio got added.
 	 * @return EmbedObject with infos for the audio-info channel.
 	 */
-	static final EmbedObject getAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
+	public static final EmbedObject getAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
 		try {
 			final EmbedBuilder builder = new EmbedBuilder();
 			final AudioTrackInfo info = audiotrack.getInfo();
@@ -41,7 +41,7 @@ public class AudioInfo {
 			final int minutes = (int) (Math.floor( info.length / 60000 ));
 			final int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
 			builder.appendField( "Status:", "playing", false );
-			builder.appendField( "Volume:", String.valueOf( Util.getGuildAudioManager(guild).getPlayer().getVolume() ), false );
+			builder.appendField( "Volume:", String.valueOf( GuildExtends.get ( guild ).getAudioManager().getPlayer().getVolume() ), false );
 			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
 			builder.appendField( "Added:", Util.getTimestamp ( dateadded ), false );
 			
@@ -62,8 +62,10 @@ public class AudioInfo {
 	 * @param status The new status.
 	 */
 	public final static void changeAudioInfoStatus ( final IGuild guild, final String status ) {
-		if ( Channels.audioInfoChannelID != -1 ) {
-			final IChannel audioinfochannel = guild.getChannelByID( Channels.audioInfoChannelID );
+		final GuildExtends guildext = GuildExtends.get( guild );
+		final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
+		if ( audioinfochannelID != null ) {
+			final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
 			if ( audioinfochannel != null ) {
 				final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
 				if ( msg != null ) {
@@ -87,8 +89,10 @@ public class AudioInfo {
 	 * @param volume The new volume-info.
 	 */
 	public final static void changeAudioInfoVolume ( final IGuild guild, final int volume ) {
-		if ( Channels.audioInfoChannelID != -1 ) {
-			final IChannel audioinfochannel = guild.getChannelByID( Channels.audioInfoChannelID );
+		final GuildExtends guildext = GuildExtends.get( guild );
+		final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
+		if ( audioinfochannelID != null ) {
+			final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
 			if ( audioinfochannel != null ) {
 				final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
 				if ( msg != null ) {

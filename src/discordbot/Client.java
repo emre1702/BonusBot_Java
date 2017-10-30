@@ -1,5 +1,9 @@
 package discordbot;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.util.DiscordException; 
@@ -9,7 +13,14 @@ import sx.blah.discord.util.DiscordException;
  * @author emre1702
  *
  */
-class Client {
+public class Client {
+	
+	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
+	
+	static {
+		AudioSourceManagers.registerRemoteSources( playerManager );
+		AudioSourceManagers.registerLocalSource( playerManager );
+	}
 	
 	/**
 	 * Creates the client for the bot.
@@ -30,6 +41,10 @@ class Client {
             e.printStackTrace ( Logging.getPrintWrite() );
             return null;
         }
+	}
+	
+	public static final AudioPlayerManager getPlayerManager () {
+		return playerManager;
 	}
 	
 }

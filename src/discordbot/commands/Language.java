@@ -3,8 +3,7 @@ package discordbot.commands;
 import java.util.List;
 
 import discordbot.Logging;
-import discordbot.server.Channels;
-import discordbot.server.Roles;
+import discordbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -25,22 +24,26 @@ public class Language {
 		
 		final Command requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
-				if ( Channels.isLanguageChannel( event.getChannel().getLongID() ) ) {
+				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+				if ( guildext.isLanguageChannel( event.getChannel().getLongID() ) ) {
 					IRole role = null;
 					switch ( cmd ) {
 						case "deutsch":
 						case "german":
-							if ( Roles.germanRoleID != -1 )
-								role = event.getGuild().getRoleByID( Roles.germanRoleID );
+							Long germanRoleID = guildext.getGermanRoleID();
+							if ( germanRoleID != null )
+								role = event.getGuild().getRoleByID( germanRoleID );
 							break;
 						case "türkce":
 						case "turkish":
-							if ( Roles.turkishRoleID != -1 )
-								role = event.getGuild().getRoleByID( Roles.turkishRoleID );
+							Long turkishRoleID = guildext.getTurkishRoleID();
+							if ( turkishRoleID != null )
+								role = event.getGuild().getRoleByID( turkishRoleID );
 							break;
 						case "english":
-							if ( Roles.englishRoleID != -1 )
-								role = event.getGuild().getRoleByID( Roles.englishRoleID );
+							Long englishRoleID = guildext.getEnglishRoleID();
+							if ( englishRoleID != null )
+								role = event.getGuild().getRoleByID( englishRoleID );
 							break;
 					}
 					if ( role != null )

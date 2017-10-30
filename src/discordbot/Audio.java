@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
+import discordbot.guild.GuildExtends;
 import lavaplayer.GuildAudioManager;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -26,7 +27,7 @@ public class Audio {
 	 */
 	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
 		final IChannel channel = event.getChannel();
-		final GuildAudioManager audioManager = Util.getGuildAudioManager(channel.getGuild());
+		final GuildAudioManager audioManager = GuildExtends.get(channel.getGuild()).getAudioManager();
 
 		final AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 		      @Override
@@ -74,7 +75,7 @@ public class Audio {
 		      }
 		      
 		};
-	    Util.playerManager.loadItemOrdered(audioManager, trackUrl, handler );
+		Client.getPlayerManager().loadItemOrdered(audioManager, trackUrl, handler );
 	  }
 
 	/**
@@ -117,7 +118,7 @@ public class Audio {
 	 */
 	public final static void skipTrack ( final MessageReceivedEvent event ) {
 		final IChannel channel = event.getChannel();
-		final GuildAudioManager audioManager = Util.getGuildAudioManager(channel.getGuild());
+		final GuildAudioManager audioManager = GuildExtends.get(event.getGuild()).getAudioManager();
 		final int size = audioManager.getScheduler().getQueue().size();
 		final AudioTrack oldtrack = audioManager.getScheduler().nextTrack();
 	    

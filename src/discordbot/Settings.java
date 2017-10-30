@@ -4,9 +4,6 @@ import java.io.FileReader;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import discordbot.server.Channels;
-import discordbot.server.Emojis;
-import discordbot.server.Roles;
 
 /**
  * Load and manage settings.
@@ -14,19 +11,27 @@ import discordbot.server.Roles;
  *
  */
 public class Settings {
-	/**
-	 * Token of the bot.
-	 * Can be found here:
-	 * https://discordapp.com/developers/applications/me
-	 */
+
 	static String token;
 	public static String prefix = "!";
 	static String name = "Bonus-Bot";
 	static String playing = "Bonus-community";
+	public static String languageChannel = "";
+	public static String audioChannel = "";
+	public static String audioInfoChannel = "";
+	public static String greetUserChannel = "";
+	public static String audiobotUserRole = "";
+	public static String englishRole = "";
+	public static String germanRole = "";
+	public static String turkishRole = "";
+	public static String whatEmoji = "what";
+	public static String hahaEmoji = "haha";
+	public static String tadaEmoji = "";
 	
 	/**
 	 * Loads the settings from discordbot.log.
-	 * To disable a settings just delete it or change the value to -1.
+	 * To disable a settings just change the value to "" (empty String).
+	 * Don't disable "token"!
 	 */
 	public final static void loadSettings ( ) {
 		final JSONParser parser = new JSONParser();
@@ -44,37 +49,41 @@ public class Settings {
 			if ( jsonObject.containsKey( "playing" ) ) 
 				playing = (String) jsonObject.get( "playing" );
 			
-			if ( jsonObject.containsKey( "languageChannelID" ) )
-				Channels.languageChannelID = (Long) jsonObject.get( "languageChannelID" );
-			if ( jsonObject.containsKey( "audioChannelID" ) )
-				Channels.audioChannelID = (Long) jsonObject.get( "audioChannelID" );
-			if ( jsonObject.containsKey( "audioChannelID" ) )
-				Channels.audioInfoChannelID = (Long) jsonObject.get( "audioInfoChannelID" );
-			if ( jsonObject.containsKey( "greetUserChannelID" ) )
-				Channels.greetUserChannelID = (Long) jsonObject.get( "greetUserChannelID" );
-			if ( jsonObject.containsKey( "audiobotUserID" ) )
-				Roles.audiobotUserID = (Long) jsonObject.get( "audiobotUserID" );
-			if ( jsonObject.containsKey( "germanRoleID" ) )
-				Roles.germanRoleID = (Long) jsonObject.get( "germanRoleID" );
-			if ( jsonObject.containsKey( "englishRoleID" ) )
-				Roles.englishRoleID = (Long) jsonObject.get( "englishRoleID" );
-			if ( jsonObject.containsKey( "turkishRoleID" ) )
-				Roles.turkishRoleID = (Long) jsonObject.get( "turkishRoleID" );
+			if ( jsonObject.containsKey( "languageChannel" ) )
+				languageChannel = (String) jsonObject.get( "languageChannel" );
+			if ( jsonObject.containsKey( "audioChannel" ) )
+				audioChannel = (String) jsonObject.get( "audioChannel" );
+			if ( jsonObject.containsKey( "audioInfoChannel" ) )
+				audioInfoChannel = (String) jsonObject.get( "audioInfoChannel" );
+			if ( jsonObject.containsKey( "greetUserChannel" ) )
+				greetUserChannel = (String) jsonObject.get( "greetUserChannel" );
 			
-			if ( jsonObject.containsKey( "whatEmojiID" ) ) {
-				Emojis.whatcode = (Long) jsonObject.get( "whatEmojiID" );
-				Emojis.what  = "<:what:"+Emojis.whatcode+">";
-			}
-			if ( jsonObject.containsKey( "hahaEmojiID" ) ) {
-				Emojis.hahacode = (Long) jsonObject.get( "hahaEmojiID" );
-				Emojis.haha = "<:haha:"+Emojis.hahacode+">";
-			}
-			if ( jsonObject.containsKey( "tadaEmojiID" ) ) {
-				Emojis.tada = "<:tada:"+ (Long) jsonObject.get( "tadaEmojiID" ) +">";
-			}
+			if ( jsonObject.containsKey( "audiobotUserRole" ) )
+				audiobotUserRole = (String) jsonObject.get( "audiobotUserRole" );
+			if ( jsonObject.containsKey( "englishRole" ) )
+				englishRole = (String) jsonObject.get( "englishRole" );
+			if ( jsonObject.containsKey( "germanRole" ) )
+				germanRole = (String) jsonObject.get( "germanRole" );
+			if ( jsonObject.containsKey( "turkishRole" ) )
+				turkishRole = (String) jsonObject.get( "turkishRole" );
+			
+			if ( jsonObject.containsKey( "whatEmoji" ) )
+				whatEmoji = (String) jsonObject.get( "whatEmoji" );
+			if ( jsonObject.containsKey( "hahaEmoji" ) )
+				hahaEmoji = (String) jsonObject.get( "hahaEmoji" );
+			if ( jsonObject.containsKey( "tadaEmoji" ) )
+				tadaEmoji = (String) jsonObject.get( "tadaEmoji" );
 			
 		} catch ( Exception e ) {
 			e.printStackTrace ( Logging.getPrintWrite() );
 		}
 	}
 }
+
+
+
+/**
+ * Loads the informations from the server.
+ * To disable a settings just set it to -1 (or disable it)
+ * Don't disable "token"!
+ */
