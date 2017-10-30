@@ -238,21 +238,16 @@ public class Audio {
 		/** Shows whats getting played */
         final Command showPlaying = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
-				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
-					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
-						final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
-						final AudioTrack track = player.getPlayingTrack();
-						if ( track != null ) {
-							final AudioTrackInfo info = track.getInfo();
-							final String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
-							Util.sendMessage( event.getChannel(), "**"+Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
-							 		+ "**"+Lang.getLang ( "url", event.getAuthor(), event.getGuild() ) +":**\n"+ info.uri + "\n"
-							 		+ "**"+Lang.getLang ( "length", event.getAuthor(), event.getGuild() ) +":**\n" + length + "\n" );
-						} else {
-							Util.sendMessage( event.getChannel(), Lang.getLang ( "not_playing_audio", event.getAuthor(), event.getGuild() ) );
-						}
-					}
+				final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
+				final AudioTrack track = player.getPlayingTrack();
+				if ( track != null ) {
+					final AudioTrackInfo info = track.getInfo();
+					final String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
+					Util.sendMessage( event.getChannel(), "**"+Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
+					 		+ "**"+Lang.getLang ( "url", event.getAuthor(), event.getGuild() ) +":**\n"+ info.uri + "\n"
+					 		+ "**"+Lang.getLang ( "length", event.getAuthor(), event.getGuild() ) +":**\n" + length + "\n" );
+				} else {
+					Util.sendMessage( event.getChannel(), Lang.getLang ( "not_playing_audio", event.getAuthor(), event.getGuild() ) );
 				}
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
