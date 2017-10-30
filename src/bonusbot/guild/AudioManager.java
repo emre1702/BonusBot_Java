@@ -51,7 +51,7 @@ public class AudioManager {
         			final Long audioInfoChannelID = guildext.getAudioInfoChannelID();
             		if ( audioInfoChannelID != null ) {
             			TrackScheduler scheduler = manager.getScheduler();
-            			EmbedObject object = AudioInfo.getAudioInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
+            			EmbedObject object = AudioInfo.createAudioInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
             			IChannel musicinfochannel = guild.getChannelByID( audioInfoChannelID );
             			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
             			if ( msghist.isEmpty() ) {

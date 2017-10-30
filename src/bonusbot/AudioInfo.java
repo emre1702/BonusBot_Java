@@ -17,14 +17,14 @@ import sx.blah.discord.util.EmbedBuilder;
 public class AudioInfo {
 	
 	/**
-	 * Gets the EmbedObject with informations the audiotrack for audio-info channel.
+	 * Creates the EmbedObject with informations the audiotrack for audio-info channel.
 	 * @param audiotrack The audiotrack we want to get the infos of.
 	 * @param user User who added the audiotrack.
 	 * @param guild Guild where all happenes.
 	 * @param dateadded Date when the audio got added.
 	 * @return EmbedObject with infos for the audio-info channel.
 	 */
-	public static final EmbedObject getAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
+	public static final EmbedObject createAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
 		try {
 			final EmbedBuilder builder = new EmbedBuilder();
 			final AudioTrackInfo info = audiotrack.getInfo();
