@@ -10,8 +10,8 @@ public class Channels {
 	/* The channel where you will be able to add yourself the rights 
 	 * to read, write and talk in your language channels */
 	public static long languageChannelID = -1;
-	public static long musicChannelID = -1;
-	public static long musicInfoChannelID = -1;
+	public static long audioChannelID = -1;
+	public static long audioInfoChannelID = -1;
 	public static long greetUserChannelID = -1;
 	
 	/**
@@ -28,7 +28,7 @@ public class Channels {
 	 * @param ID The ID to be checked.
 	 * @return If the ID is the musicChannelID. Returns true if musicChannelID is not defined in discordconf.log.
 	 */
-	public final static boolean isMusicChannel ( final long ID ) {
-		return ( musicChannelID == -1 || ID == musicChannelID );
+	public final static boolean isAudioChannel ( final long ID ) {
+		return ( audioChannelID == -1 || ID == audioChannelID );
 	}
 }

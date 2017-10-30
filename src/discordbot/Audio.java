@@ -5,7 +5,7 @@ import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import lavaplayer.GuildMusicManager;
+import lavaplayer.GuildAudioManager;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
@@ -26,7 +26,7 @@ public class Audio {
 	 */
 	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
 		final IChannel channel = event.getChannel();
-		final GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
+		final GuildAudioManager audioManager = Util.getGuildAudioManager(channel.getGuild());
 
 		final AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 		      @Override
@@ -34,10 +34,10 @@ public class Audio {
 		        
 		        if ( queue ) {
 		        	Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
-		        	queue(musicManager, track, event.getAuthor());
+		        	queue(audioManager, track, event.getAuthor());
 		        } else {
 		        	Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": "+ track.getInfo().title);
-		        	play(musicManager, track, event.getAuthor());
+		        	play(audioManager, track, event.getAuthor());
 		        }
 		        
 		      }
@@ -54,11 +54,11 @@ public class Audio {
 		        if ( queue ) {
 		        	Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title 
 			        		+ " ("+ Lang.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+ " " + playlist.getName() + ")");
-		        	queue(musicManager, firstTrack, event.getAuthor());
+		        	queue(audioManager, firstTrack, event.getAuthor());
 		        } else {
 		        	Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": " + firstTrack.getInfo().title 
 			        		+ " ("+ Lang.getLang ( "first_track_of_playlist", event.getAuthor(), event.getGuild() )+" " + playlist.getName() + ")");
-		        	play(musicManager, firstTrack, event.getAuthor());
+		        	play(audioManager, firstTrack, event.getAuthor());
 		        }
 		        
 		      }
@@ -74,21 +74,21 @@ public class Audio {
 		      }
 		      
 		};
-	    Util.playerManager.loadItemOrdered(musicManager, trackUrl, handler );
+	    Util.playerManager.loadItemOrdered(audioManager, trackUrl, handler );
 	  }
 
 	/**
 	 * Play the AudioTrack
-	 * @param musicManager The GuildMusicManager of the guild.
+	 * @param audioManager The GuildAudioManager of the guild.
 	 * @param track AudioTrack the user want to have played.
 	 * @param user User who added the track (used later for language).
 	 */
-	private final static void play ( final GuildMusicManager musicManager, final AudioTrack track, final IUser user ) {
+	private final static void play ( final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
 		try {
-			final TrackScheduler scheduler = musicManager.getScheduler();
+			final TrackScheduler scheduler = audioManager.getScheduler();
 			scheduler.userqueue.add( user );
 			scheduler.datequeue.add( Util.getLocalDateTime() );
-			musicManager.getPlayer().playTrack( track );
+			audioManager.getPlayer().playTrack( track );
 		} catch ( Exception e ) {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
 	 	}
@@ -96,13 +96,13 @@ public class Audio {
 	
 	/**
 	 * Puts the AudioTrack into the queue.
-	 * @param musicManager The GuildMusicManager of the guild.
+	 * @param audioManager The GuildAudioManager of the guild.
 	 * @param track AudioTrack the user want to have played.
 	 * @param user User who added the track (used later for language).
 	 */
-	private final static void queue ( final GuildMusicManager musicManager, final AudioTrack track, final IUser user ) {
+	private final static void queue ( final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
 		try {
-			final TrackScheduler scheduler = musicManager.getScheduler();
+			final TrackScheduler scheduler = audioManager.getScheduler();
 			scheduler.userqueue.add( user );
 			scheduler.datequeue.add( Util.getLocalDateTime() );
 			scheduler.queue(track);
@@ -117,9 +117,9 @@ public class Audio {
 	 */
 	public final static void skipTrack ( final MessageReceivedEvent event ) {
 		final IChannel channel = event.getChannel();
-		final GuildMusicManager musicManager = Util.getGuildMusicManager(channel.getGuild());
-		final int size = musicManager.getScheduler().getQueue().size();
-		final AudioTrack oldtrack = musicManager.getScheduler().nextTrack();
+		final GuildAudioManager audioManager = Util.getGuildAudioManager(channel.getGuild());
+		final int size = audioManager.getScheduler().getQueue().size();
+		final AudioTrack oldtrack = audioManager.getScheduler().nextTrack();
 	    
 	    if ( oldtrack != null || size > 0 ) {
 		    if ( size > 0 ) 

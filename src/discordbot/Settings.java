@@ -46,14 +46,14 @@ public class Settings {
 			
 			if ( jsonObject.containsKey( "languageChannelID" ) )
 				Channels.languageChannelID = (Long) jsonObject.get( "languageChannelID" );
-			if ( jsonObject.containsKey( "musicChannelID" ) )
-				Channels.musicChannelID = (Long) jsonObject.get( "musicChannelID" );
-			if ( jsonObject.containsKey( "musicInfoChannelID" ) )
-				Channels.musicInfoChannelID = (Long) jsonObject.get( "musicInfoChannelID" );
+			if ( jsonObject.containsKey( "audioChannelID" ) )
+				Channels.audioChannelID = (Long) jsonObject.get( "audioChannelID" );
+			if ( jsonObject.containsKey( "audioChannelID" ) )
+				Channels.audioInfoChannelID = (Long) jsonObject.get( "audioInfoChannelID" );
 			if ( jsonObject.containsKey( "greetUserChannelID" ) )
 				Channels.greetUserChannelID = (Long) jsonObject.get( "greetUserChannelID" );
-			if ( jsonObject.containsKey( "musicbotUserID" ) )
-				Roles.musicbotUserID = (Long) jsonObject.get( "musicbotUserID" );
+			if ( jsonObject.containsKey( "audiobotUserID" ) )
+				Roles.audiobotUserID = (Long) jsonObject.get( "audiobotUserID" );
 			if ( jsonObject.containsKey( "germanRoleID" ) )
 				Roles.germanRoleID = (Long) jsonObject.get( "germanRoleID" );
 			if ( jsonObject.containsKey( "englishRoleID" ) )

@@ -15,7 +15,7 @@ public class Roles {
 	public static long germanRoleID = -1;
 	public static long englishRoleID = -1;
 	public static long turkishRoleID = -1;
-	public static long musicbotUserID = -1;
+	public static long audiobotUserID = -1;
 	
 	/**
 	 * Checks if the specific user in the guild has the right to play music.
@@ -23,10 +23,10 @@ public class Roles {
 	 * @param guild The guild where the user wants to play music.
 	 * @return If the user has the right to play music. Returns true if musicbotUserID is not defined in discordbot.conf.
 	 */
-	public final static boolean canPlayMusic ( IUser user, IGuild guild ) {
-		if ( musicbotUserID != -1 ) {
+	public final static boolean canPlayAudio ( IUser user, IGuild guild ) {
+		if ( audiobotUserID != -1 ) {
 			final List<IRole> roles = user.getRolesForGuild( guild );
-			if ( roles.contains( guild.getRoleByID( musicbotUserID ) ) )
+			if ( roles.contains( guild.getRoleByID( audiobotUserID ) ) )
 				return true;
 			else
 				return false;

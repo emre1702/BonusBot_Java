@@ -24,7 +24,7 @@ public class Handler {
 	public Handler () {
 		Fun.createFunCommands();
 		Language.createLanguageCommands();
-		Audio.createMusicCommands();
+		Audio.createAudioCommands();
 	}
 	
 	 @EventSubscriber

@@ -16,7 +16,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import discordbot.server.Channels;
-import lavaplayer.GuildMusicManager;
+import lavaplayer.GuildAudioManager;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
@@ -35,7 +35,7 @@ import sx.blah.discord.util.RequestBuffer;
  *
  */
 public class Util {
-	private static final Map<Long, GuildMusicManager> musicManagers  = new HashMap<>();
+	private static final Map<Long, GuildAudioManager> audioManagers  = new HashMap<>();
 	static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 	
 	static {
@@ -121,21 +121,21 @@ public class Util {
 	}
 	
 	/**
-	 * Get the GuildMusicManager for the specific guild.
+	 * Get the GuildAudioManager for the specific guild.
 	 * @param guild The guild of which we want to get the GuildMusicManager.
 	 * @return The GuildMusicManager of the guild.
 	 */
-	public final static synchronized GuildMusicManager getGuildMusicManager ( final IGuild guild ) {
+	public final static synchronized GuildAudioManager getGuildAudioManager ( final IGuild guild ) {
 		final long guildId = guild.getLongID();
-		GuildMusicManager musicManager = musicManagers.get(guildId);
+		GuildAudioManager audioManager = audioManagers.get(guildId);
 
-        if (musicManager == null) {
-            musicManager = new GuildMusicManager(playerManager);
-            musicManagers.put(guildId, musicManager);
+        if (audioManager == null) {
+        	audioManager = new GuildAudioManager(playerManager);
+            audioManagers.put(guildId, audioManager);
             
-            final GuildMusicManager managerForInnerScope = musicManager;
+            final GuildAudioManager managerForInnerScope = audioManager;
             
-            musicManager.getPlayer().addListener(new AudioEventAdapter() {
+            audioManager.getPlayer().addListener(new AudioEventAdapter() {
             	/*@Override
             	public void onPlayerPause ( AudioPlayer player ) {
             		
@@ -149,10 +149,10 @@ public class Util {
             	@Override
             	public void onTrackStart ( AudioPlayer player, AudioTrack track ) {
             		try {
-	            		if ( Channels.musicInfoChannelID != -1 ) {
+	            		if ( Channels.audioInfoChannelID != -1 ) {
 	            			TrackScheduler scheduler = managerForInnerScope.getScheduler();
 	            			EmbedObject object = AudioInfo.getAudioInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
-	            			IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
+	            			IChannel musicinfochannel = guild.getChannelByID( Channels.audioInfoChannelID );
 	            			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
 	            			if ( msghist.isEmpty() ) {
 	            				Util.sendMessage( musicinfochannel, object );
@@ -171,16 +171,16 @@ public class Util {
             		if(endReason.mayStartNext) {
             			managerForInnerScope.getScheduler().nextTrack();
             		}
-            		if ( Channels.musicInfoChannelID != -1 ) {
+            		if ( Channels.audioInfoChannelID != -1 ) {
             			AudioInfo.changeAudioInfoStatus( guild, "ended" );
             		}
             	}
             } );
         }
 
-        guild.getAudioManager().setAudioProvider(musicManager.getAudioProvider());
+        guild.getAudioManager().setAudioProvider(audioManager.getAudioProvider());
 
-        return musicManager;
+        return audioManager;
     }
 
 }

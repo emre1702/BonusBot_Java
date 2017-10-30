@@ -41,7 +41,7 @@ public class AudioInfo {
 			final int minutes = (int) (Math.floor( info.length / 60000 ));
 			final int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
 			builder.appendField( "Status:", "playing", false );
-			builder.appendField( "Volume:", String.valueOf( Util.getGuildMusicManager(guild).getPlayer().getVolume() ), false );
+			builder.appendField( "Volume:", String.valueOf( Util.getGuildAudioManager(guild).getPlayer().getVolume() ), false );
 			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
 			builder.appendField( "Added:", Util.getTimestamp ( dateadded ), false );
 			
@@ -62,10 +62,10 @@ public class AudioInfo {
 	 * @param status The new status.
 	 */
 	public final static void changeAudioInfoStatus ( final IGuild guild, final String status ) {
-		if ( Channels.musicInfoChannelID != -1 ) {
-			final IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
-			if ( musicinfochannel != null ) {
-				final IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+		if ( Channels.audioInfoChannelID != -1 ) {
+			final IChannel audioinfochannel = guild.getChannelByID( Channels.audioInfoChannelID );
+			if ( audioinfochannel != null ) {
+				final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
 				if ( msg != null ) {
 					final IEmbed embed = msg.getEmbeds().get ( 0 );
 					if ( embed != null ) {
@@ -87,10 +87,10 @@ public class AudioInfo {
 	 * @param volume The new volume-info.
 	 */
 	public final static void changeAudioInfoVolume ( final IGuild guild, final int volume ) {
-		if ( Channels.musicInfoChannelID != -1 ) {
-			final IChannel musicinfochannel = guild.getChannelByID( Channels.musicInfoChannelID );
-			if ( musicinfochannel != null ) {
-				final IMessage msg = musicinfochannel.getFullMessageHistory().getEarliestMessage();
+		if ( Channels.audioInfoChannelID != -1 ) {
+			final IChannel audioinfochannel = guild.getChannelByID( Channels.audioInfoChannelID );
+			if ( audioinfochannel != null ) {
+				final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
 				if ( msg != null ) {
 					final IEmbed embed = msg.getEmbeds().get ( 0 );
 					if ( embed != null ) {
