@@ -97,9 +97,10 @@ public class Util {
 	/**
 	 * Returns the first non-null value.
 	 * Equivalent to ?? from C#.
-	 * @param one
-	 * @param two
-	 * @return
+	 * @param one First one to check
+	 * @param two Second one to check
+	 * @param <T> a type
+	 * @return The first value of both not being null.
 	 */
 	public final static <T> T firstNonNull ( T one, T two ) {
 		return one != null ? one : two;
@@ -107,7 +108,7 @@ public class Util {
 	
 	/**
 	 * Get string to use in the discord-message by the emoji.
-	 * @param emoji 
+	 * @param emoji Emoji whose string we want to retrieve.
 	 * @return String to use in Discord
 	 */
 	public final static String getEmojiString ( IEmoji emoji ) {

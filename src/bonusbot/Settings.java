@@ -11,21 +11,36 @@ import org.json.simple.parser.JSONParser;
  *
  */
 public class Settings {
-
+	
+	/** Token of the bot (Client-ID) */
 	static String token;
+	/** Prefix for the commands */
 	public static String prefix = "!";
+	/** name of the bot */
 	static String name = "Bonus-Bot";
+	/** playing-text of the bot */
 	static String playing = "Bonus-community";
+	/** name of the language-channel where you can use language-commands */
 	public static String languageChannel = "";
+	/** name of the audio-channel where you can use audio-commands */
 	public static String audioChannel = "";
+	/** name of the channel where the audio-info gets posted (embed) */
 	public static String audioInfoChannel = "";
+	/** name of the channel where the user joining the user get greeted */
 	public static String greetUserChannel = "";
+	/** name of the role which can use audio-commands */
 	public static String audiobotUserRole = "";
+	/** name of the english-section role (!english) */
 	public static String englishRole = "";
+	/** name of the german-section role (!german/!deutsch) */
 	public static String germanRole = "";
+	/** name of the turkish-section role (!turkish/!türkce) */
 	public static String turkishRole = "";
+	/** name of the what-emoji, used for some outputs */
 	public static String whatEmoji = "what";
+	/** name of the haha-emoji, used for some outputs */
 	public static String hahaEmoji = "haha";
+	/** name of the tada-emoji, used for some outputs */
 	public static String tadaEmoji = "";
 	
 	/**
@@ -79,11 +94,3 @@ public class Settings {
 		}
 	}
 }
-
-
-
-/**
- * Loads the informations from the server.
- * To disable a settings just set it to -1 (or disable it)
- * Don't disable "token"!
- */

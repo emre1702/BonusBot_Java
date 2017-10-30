@@ -15,9 +15,11 @@ import sx.blah.discord.handle.obj.IUser;
  */
 public class Lang {
 	
+	/** map for all the language-string for the languages */
 	private final static Map<String, Map<String, String>> languageMap = new HashMap<String, Map<String, String>>();
+	/** add the language-strings */
 	static {
-		Map<String, String> english = new HashMap<String, String>();
+		final Map<String, String> english = new HashMap<String, String>();
 		english.put( "yes", "Yes" );
 		english.put( "no", "No" );
 		english.put( "not_sure", "Not sure" );
@@ -45,7 +47,7 @@ public class Lang {
 		english.put( "url", "url" );
 		english.put( "length", "length" );
 		
-		Map<String, String> german = new HashMap<String, String>();
+		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
 		german.put( "no", "Nein" );
 		german.put( "not_sure", "Nicht sicher" );
@@ -73,7 +75,7 @@ public class Lang {
 		german.put( "url", "Link" );
 		german.put( "length", "Länge" );
 		
-		Map<String, String> turkish = new HashMap<String, String>();
+		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
 		turkish.put( "no", "Hayir" );
 		turkish.put( "not_sure", "Emin degilim" );

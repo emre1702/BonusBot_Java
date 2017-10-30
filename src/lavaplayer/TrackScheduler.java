@@ -12,64 +12,71 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * This class schedules tracks for the audio player. It contains the queue of tracks.
  */
 public class TrackScheduler {
-  private final ConcurrentLinkedQueue<AudioTrack> queue;
-  public final ConcurrentLinkedQueue<IUser> userqueue;
-  public final ConcurrentLinkedQueue<LocalDateTime> datequeue;
-  private final AudioPlayer player;
-
-  public TrackScheduler(AudioPlayer player) {
-    // Because we will be removing from the "head" of the queue frequently, a LinkedList is a better implementation
-    // since all elements won't have to be shifted after removing. Additionally, choosing to add in between the queue
-    // will similarly not cause many elements to shift and wil only require a couple of node changes.
-    queue = new ConcurrentLinkedQueue<>();
-    userqueue = new ConcurrentLinkedQueue<>();
-    datequeue = new ConcurrentLinkedQueue<>();
-    this.player = player;
-  }
-
-  /**
-   * Add the next track to queue or play right away if nothing is in the queue.
-   *
-   * @param track The track to play or add to queue.
-   * @return If the track was started.
-   */
-  public synchronized boolean queue(AudioTrack track) {
-    // Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
-    // something is playing, it returns false and does nothing. In that case the player was already playing so this
-    // track goes to the queue instead.
-    boolean playing = player.startTrack(track, true);
-
-    if(!playing) {
-      queue.add(track);
-    }
-
-    return playing;
-  }
-
-  /**
-   * Starts the next track, stopping the current one if it is playing.
-   * @return The track that was stopped, null if there wasn't anything playing
-   */
-  public synchronized AudioTrack nextTrack() {
-    AudioTrack currentTrack = player.getPlayingTrack();
-    AudioTrack nextTrack = queue.poll();
-
-    // Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
-    // giving null to startTrack, which is a valid argument and will simply stop the player.
-    player.startTrack(nextTrack, false);
-    return currentTrack;
-  }
-
-  /**
-   * Returns the queue for this scheduler. Adding to the head of the queue (index 0) does not automatically
-   * cause it to start playing immediately. The returned collection is thread-safe and can be modified.
-   *
-   * To iterate over this queue, use a synchronized block. For example:
-   * {@code synchronize (getQueue()) { // iteration code } }
-   * 
-   * @return The queue.
-   */
-  public ConcurrentLinkedQueue<AudioTrack> getQueue() {
-    return this.queue;
-  }
+	/** queue for AudioTrack */
+	private final ConcurrentLinkedQueue<AudioTrack> queue;
+	/** queue for the user who added the AudioTrack */
+	public final ConcurrentLinkedQueue<IUser> userqueue;
+	/** queue for the date when the AudioTrack got added */
+	public final ConcurrentLinkedQueue<LocalDateTime> datequeue;
+	private final AudioPlayer player;
+	
+	/**
+	 * Constructor for TrackScheduler 
+	 * @param player AudioPlayer for the TrackScheduler
+	 */
+	public TrackScheduler(final AudioPlayer player) {
+		// Because we will be removing from the "head" of the queue frequently, a LinkedList is a better implementation
+		// since all elements won't have to be shifted after removing. Additionally, choosing to add in between the queue
+		// will similarly not cause many elements to shift and wil only require a couple of node changes.
+		queue = new ConcurrentLinkedQueue<>();
+		userqueue = new ConcurrentLinkedQueue<>();
+		datequeue = new ConcurrentLinkedQueue<>();
+		this.player = player;
+	}
+	
+	/**
+	 * Add the next track to queue or play right away if nothing is in the queue.
+	 *
+	 * @param track The track to play or add to queue.
+	 * @return If the track was started.
+	 */
+	public synchronized boolean queue(final AudioTrack track) {
+		// Calling startTrack with the noInterrupt set to true will start the track only if nothing is currently playing. If
+		// something is playing, it returns false and does nothing. In that case the player was already playing so this
+		// track goes to the queue instead.
+		final boolean playing = player.startTrack(track, true);
+		
+		if(!playing) {
+			queue.add(track);
+		}
+		
+		return playing;
+	}
+	
+	/**
+	 * Starts the next track, stopping the current one if it is playing.
+	 * @return The track that was stopped, null if there wasn't anything playing
+	 */
+	public synchronized AudioTrack nextTrack() {
+		final AudioTrack currentTrack = player.getPlayingTrack();
+		final AudioTrack nextTrack = queue.poll();
+		
+		// Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
+		// giving null to startTrack, which is a valid argument and will simply stop the player.
+		player.startTrack(nextTrack, false);
+		return currentTrack;
+	}
+	
+	/**
+	 * Returns the queue for this scheduler. Adding to the head of the queue (index 0) does not automatically
+	 * cause it to start playing immediately. The returned collection is thread-safe and can be modified.
+	 *
+	 * To iterate over this queue, use a synchronized block. For example:
+	 * {@code synchronize (getQueue()) { // iteration code } }
+	 * 
+	 * @return The queue.
+	 */
+	public ConcurrentLinkedQueue<AudioTrack> getQueue() {
+		return this.queue;
+	}
 }

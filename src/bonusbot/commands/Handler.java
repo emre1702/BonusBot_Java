@@ -14,6 +14,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
  */
 public class Handler {
 	
+	/** map for commands */
 	final static Map<String, Command> commandMap = new HashMap<String, Command>();
 	
 	/**
@@ -27,6 +28,10 @@ public class Handler {
 		Audio.createAudioCommands();
 	}
 	
+	/** 
+	 * When a message is received 
+	 * @param event MessageReceivedEvent from Discord4J
+	 */
 	 @EventSubscriber
 	 public void onMessageReceived ( MessageReceivedEvent event ) {
 		 	try {

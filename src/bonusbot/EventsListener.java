@@ -8,19 +8,32 @@ import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
 import sx.blah.discord.handle.obj.IGuild;
 
+/**
+ * Listener for Discord4J events.
+ * @author EmreKara
+ *
+ */
 class EventsListener {
 	
+	/**
+	 * When the bot is ready.
+	 * @param event ReadyEvent from Discord4J
+	 */
 	@EventSubscriber
 	public final void onReady ( final ReadyEvent event ) {
 		event.getClient().changeUsername( Settings.name );
 		event.getClient().changePlayingText( Settings.playing );
 		
-		List<IGuild> guilds = event.getClient().getGuilds();
+		final List<IGuild> guilds = event.getClient().getGuilds();
 		for ( IGuild guild : guilds ) {
 			new GuildExtends ( guild );
 		}
 	}
 	
+	/**
+	 * When a user joined the guild (first time).
+	 * @param event UserJoinEvent from Discord4J
+	 */
 	@EventSubscriber
 	public final void onUserJoinedGuild ( final UserJoinEvent event ) {
 		final GuildExtends guildext = GuildExtends.get( event.getGuild() );

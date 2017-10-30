@@ -22,6 +22,10 @@ public class Language {
 	// Load that way so Handler is first fully loaded before creating the commands.
 	static void createLanguageCommands () {
 		
+		/** 
+		 * Request language-section role.
+		 * Deactivated when languageChannel doesn't exist/isn't set.
+		 */
 		final Command requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );

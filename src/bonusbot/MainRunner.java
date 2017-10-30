@@ -8,8 +8,12 @@ import sx.blah.discord.api.events.EventDispatcher;
  *
  */
 public class MainRunner {
-  
-	public static void main ( String[] args ) {
+	
+	/**
+	 * static void main
+	 * @param args Console-args, not used
+	 */
+	public static void main ( final String[] args ) {
 		try {
 			Settings.loadSettings();
 			final IDiscordClient client = Client.createClient(Settings.token, true);

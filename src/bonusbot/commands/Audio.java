@@ -26,9 +26,10 @@ public class Audio {
 	 * Create the audio-commands.
 	 */
 	// Load that way so Handler is first fully loaded before creating the commands.
-	static void createAudioCommands () {
+	final static void createAudioCommands () {
 		
-		Handler.commandMap.put ( "join", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		/** Bot joins the voice-channel. */
+		final Command joinChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -50,9 +51,11 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		} );
+		};
+		Handler.commandMap.put ( "join", joinChannel );
 		
-		Handler.commandMap.put ( "leave", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		/** Bot leaves the voice-channel. */
+		final Command leaveChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -79,9 +82,11 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		} );
+		};
+		Handler.commandMap.put ( "leave", leaveChannel );
 		
-		final Command playCommand = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		/** Plays audio from a source (URL). */
+		final Command playAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -122,13 +127,14 @@ public class Audio {
 				e.printStackTrace( Logging.getPrintWrite() );
 			}
         };
-        Handler.commandMap.put ( "play", playCommand );
-        Handler.commandMap.put ( "yt", playCommand );
-        Handler.commandMap.put ( "queue", playCommand );
-        Handler.commandMap.put ( "qplay", playCommand );
-        Handler.commandMap.put ( "qyt", playCommand );
+        Handler.commandMap.put ( "play", playAudio );
+        Handler.commandMap.put ( "yt", playAudio );
+        Handler.commandMap.put ( "queue", playAudio );
+        Handler.commandMap.put ( "qplay", playAudio );
+        Handler.commandMap.put ( "qyt", playAudio );
         
-        Handler.commandMap.put( "pause", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+        /** Pauses the player */
+        final Command pausePlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -152,9 +158,11 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-        });
+        };
+        Handler.commandMap.put( "pause", pausePlayer );
         
-        Handler.commandMap.put( "stop", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+        /** Stops the player */
+        final Command stopPlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -179,9 +187,11 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-        });
+        };
+        Handler.commandMap.put( "stop", stopPlayer );
 		
-        Handler.commandMap.put( "skip", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+        /** Skips the current playing audio */
+        final Command skipAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -192,9 +202,11 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		});
+		};
+		Handler.commandMap.put( "skip", skipAudio );
 		
-        Handler.commandMap.put( "volume", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		/** Sets the volume of the player */
+        final Command setVolume = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -220,9 +232,11 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		});
+		};
+		Handler.commandMap.put( "volume", setVolume );
 		
-        Handler.commandMap.put( "playing", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		/** Shows whats getting played */
+        final Command showPlaying = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -243,9 +257,11 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		});
+		};
+		Handler.commandMap.put( "playing", showPlaying );
 		
-        Handler.commandMap.put("position", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		/** Sets the position of the current audio */
+        final Command setAudioPosition = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -267,6 +283,7 @@ public class Audio {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		});
+		};
+		Handler.commandMap.put("position", setAudioPosition );
 	}
 }

@@ -13,18 +13,36 @@ import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
 
+/**
+ * Manage more informations for the specific guild.
+ * @author emre1702
+ *
+ */
 public class GuildExtends {
 
+	/** The object for the specific guild(ID) */
 	private final static Map<Long, GuildExtends> guildExtendsObjects = new HashMap<>();
+	/** The AudioManager for the guild */
 	private AudioManager audiomanager;
+	/** The guild */
 	private IGuild guild;
 	
+	/**
+	 * Constructor 
+	 * Create AudioManager for the guild.
+	 * @param guild The guild.
+	 */
 	public GuildExtends ( final IGuild guild ) {
 		guildExtendsObjects.put( guild.getLongID(), this );
 		this.audiomanager = new AudioManager ( guild, Client.getPlayerManager() );
 		this.guild = guild;
 	}
 	
+	/**
+	 * Get the object for the specific guild.
+	 * @param guild The guild whose object we want to retrieve.
+	 * @return The GuildExtends object for the guild.
+	 */
 	public synchronized final static GuildExtends get ( final IGuild guild ) {
 		final long guildId = guild.getLongID();
 		GuildExtends guildext = guildExtendsObjects.get ( guildId );
@@ -36,16 +54,33 @@ public class GuildExtends {
         return guildext;
 	}
 	
+	/**
+	 * Check if the audio-channel is not set and the ID is it. 
+	 * Needed to check if we can use audio-commmands in this channel.
+	 * @param ID Long-ID of the channel we want to check.
+	 * @return if the audio-channel is not set or the ID is the audio-channel.
+	 */
 	public final boolean isAudioChannel ( final Long ID ) {
 		final Long audiochannelID = this.getAudioChannelID();
 		return ( audiochannelID == null || audiochannelID.equals( ID ) );
 	}
 	
+	/**
+	 * Check if the language-channel is not set and the ID is it. 
+	 * Needed to check if we can use language-commands in this channel.
+	 * @param ID Long-ID of the channel we want to check.
+	 * @return if the language-channel is not set or the ID is the language-channel.
+	 */
 	public final boolean isLanguageChannel ( final Long ID ) {
 		final Long languagechannelID = this.getLanguageChannelID();
 		return ( languagechannelID == null || languagechannelID.equals( ID ) );
 	} 
 	
+	/**
+	 * Check if the user has the role to play audio or everyone can play it (audioBotUserRoleID is not set)
+	 * @param user The user we want to check.
+	 * @return If user can use audio-commands.
+	 */
 	public final boolean canPlayAudio ( IUser user ) {
 		final Long audioroleID = this.getAudioBotUserRoleID();
 		if ( audioroleID == null )
@@ -54,10 +89,18 @@ public class GuildExtends {
 		return roles.contains( guild.getRoleByID( audioroleID ) );
 	}
 	
+	/**
+	 * Getter for the GuildAudioManager for the guild.
+	 * @return GuildAudioManager for the guild
+	 */
 	public final GuildAudioManager getAudioManager () {
 		return this.audiomanager.manager;
 	}
 	
+	/**
+	 * Getter for the ID of the language-channel in this guild.
+	 * @return LongID of the language-channel or null if not exists.
+	 */
 	public final Long getLanguageChannelID() {
 		if ( Settings.languageChannel != "" ) {
 			final List<IChannel> channel = guild.getChannelsByName( Settings.languageChannel );
@@ -68,6 +111,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the audio-channel in this guild.
+	 * @return LongID of the audio-channel or null if not exists.
+	 */
 	public final Long getAudioChannelID() {
 		if ( Settings.audioChannel != "" ) {
 			final List<IChannel> channel = guild.getChannelsByName( Settings.audioChannel );
@@ -77,7 +124,11 @@ public class GuildExtends {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Getter for the ID of the audioinfo-channel in this guild.
+	 * @return LongID of the audioinfo-channel or null if not exists.
+	 */
 	public final Long getAudioInfoChannelID() {
 		if ( Settings.audioInfoChannel != "" ) {
 			final List<IChannel> channel = guild.getChannelsByName( Settings.audioInfoChannel );
@@ -88,6 +139,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the channel where we want to greet new user in this guild.
+	 * @return LongID of the greet-user-channel or null if not exists.
+	 */
 	public final Long getGreetUserChannelID() {
 		if ( Settings.greetUserChannel != "" ) {
 			final List<IChannel> channel = guild.getChannelsByName( Settings.greetUserChannel );
@@ -98,6 +153,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the role who should be able to use audio-commands.
+	 * @return LongID of the audioBotUser role or null if not exists
+	 */
 	public final Long getAudioBotUserRoleID() {
 		if ( Settings.audiobotUserRole != "" ) {
 			final List<IRole> roles = guild.getRolesByName( Settings.audiobotUserRole );
@@ -108,6 +167,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the role for the english-section.
+	 * @return LongID of the english-section role or null if not exists
+	 */
 	public final Long getEnglishRoleID() {
 		if ( Settings.englishRole != "" ) {
 			final List<IRole> roles = guild.getRolesByName( Settings.englishRole );
@@ -118,6 +181,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the role for the german-section.
+	 * @return LongID of the german-section role or null if not exists
+	 */
 	public final Long getGermanRoleID() {
 		if ( Settings.germanRole != "" ) {
 			final List<IRole> roles = guild.getRolesByName( Settings.germanRole );
@@ -128,6 +195,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the role for the turkish-section.
+	 * @return LongID of the turkish-section role or null if not exists
+	 */
 	public final Long getTurkishRoleID() {
 		if ( Settings.turkishRole != "" ) {
 			final List<IRole> roles = guild.getRolesByName( Settings.turkishRole );
@@ -138,6 +209,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the what-emoji
+	 * @return LongID of the what-emoji or null if not exists
+	 */
 	public final IEmoji getWhatEmoji() {
 		if ( Settings.whatEmoji != "" ) {
 			return guild.getEmojiByName( Settings.whatEmoji );
@@ -145,6 +220,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the haha-emoji
+	 * @return LongID of the haha-emoji or null if not exists
+	 */
 	public final IEmoji getHahaEmoji() {
 		if ( Settings.hahaEmoji != "" ) {
 			return guild.getEmojiByName( Settings.hahaEmoji );
@@ -152,6 +231,10 @@ public class GuildExtends {
 		return null;
 	}
 	
+	/**
+	 * Getter for the ID of the tada-emoji
+	 * @return LongID of the tada-emoji or null if not exists
+	 */
 	public final IEmoji getTadaEmoji() {
 		if ( Settings.tadaEmoji != "" ) {
 			return guild.getEmojiByName( Settings.tadaEmoji );

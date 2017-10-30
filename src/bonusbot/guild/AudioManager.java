@@ -16,7 +16,13 @@ import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.util.MessageHistory;
 
+/**
+ * Manage the GuildAudioManager for a guild.
+ * @author emre1702
+ *
+ */
 public class AudioManager {
+	/** GuildAudioManager for the guild */
 	GuildAudioManager manager = null;
 	
 	/**

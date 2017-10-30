@@ -23,9 +23,9 @@ public class Fun {
 	 * Create the music-commands.
 	 */
 	// Load that way so Handler is first fully loaded before creating the commands.
-	static void createFunCommands ( ) {	
+	final static void createFunCommands ( ) {	
 		
-		Handler.commandMap.put ( "8ball", ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		final Command askTheBot = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try { 
 				final IChannel channel = event.getChannel();
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
@@ -66,6 +66,8 @@ public class Fun {
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
-		} );		
+		};		
+		Handler.commandMap.put ( "8ball", askTheBot );
+		Handler.commandMap.put ( "ask", askTheBot );
 	}
 }

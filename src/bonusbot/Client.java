@@ -15,8 +15,10 @@ import sx.blah.discord.util.DiscordException;
  */
 public class Client {
 	
+	/** AudioPlayerManager for LavaPlayer */
 	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 	
+	/** Register sources of audio for LavaPlayer */
 	static {
 		AudioSourceManagers.registerRemoteSources( playerManager );
 		AudioSourceManagers.registerLocalSource( playerManager );
@@ -43,6 +45,10 @@ public class Client {
         }
 	}
 	
+	/**
+	 * Get the AudioPlayerManager for the bot from LavaPlayer.
+	 * @return AudioPlayerManager
+	 */
 	public static final AudioPlayerManager getPlayerManager () {
 		return playerManager;
 	}
