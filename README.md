@@ -26,7 +26,49 @@ Currently supported are:
 
 If you understand a little bit of Java, you can add other languages by yourself (and maybe do a pull request).
 
-Oh and there is the command "8ball", just test it out.
+Oh and there is the command "8ball", just test it out.  
+
+
+### Commands
+Don't forget to use the prefix (default: "!") before the command!  
+See "Settings" for more infos.
+
+#### language-roles  
+Only usable in languageChannel, not usable when it's deactivated.  
+
+- english  
+- german / deutsch  
+- türkce / turkish  
+
+#### audio
+Only usable in audioChannel, usable everywhere when it's deactivated.
+
+- play [url/empty]  
+  - Joins your channel and plays an audio (without changing the queue).  
+    Use '!play' without arguments to unpause an audio.  
+- queue [url]
+  - Joins your server and puts audio in the queue.  
+  If there is no audio playing, it gets played directly.  
+- pause 
+  - Pauses/unpauses the audio  
+- skip
+  - Skips the current audio.  
+- volume [0-200]  
+  - Changes the volume.  
+- join
+  - Joines your channel.  
+- leave  
+  - Leaves your channel.  
+- playing  
+  - Shows infos about the audio getting played.  
+- position [0-100]  
+  - Sets the audio-position (argument in percent)  
+
+#### rest
+Usable everywhere
+
+- 8ball [text]  
+  - Ask the bot.
 
 
 ## What is discordbot.conf?
@@ -107,7 +149,7 @@ You can deactivate a optional setting by deleting the line or using "" (empty st
   - default: "what" / "haha" / "tada"  
   - deactivated: no emojis will be used  
 
-#### start
+### Start
 
 Just put it somewhere and start it with:  
 java -jar bonusbot.jar   
