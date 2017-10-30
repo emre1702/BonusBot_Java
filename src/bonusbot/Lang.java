@@ -36,7 +36,7 @@ public class Lang {
 		english.put( "current_volume", "The current volume is: " );
 		english.put( "volume_usage_1", "Use '" );
 		english.put( "volume_usage_2", "volume [0-200]' to change the volume!" );
-		english.put( "not_playing_audio", "I'm not playing audio right now." );
+		english.put( "not_played_audio_so_far", "I haven't played audio so far." );
 		english.put( "adding_to_queue", "Adding to queue: " );
 		english.put( "first_track_of_playlist", "first track of playlist" );
 		english.put( "nothing_found_by", "Nothing found by " );
@@ -64,7 +64,7 @@ public class Lang {
 		german.put( "current_volume", "Die jetzige Lautstärke ist: " );
 		german.put( "volume_usage_1", "Benutze '" );
 		german.put( "volume_usage_2", "volume [0-200]' um die Lautstärke zu veränden." );
-		german.put( "not_playing_audio", "Ich spiele nicht mal Sound ab." );
+		german.put( "not_played_audio_so_far", "Ich habe bisher nichts abgespielt." );
 		german.put( "adding_to_queue", "Füge der Warteschleife hinzu: " );
 		german.put( "first_track_of_playlist", "Erster Song der Playliste" );
 		german.put( "nothing_found_by", "Nichts gefunden bei " );
@@ -92,7 +92,7 @@ public class Lang {
 		turkish.put( "current_volume", "Simdiki hacim: " );
 		turkish.put( "volume_usage_1", "Hacim'i degistirmek icin '" );
 		turkish.put( "volume_usage_2", "volume [0-200]' kullan!" );
-		turkish.put( "not_playing_audio", "Ses oynamiyorum." );
+		turkish.put( "not_played_audio_so_far", "Simdiye kadar bisey oynatmadim." );
 		turkish.put( "adding_to_queue", "Kuyruga ekliyorum: " );
 		turkish.put( "first_track_of_playlist", "calma listesinin ilk sesi" );
 		turkish.put( "nothing_found_by", "Bisey bulunamadi: " );

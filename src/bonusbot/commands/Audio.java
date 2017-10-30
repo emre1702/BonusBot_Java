@@ -239,13 +239,11 @@ public class Audio {
 		/** Shows whats getting played */
         final Command showPlaying = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
-				final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
-				final AudioTrack track = player.getPlayingTrack();
-				if ( track != null ) {
-					final EmbedObject obj = AudioInfo.getLastAudioInfo( event.getGuild() );
+				final EmbedObject obj = AudioInfo.getLastAudioInfo( event.getGuild() );
+				if ( obj != null ) {
 					Util.sendMessage( event.getChannel(), obj );
 				} else {
-					Util.sendMessage( event.getChannel(), Lang.getLang ( "not_playing_audio", event.getAuthor(), event.getGuild() ) );
+					Util.sendMessage( event.getChannel(), Lang.getLang ( "not_played_audio_so_far", event.getAuthor(), event.getGuild() ) );
 				}
 			} catch ( Exception e ) {
 				e.printStackTrace ( Logging.getPrintWrite() );
