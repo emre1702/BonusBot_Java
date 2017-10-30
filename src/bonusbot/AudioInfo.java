@@ -1,6 +1,8 @@
 package bonusbot;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
@@ -8,13 +10,19 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
-import sx.blah.discord.handle.obj.IEmbed;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.EmbedBuilder;
 
+/**
+ * Manage the audio-info embed for !playing and the audio-info channel.
+ * @author emre1702
+ *
+ */
 public class AudioInfo {
+	/** map for last created embedobject in guild */
+	private final static Map<Long, EmbedObject> guildlastembed = new HashMap<Long, EmbedObject>();
 	
 	/**
 	 * Creates the EmbedObject with informations the audiotrack for audio-info channel.
@@ -24,7 +32,7 @@ public class AudioInfo {
 	 * @param dateadded Date when the audio got added.
 	 * @return EmbedObject with infos for the audio-info channel.
 	 */
-	public static final EmbedObject createAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
+	public final static EmbedObject createAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
 		try {
 			final EmbedBuilder builder = new EmbedBuilder();
 			final AudioTrackInfo info = audiotrack.getInfo();
@@ -45,9 +53,11 @@ public class AudioInfo {
 			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
 			builder.appendField( "Added:", Util.getTimestamp ( dateadded ), false );
 			
-			final EmbedObject obj = builder.build();
+			EmbedObject obj = builder.build();
 			
-			obj.timestamp = Util.getTimestampForDiscord();
+			refreshLastChangedTimestamp ( obj );
+			
+			guildlastembed.put( guild.getLongID(), obj );
 			
 			return obj;
 		} catch ( Exception e ) {
@@ -57,26 +67,33 @@ public class AudioInfo {
 	}
 	
 	/**
-	 * Change the status in the EmbedObject in audio-info channel.
+	 * Refresh last-changed info in embed
+	 * @param obj EmbedObject
+	 */
+	private final static void refreshLastChangedTimestamp ( final EmbedObject obj ) {
+		obj.timestamp = Util.getTimestampForDiscord();
+	}
+	
+	/**
+	 * Change the status in the EmbedObject.
+	 * If the audio-info is available, refresh it there.
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param status The new status.
 	 */
 	public final static void changeAudioInfoStatus ( final IGuild guild, final String status ) {
-		final GuildExtends guildext = GuildExtends.get( guild );
-		final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
-		if ( audioinfochannelID != null ) {
-			final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
-			if ( audioinfochannel != null ) {
-				final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
-				if ( msg != null ) {
-					final IEmbed embed = msg.getEmbeds().get ( 0 );
-					if ( embed != null ) {
-						final EmbedObject obj = new EmbedObject ( embed );
-						if ( obj.fields.length > 0 ) {
-							obj.fields[0].value = status;
-							obj.timestamp = Util.getTimestampForDiscord();
-							msg.edit( obj );
-						}
+		final EmbedObject obj = getLastAudioInfo ( guild );
+		if ( obj != null && obj.fields.length > 0 ) {
+			obj.fields[0].value = status;
+			refreshLastChangedTimestamp ( obj );
+			
+			final GuildExtends guildext = GuildExtends.get( guild );
+			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
+			if ( audioinfochannelID != null ) {
+				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
+				if ( audioinfochannel != null ) {
+					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
+					if ( msg != null ) {
+						msg.edit( obj );
 					}
 				}
 			}
@@ -84,29 +101,37 @@ public class AudioInfo {
 	}
 	
 	/**
-	 * Change the volume-info in the EmbedObject in audio-info channel.
+	 * Change the volume-info in the EmbedObject.
+	 * If the audio-info is available, refresh it there.
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param volume The new volume-info.
 	 */
 	public final static void changeAudioInfoVolume ( final IGuild guild, final int volume ) {
-		final GuildExtends guildext = GuildExtends.get( guild );
-		final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
-		if ( audioinfochannelID != null ) {
-			final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
-			if ( audioinfochannel != null ) {
-				final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
-				if ( msg != null ) {
-					final IEmbed embed = msg.getEmbeds().get ( 0 );
-					if ( embed != null ) {
-						final EmbedObject obj = new EmbedObject ( embed );
-						if ( obj.fields.length > 0 ) {
-							obj.fields[1].value = String.valueOf( volume );
-							obj.timestamp = Util.getTimestampForDiscord();
-							msg.edit( obj );
-						}
+		final EmbedObject obj = getLastAudioInfo ( guild );
+		if ( obj != null && obj.fields.length > 1 ) {
+			obj.fields[1].value = String.valueOf( volume );
+			refreshLastChangedTimestamp ( obj );
+			
+			final GuildExtends guildext = GuildExtends.get( guild );
+			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
+			if ( audioinfochannelID != null ) {
+				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
+				if ( audioinfochannel != null ) {
+					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
+					if ( msg != null ) {
+						msg.edit( obj );
 					}
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Getter for the last created audio-info-embed for the guild.
+	 * @param guild The guild whose audio-info we want to retrieve.
+	 * @return The EmbedObject.
+	 */
+	public final static EmbedObject getLastAudioInfo ( IGuild guild ) {
+		return guildlastembed.get( guild.getLongID() );
 	}
 }

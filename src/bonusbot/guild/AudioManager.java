@@ -47,11 +47,11 @@ public class AudioManager {
         	@Override
         	public void onTrackStart ( AudioPlayer player, AudioTrack track ) {
         		try {
+        			TrackScheduler scheduler = manager.getScheduler();
+        			EmbedObject object = AudioInfo.createAudioInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
         			final GuildExtends guildext = GuildExtends.get( guild );
         			final Long audioInfoChannelID = guildext.getAudioInfoChannelID();
-            		if ( audioInfoChannelID != null ) {
-            			TrackScheduler scheduler = manager.getScheduler();
-            			EmbedObject object = AudioInfo.createAudioInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
+                	if ( audioInfoChannelID != null ) {
             			IChannel musicinfochannel = guild.getChannelByID( audioInfoChannelID );
             			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
             			if ( msghist.isEmpty() ) {
@@ -71,11 +71,7 @@ public class AudioManager {
         		if(endReason.mayStartNext) {
         			manager.getScheduler().nextTrack();
         		}
-        		final GuildExtends guildext = GuildExtends.get( guild );
-    			final Long audioInfoChannelID = guildext.getAudioInfoChannelID();
-        		if ( audioInfoChannelID != null ) {
-        			AudioInfo.changeAudioInfoStatus( guild, "ended" );
-        		}
+        		AudioInfo.changeAudioInfoStatus( guild, "ended" );
         	}
         } );
         
