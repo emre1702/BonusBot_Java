@@ -13,6 +13,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import bonusbot.*;
 import bonusbot.guild.GuildExtends;
+import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 /** 
@@ -241,11 +242,8 @@ public class Audio {
 				final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
 				final AudioTrack track = player.getPlayingTrack();
 				if ( track != null ) {
-					final AudioTrackInfo info = track.getInfo();
-					final String length = (int) ( Math.floor( info.length / 60000 ) ) + ":" + (int) ( Math.floor( info.length / 1000 ) % 60 );
-					Util.sendMessage( event.getChannel(), "**"+Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) +":**\n"+info.title+" - "+info.author+"\n"
-					 		+ "**"+Lang.getLang ( "url", event.getAuthor(), event.getGuild() ) +":**\n"+ info.uri + "\n"
-					 		+ "**"+Lang.getLang ( "length", event.getAuthor(), event.getGuild() ) +":**\n" + length + "\n" );
+					final EmbedObject obj = AudioInfo.getLastAudioInfo( event.getGuild() );
+					Util.sendMessage( event.getChannel(), obj );
 				} else {
 					Util.sendMessage( event.getChannel(), Lang.getLang ( "not_playing_audio", event.getAuthor(), event.getGuild() ) );
 				}
