@@ -1,4 +1,4 @@
-package discordbot;
+package bonusbot;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 
@@ -15,7 +15,7 @@ public class MainRunner {
 			final IDiscordClient client = Client.createClient(Settings.token, true);
 			
 			final EventDispatcher dispatcher = client.getDispatcher();
-			dispatcher.registerListener(new discordbot.commands.Handler());
+			dispatcher.registerListener(new bonusbot.commands.Handler());
 			dispatcher.registerListener( new EventsListener() );
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());

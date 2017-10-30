@@ -1,4 +1,4 @@
-package discordbot;
+package bonusbot;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
@@ -17,7 +17,7 @@ public class Logging {
 	 */
 	public final static PrintStream getPrintWrite ( ) {
 		try {
-			final FileOutputStream f = new FileOutputStream ( "discordbot.log", true );
+			final FileOutputStream f = new FileOutputStream ( "bonusbot.log", true );
 			PrintStream stream = new PrintStream ( f );
 			stream.print( Util.getTimestamp()+": " );
 			return stream;

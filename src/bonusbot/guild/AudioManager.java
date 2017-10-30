@@ -1,4 +1,4 @@
-package discordbot.guild;
+package bonusbot.guild;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
@@ -6,9 +6,9 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
-import discordbot.AudioInfo;
-import discordbot.Logging;
-import discordbot.Util;
+import bonusbot.AudioInfo;
+import bonusbot.Logging;
+import bonusbot.Util;
 import lavaplayer.GuildAudioManager;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;

@@ -1,9 +1,9 @@
-package discordbot;
+package bonusbot;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import discordbot.guild.GuildExtends;
+import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;

@@ -1,11 +1,11 @@
-package discordbot;
+package bonusbot;
 
 import java.time.LocalDateTime;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
-import discordbot.guild.GuildExtends;
+import bonusbot.guild.GuildExtends;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmbed;

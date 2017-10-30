@@ -1,8 +1,8 @@
-package discordbot.commands;
+package bonusbot.commands;
 import java.util.*;
 
-import discordbot.Logging;
-import discordbot.Settings;
+import bonusbot.Logging;
+import bonusbot.Settings;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 

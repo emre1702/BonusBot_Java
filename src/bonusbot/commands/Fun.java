@@ -1,12 +1,12 @@
-package discordbot.commands;
+package bonusbot.commands;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import discordbot.Lang;
-import discordbot.Logging;
-import discordbot.Util;
-import discordbot.guild.GuildExtends;
+import bonusbot.Lang;
+import bonusbot.Logging;
+import bonusbot.Util;
+import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;

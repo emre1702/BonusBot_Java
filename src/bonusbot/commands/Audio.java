@@ -1,7 +1,5 @@
-package discordbot.commands;
+package bonusbot.commands;
 
-import discordbot.*;
-import discordbot.guild.GuildExtends;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IEmoji;
@@ -12,6 +10,9 @@ import java.util.List;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
+
+import bonusbot.*;
+import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 /** 
@@ -109,7 +110,7 @@ public class Audio {
 			            	final String searchStr = String.join(" ", args);
 				
 			            	final boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
-				            discordbot.Audio.loadAndPlay ( event, searchStr, addtoqueue );
+				            bonusbot.Audio.loadAndPlay ( event, searchStr, addtoqueue );
 			            } else {
 			            	final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
 							player.setPaused( false );
@@ -185,7 +186,7 @@ public class Audio {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
-						discordbot.Audio.skipTrack(event);
+						bonusbot.Audio.skipTrack(event);
 					}
 				}
 			} catch ( Exception e ) {

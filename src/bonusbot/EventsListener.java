@@ -1,8 +1,8 @@
-package discordbot;
+package bonusbot;
 
 import java.util.List;
 
-import discordbot.guild.GuildExtends;
+import bonusbot.guild.GuildExtends;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;

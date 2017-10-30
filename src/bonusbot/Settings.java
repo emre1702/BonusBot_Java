@@ -1,4 +1,4 @@
-package discordbot;
+package bonusbot;
 import java.io.FileReader;
 
 import org.json.simple.JSONObject;
@@ -37,7 +37,7 @@ public class Settings {
 		final JSONParser parser = new JSONParser();
 		
 		try {
-			final Object obj = parser.parse( new FileReader ( "discordbot.conf" ) );
+			final Object obj = parser.parse( new FileReader ( "bonusbot.conf" ) );
 			
 			final JSONObject jsonObject = (JSONObject) obj;
 			token = (String) jsonObject.get( "token" );

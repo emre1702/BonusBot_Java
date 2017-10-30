@@ -1,11 +1,11 @@
-package discordbot.guild;
+package bonusbot.guild;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import discordbot.Client;
-import discordbot.Settings;
+import bonusbot.Client;
+import bonusbot.Settings;
 import lavaplayer.GuildAudioManager;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;

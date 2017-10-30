@@ -1,11 +1,11 @@
-package discordbot;
+package bonusbot;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
-import discordbot.guild.GuildExtends;
+import bonusbot.guild.GuildExtends;
 import lavaplayer.GuildAudioManager;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
