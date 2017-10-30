@@ -2,6 +2,7 @@ package bonusbot;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -10,6 +11,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IEmbed;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IUser;
@@ -128,10 +130,28 @@ public class AudioInfo {
 	
 	/**
 	 * Getter for the last created audio-info-embed for the guild.
+	 * If there is none in the map, check the audio-info channel.
 	 * @param guild The guild whose audio-info we want to retrieve.
 	 * @return The EmbedObject.
 	 */
 	public final static EmbedObject getLastAudioInfo ( IGuild guild ) {
-		return guildlastembed.get( guild.getLongID() );
+		EmbedObject obj = guildlastembed.get( guild.getLongID() );
+		if ( obj == null ) {
+			final GuildExtends guildext = GuildExtends.get( guild );
+			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
+			if ( audioinfochannelID != null ) {
+				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
+				if ( audioinfochannel != null ) {
+					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
+					if ( msg != null ) {
+						List<IEmbed> embeds = msg.getEmbeds();
+						if ( !embeds.isEmpty() ) {
+							obj = new EmbedObject ( embeds.get( 0 ) );
+						}
+					}
+				}
+			}
+		}
+		return obj;
 	}
 }
