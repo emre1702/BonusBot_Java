@@ -8,14 +8,14 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 
 
 /** 
- * Command-handler.
+ * ICommand-handler.
  * @author emre1702
  *
  */
 public class Handler {
 	
 	/** map for commands */
-	final static Map<String, Command> commandMap = new HashMap<String, Command>();
+	final static Map<String, ICommand> commandMap = new HashMap<String, ICommand>();
 	
 	/**
 	 * Create all the commands.

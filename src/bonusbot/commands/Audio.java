@@ -29,7 +29,7 @@ public class Audio {
 	final static void createAudioCommands () {
 		
 		/** Bot joins the voice-channel. */
-		final Command joinChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+		final ICommand joinChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -55,7 +55,7 @@ public class Audio {
 		Handler.commandMap.put ( "join", joinChannel );
 		
 		/** Bot leaves the voice-channel. */
-		final Command leaveChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+		final ICommand leaveChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -86,7 +86,7 @@ public class Audio {
 		Handler.commandMap.put ( "leave", leaveChannel );
 		
 		/** Plays audio from a source (URL). */
-		final Command playAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+		final ICommand playAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -134,7 +134,7 @@ public class Audio {
         Handler.commandMap.put ( "qyt", playAudio );
         
         /** Pauses the player */
-        final Command pausePlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        final ICommand pausePlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -162,7 +162,7 @@ public class Audio {
         Handler.commandMap.put( "pause", pausePlayer );
         
         /** Stops the player */
-        final Command stopPlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        final ICommand stopPlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -191,7 +191,7 @@ public class Audio {
         Handler.commandMap.put( "stop", stopPlayer );
 		
         /** Skips the current playing audio */
-        final Command skipAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        final ICommand skipAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -206,7 +206,7 @@ public class Audio {
 		Handler.commandMap.put( "skip", skipAudio );
 		
 		/** Sets the volume of the player */
-        final Command setVolume = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        final ICommand setVolume = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -236,7 +236,7 @@ public class Audio {
 		Handler.commandMap.put( "volume", setVolume );
 		
 		/** Shows whats getting played */
-        final Command showPlaying = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        final ICommand showPlaying = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final EmbedObject obj = AudioInfo.getLastAudioInfo( event.getGuild() );
 				if ( obj != null ) {
@@ -251,7 +251,7 @@ public class Audio {
 		Handler.commandMap.put( "playing", showPlaying );
 		
 		/** Sets the position of the current audio */
-        final Command setAudioPosition = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        final ICommand setAudioPosition = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {

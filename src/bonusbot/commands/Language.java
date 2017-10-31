@@ -26,7 +26,7 @@ public class Language {
 		 * Request language-section role.
 		 * Deactivated when languageChannel doesn't exist/isn't set.
 		 */
-		final Command requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		final ICommand requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isLanguageChannel( event.getChannel().getLongID() ) ) {

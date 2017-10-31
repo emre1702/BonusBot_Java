@@ -25,7 +25,7 @@ public class Fun {
 	// Load that way so Handler is first fully loaded before creating the commands.
 	final static void createFunCommands ( ) {	
 		
-		final Command askTheBot = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
+		final ICommand askTheBot = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try { 
 				final IChannel channel = event.getChannel();
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
