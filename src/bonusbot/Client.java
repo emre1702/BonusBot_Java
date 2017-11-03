@@ -1,9 +1,5 @@
 package bonusbot;
 
-import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
-import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.util.DiscordException; 
@@ -14,15 +10,6 @@ import sx.blah.discord.util.DiscordException;
  *
  */
 public class Client {
-	
-	/** AudioPlayerManager for LavaPlayer */
-	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
-	
-	/** Register sources of audio for LavaPlayer */
-	static {
-		AudioSourceManagers.registerRemoteSources( playerManager );
-		AudioSourceManagers.registerLocalSource( playerManager );
-	}
 	
 	/**
 	 * Creates the client for the bot.
@@ -44,13 +31,4 @@ public class Client {
             return null;
         }
 	}
-	
-	/**
-	 * Get the AudioPlayerManager for the bot from LavaPlayer.
-	 * @return AudioPlayerManager
-	 */
-	public static final AudioPlayerManager getPlayerManager () {
-		return playerManager;
-	}
-	
 }
