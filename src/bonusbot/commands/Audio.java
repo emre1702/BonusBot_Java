@@ -8,6 +8,7 @@ import sx.blah.discord.handle.obj.IVoiceChannel;
 import java.util.List;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import bonusbot.*;
@@ -21,6 +22,29 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
  *
  */
 public class Audio {
+	
+	private final static boolean joinVoiceChannel ( MessageReceivedEvent event ) {
+		final IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
+		
+        if(botVoiceChannel == null) {
+        	final IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
+        	
+			if ( channel != null ) {
+				channel.join();
+			} else {
+				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+				final IEmoji whatemoji = guildext.getWhatEmoji();
+				if ( whatemoji == null ) {
+					Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
+				} else {
+					Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Util.getEmojiString( whatemoji ) );
+					event.getMessage().addReaction( ReactionEmoji.of ( whatemoji ));
+				}
+				return false;
+			}
+        }
+        return true;
+	}
 	
 	/**
 	 * Create the audio-commands.
@@ -90,32 +114,15 @@ public class Audio {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
-					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
-						final IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
-			
-			            if(botVoiceChannel == null) {
-			            	final IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
-							
-							if ( channel != null ) {
-								channel.join();
-							} else {
-								final IEmoji whatemoji = guildext.getWhatEmoji();
-								if ( whatemoji == null ) {
-									Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
-								} else {
-									Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Util.getEmojiString( whatemoji ) );
-									event.getMessage().addReaction( ReactionEmoji.of ( whatemoji ));
-								}
-								return;
+					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {         
+						if ( args.size() > 0 ) {
+							if ( joinVoiceChannel ( event ) ) {		
+					            // Turn the args back into a string separated by space
+				            	final String searchStr = String.join(" ", args);
+					
+				            	final boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
+					            bonusbot.Audio.loadAndPlay ( event, searchStr, addtoqueue );
 							}
-			            }
-			            
-			            if ( args.size() > 0 ) {
-				            // Turn the args back into a string separated by space
-			            	final String searchStr = String.join(" ", args);
-				
-			            	final boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
-				            bonusbot.Audio.loadAndPlay ( event, searchStr, addtoqueue );
 			            } else {
 			            	final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
 							player.setPaused( false );
@@ -275,5 +282,26 @@ public class Audio {
 			}
 		};
 		Handler.commandMap.put("position", setAudioPosition );
+		
+		/** search YouTube and play the first */
+		final ICommand searchPlayYoutube = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+			try {
+				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
+						if ( args.size() > 0 ) {
+							if ( joinVoiceChannel ( event ) ) {			
+								String argstr = String.join( " ", args );
+								AudioPlaylist item = (AudioPlaylist) bonusbot.Audio.getYoutubeSearchProvider().loadSearchResult( argstr );
+								bonusbot.Audio.play( guildext.getAudioManager(), item.getTracks().get( 0 ), event.getAuthor() );
+							}
+						}
+					}
+				}	
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		};
+		Handler.commandMap.put( "ytsearch", searchPlayYoutube );
 	}
 }
