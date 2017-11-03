@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import bonusbot.Client;
+import bonusbot.Audio;
 import bonusbot.Settings;
 import lavaplayer.GuildAudioManager;
 import sx.blah.discord.handle.obj.IChannel;
@@ -34,7 +34,7 @@ public class GuildExtends {
 	 */
 	public GuildExtends ( final IGuild guild ) {
 		guildExtendsObjects.put( guild.getLongID(), this );
-		this.audiomanager = new AudioManager ( guild, Client.getPlayerManager() );
+		this.audiomanager = new AudioManager ( guild, Audio.getPlayerManager() );
 		this.guild = guild;
 	}
 	
@@ -230,17 +230,4 @@ public class GuildExtends {
 		}
 		return null;
 	}
-	
-	/**
-	 * Getter for the ID of the tada-emoji
-	 * @return LongID of the tada-emoji or null if not exists
-	 */
-	public final IEmoji getTadaEmoji() {
-		if ( Settings.tadaEmoji != "" ) {
-			return guild.getEmojiByName( Settings.tadaEmoji );
-		}
-		return null;
-	}
-	
-
 }

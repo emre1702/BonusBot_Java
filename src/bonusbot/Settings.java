@@ -40,8 +40,6 @@ public class Settings {
 	public static String whatEmoji = "what";
 	/** name of the haha-emoji, used for some outputs */
 	public static String hahaEmoji = "haha";
-	/** name of the tada-emoji, used for some outputs */
-	public static String tadaEmoji = "";
 	
 	/**
 	 * Loads the settings from discordbot.log.
@@ -86,8 +84,6 @@ public class Settings {
 				whatEmoji = (String) jsonObject.get( "whatEmoji" );
 			if ( jsonObject.containsKey( "hahaEmoji" ) )
 				hahaEmoji = (String) jsonObject.get( "hahaEmoji" );
-			if ( jsonObject.containsKey( "tadaEmoji" ) )
-				tadaEmoji = (String) jsonObject.get( "tadaEmoji" );
 			
 		} catch ( Exception e ) {
 			e.printStackTrace ( Logging.getPrintWrite() );
