@@ -44,9 +44,8 @@ class EventsListener {
 			final String suffix = amountonserver == 1 ? "st" : 
 				( amountonserver == 2 ? "nd" :
 				( amountonserver == 3 ? "rd" : "th" ) );
-			final String tadaemoji = guildext.getTadaEmoji() == null ? " "+ guildext.getTadaEmoji() : "!";
 			Util.sendMessage( guild.getChannelByID( greetUserChannelID ), "Welcome "+event.getUser().mention()
-					+"!\nYou are the "+amountonserver+suffix+" user" + tadaemoji
+					+"!\nYou are the "+amountonserver+suffix+" user 🎉"
 					+"\nPlease read 'informations' in 'important' category." );
 			
 		}
