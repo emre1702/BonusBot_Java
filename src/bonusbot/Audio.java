@@ -1,6 +1,11 @@
 package bonusbot;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
@@ -18,6 +23,33 @@ import sx.blah.discord.handle.obj.IUser;
  *
  */
 public class Audio {
+	
+	/** AudioPlayerManager for LavaPlayer */
+	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
+	private static YoutubeSearchProvider youtubeSearch;
+	
+	/** Register sources of audio for LavaPlayer and load YoutubeSearchProvider */
+	static {
+		AudioSourceManagers.registerRemoteSources( playerManager );
+		AudioSourceManagers.registerLocalSource( playerManager );
+		youtubeSearch = new YoutubeSearchProvider( playerManager.source( YoutubeAudioSourceManager.class ) );
+	}
+	
+	/**
+	 * Get the AudioPlayerManager for the bot from LavaPlayer.
+	 * @return AudioPlayerManager
+	 */
+	public final static AudioPlayerManager getPlayerManager () {
+		return playerManager;
+	}
+	
+	/**
+	 * Get the YoutubeSearchProvider to be able to search for Youtube-Videos (from LavaPlayer).
+	 * @return YoutubeSearchProvider
+	 */
+	public final static YoutubeSearchProvider getYoutubeSearchProvider ( ) {
+		return youtubeSearch;
+	}
 	
 	/**
 	 * Loads an audio and plays it afterwards.
@@ -75,7 +107,7 @@ public class Audio {
 		      }
 		      
 		};
-		Client.getPlayerManager().loadItemOrdered(audioManager, trackUrl, handler );
+		playerManager.loadItemOrdered(audioManager, trackUrl, handler );
 	  }
 
 	/**
@@ -84,7 +116,7 @@ public class Audio {
 	 * @param track AudioTrack the user want to have played.
 	 * @param user User who added the track (used later for language).
 	 */
-	private final static void play ( final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
+	public final static void play ( final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
 		try {
 			final TrackScheduler scheduler = audioManager.getScheduler();
 			scheduler.userqueue.add( user );
@@ -101,7 +133,7 @@ public class Audio {
 	 * @param track AudioTrack the user want to have played.
 	 * @param user User who added the track (used later for language).
 	 */
-	private final static void queue ( final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
+	public final static void queue ( final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
 		try {
 			final TrackScheduler scheduler = audioManager.getScheduler();
 			scheduler.userqueue.add( user );
