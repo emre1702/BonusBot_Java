@@ -46,6 +46,8 @@ public class Lang {
 		english.put( "playing", "playing" );
 		english.put( "url", "url" );
 		english.put( "length", "length" );
+		english.put( "channel", "channel" );
+		english.put( "number", "number" );
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -74,6 +76,8 @@ public class Lang {
 		german.put( "playing", "Spiele ab" );
 		german.put( "url", "Link" );
 		german.put( "length", "Länge" );
+		german.put( "channel", "Kanal" );
+		german.put( "number", "Zahl" );
 		
 		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
@@ -102,6 +106,8 @@ public class Lang {
 		turkish.put( "playing", "oynaniyor" );
 		turkish.put( "url", "url" );
 		turkish.put( "length", "uzunlugu" );
+		turkish.put( "channel", "kanal" );
+		turkish.put( "number", "numara" );
 		
 		languageMap.put( "english", english );
 		languageMap.put( "german", german );
