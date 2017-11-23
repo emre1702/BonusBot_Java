@@ -154,4 +154,60 @@ public class AudioInfo {
 		}
 		return obj;
 	}
+	
+	/**
+	 * Get the YouTube search result at !ytsearch for !ytplay/!ytqueue
+	 * @param guild The guild where !ytsearch got written.
+	 * @param user The user who used !ytsearch.
+	 * @param title Search-string at !ytsearch.
+	 * @param audiolist List of audios retrieved by YouTube after searching.
+	 * @param showamount Show only amount of tracks.
+	 * @return EmbedObject we want to send to the user.
+	 */
+	public final static EmbedObject getAudioListInfo ( IGuild guild, IUser user, String title, List<AudioTrack> audiolist, int showamount ) {
+		try {
+			final EmbedBuilder builder = new EmbedBuilder();
+			
+			builder.withAuthorName( title );
+			builder.withTitle( "-" );
+			
+			showamount = audiolist.size() < showamount ? audiolist.size() : showamount;
+			
+			for ( int i = 0; i < showamount; i++ ) {
+				AudioTrack track = audiolist.get( i );
+				AudioTrackInfo info = track.getInfo();
+				int minutes = (int) ( Math.floor ( info.length / 60000 ) );
+				int seconds = (int) ( Math.floor( info.length / 1000 ) % 60 );
+				String infostr = " ";
+				/** 
+				 * 0 - 5: length, url and channel-name
+				 * 6 - 10: length and channel-name
+				 * 11+: length
+				 */
+				if ( showamount <= 5 ) {
+					infostr = Lang.getLang( "length", user, guild )+": " + ( minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ) )+
+							"\n"+Lang.getLang( "url", user, guild )+": "+info.uri +
+							"\n"+Lang.getLang( "channel", user, guild )+": "+info.author;
+				} else if ( showamount <= 10 ) {
+					infostr = Lang.getLang( "length", user, guild )+": " + ( minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ) )+
+							"\n"+Lang.getLang( "channel", user, guild )+": "+info.author;
+				} else 
+					infostr = Lang.getLang( "length", user, guild )+": " + ( minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ) );
+				builder.appendField( (i+1) + ". "+info.title, infostr, true );
+				
+			}
+			
+			builder.withFooterText( "!ytqueue/!ytplay ["+Lang.getLang( "number", user, guild )+"]" );
+	
+			EmbedObject obj = builder.build();
+			
+			refreshLastChangedTimestamp ( obj );
+			
+			return obj;
+		} catch ( Exception e ) {
+	 		e.printStackTrace ( Logging.getPrintWrite() );
+	 		return null;
+	 	}
+	}
+	
 }
