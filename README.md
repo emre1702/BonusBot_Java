@@ -45,15 +45,21 @@ Only usable in audioChannel, usable everywhere when it's deactivated.
 
 - play [url/empty]  
   - Joins your channel and plays an audio (without changing the queue).  
-    Use '!play' without arguments to unpause an audio.  
-- ytsearch [text]  
-  - Joins your channel and plays the first audio (without changing the queue)  
-    the bot found in Youtube after searching for the text.
-- queue [url]
+    Use '!play' without arguments to resume an audio.  
+- queue [url]  
   - Joins your server and puts audio in the queue.  
   If there is no audio playing, it gets played directly.  
-- pause 
-  - Pauses/unpauses the audio  
+- ytsearch [text] [showamount = 5]  
+  Searchs in YouTube and outputs the result. Amount of result depends on showamount.
+  Needed for !ytplay and !ytqueue.
+- ytplay [number]  
+  Plays the audio at specific place in result of ytsearch.  
+- ytqueue [number]  
+  Queues the audio at specific place in result of ytsearch.  
+- pause  
+  - Pauses the audio.  
+- resume  
+  - Resumes the audio.  
 - skip
   - Skips the current audio.  
 - volume [0-200]  
