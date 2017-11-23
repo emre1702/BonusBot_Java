@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
+
 import bonusbot.Audio;
 import bonusbot.Settings;
 import lavaplayer.GuildAudioManager;
@@ -26,6 +28,8 @@ public class GuildExtends {
 	private AudioManager audiomanager;
 	/** The guild */
 	private IGuild guild;
+	/** The found numbers of !ytsearch for !ytplay */
+	public AudioPlaylist ytsearchlist;
 	
 	/**
 	 * Constructor 
