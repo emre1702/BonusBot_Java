@@ -2,7 +2,9 @@ package bonusbot.commands;
 
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
+import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 
 import java.util.List;
@@ -140,8 +142,8 @@ public class Audio {
         Handler.commandMap.put ( "qplay", playAudio );
         Handler.commandMap.put ( "qyt", playAudio );
         
-        /** Pauses the player */
-        final ICommand pausePlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        /** Pauses or resumes the player */
+        final ICommand pauseResumePlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
@@ -149,8 +151,9 @@ public class Audio {
 						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
 							final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
-							player.setPaused( !player.isPaused() );
-							AudioInfo.changeAudioInfoStatus( event.getGuild(), player.isPaused() ? "paused" : "playing" );
+							boolean paused = cmd.equals( "pause" );
+							player.setPaused( paused );
+							AudioInfo.changeAudioInfoStatus( event.getGuild(), paused ? "paused" : "playing" );
 						} else {
 							final IEmoji whatemoji = guildext.getWhatEmoji();
 							if ( whatemoji == null ) {
@@ -166,7 +169,8 @@ public class Audio {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
         };
-        Handler.commandMap.put( "pause", pausePlayer );
+        Handler.commandMap.put ( "pause", pauseResumePlayer );
+        Handler.commandMap.put ( "resume", pauseResumePlayer ); 
         
         /** Stops the player */
         final ICommand stopPlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
@@ -283,18 +287,23 @@ public class Audio {
 		};
 		Handler.commandMap.put("position", setAudioPosition );
 		
-		/** search YouTube and play the first */
-		final ICommand searchPlayYoutube = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+		/** search YouTube output the list */
+		final ICommand searchYoutube = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
-						if ( args.size() > 0 ) {
-							if ( joinVoiceChannel ( event ) ) {			
-								String argstr = String.join( " ", args );
-								AudioPlaylist item = (AudioPlaylist) bonusbot.Audio.getYoutubeSearchProvider().loadSearchResult( argstr );
-								bonusbot.Audio.play( guildext.getAudioManager(), item.getTracks().get( 0 ), event.getAuthor() );
+						if ( args.size() > 0 ) {	
+							int showamount = 5;
+							if ( Util.isNumeric( args.get( args.size() - 1 ) ) ) {
+								showamount = Integer.parseInt( args.get( args.size() - 1 ) );
+								args.remove( args.size() - 1 );
 							}
+							showamount = showamount > 15 ? 15 : showamount;
+							String argstr = String.join( " ", args );
+							AudioPlaylist item = (AudioPlaylist) bonusbot.Audio.getYoutubeSearchProvider().loadSearchResult( argstr );
+							guildext.ytsearchlist = item;
+							Util.sendMessage( event.getChannel(), AudioInfo.getAudioListInfo( event.getGuild(), event.getAuthor(), argstr, item.getTracks(), showamount ) );
 						}
 					}
 				}	
@@ -302,6 +311,42 @@ public class Audio {
 				e.printStackTrace ( Logging.getPrintWrite() );
 			}
 		};
-		Handler.commandMap.put( "ytsearch", searchPlayYoutube );
+		Handler.commandMap.put( "ytsearch", searchYoutube );
+		
+		/** plays/queues the YouTube number of ytsearch numbers */
+		final ICommand playQueueYoutube = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+			try {
+				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
+						if ( joinVoiceChannel ( event ) ) {		
+							if ( guildext.ytsearchlist != null ) {
+								int number = 1;
+								if ( args.size() > 0 && Util.isNumeric ( args.get( 0 ) ) ) {
+									number = Integer.parseInt( args.get( 0 ) );
+								}
+								List<AudioTrack> tracks = guildext.ytsearchlist.getTracks();
+								IChannel channel = event.getChannel();
+								IUser author = event.getAuthor();
+								if ( number < tracks.size() ) {
+									AudioTrack track = tracks.get( number - 1 );
+									if ( cmd.equals( "ytplay" )) {
+										Util.sendMessage(channel, Lang.getLang ( "playing", author, event.getGuild() ) + ": "+ track.getInfo().title);
+										bonusbot.Audio.play( guildext.getAudioManager(), track, author );
+									} else {
+										Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", author, event.getGuild() ) + track.getInfo().title);
+										bonusbot.Audio.queue( guildext.getAudioManager(), track, author );
+									}
+								}
+							}
+						}
+					}
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+		};
+		Handler.commandMap.put( "ytplay", playQueueYoutube );
+		Handler.commandMap.put( "ytqueue", playQueueYoutube );
 	}
 }
