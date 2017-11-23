@@ -114,5 +114,14 @@ public class Util {
 	public final static String getEmojiString ( IEmoji emoji ) {
 		return "<:"+emoji.getName()+":"+emoji.getStringID()+">";
 	}
+	
+	/**
+	 * Checks if a string is numeric.
+	 * @param str The string to check.
+	 * @return if the string is numeric
+	 */
+	public final static boolean isNumeric ( String str ) {  
+	    return str.matches("[-+]?\\d*\\.?\\d+");  
+	} 
 
 }
