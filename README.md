@@ -50,7 +50,8 @@ Only usable in audioChannel, usable everywhere when it's deactivated.
   - Joins your server and puts audio in the queue.  
   If there is no audio playing, it gets played directly.  
 - ytsearch [text] [showamount = 5]  
-  - Searchs in YouTube and outputs the result. Amount of result depends on showamount.
+  - Searchs in YouTube and outputs the result.  
+  Amount of result depends on showamount.  
   Needed for !ytplay and !ytqueue.
 - ytplay [number]  
   - Plays the audio at specific place in result of ytsearch.  
