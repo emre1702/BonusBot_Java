@@ -330,12 +330,13 @@ public class Audio {
 								IUser author = event.getAuthor();
 								if ( number < tracks.size() ) {
 									AudioTrack track = tracks.get( number - 1 );
+									// clone the track, else you can't play it twice //
 									if ( cmd.equals( "ytplay" )) {
 										Util.sendMessage(channel, Lang.getLang ( "playing", author, event.getGuild() ) + ": "+ track.getInfo().title);
-										bonusbot.Audio.play( guildext.getAudioManager(), track, author );
+										bonusbot.Audio.play( guildext.getAudioManager(), track.makeClone(), author );
 									} else {
 										Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", author, event.getGuild() ) + track.getInfo().title);
-										bonusbot.Audio.queue( guildext.getAudioManager(), track, author );
+										bonusbot.Audio.queue( guildext.getAudioManager(), track.makeClone(), author );
 									}
 								}
 							}
