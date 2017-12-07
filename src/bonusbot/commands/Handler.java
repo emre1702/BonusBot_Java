@@ -26,6 +26,7 @@ public class Handler {
 		Fun.createFunCommands();
 		Language.createLanguageCommands();
 		Audio.createAudioCommands();
+		OtherGames.createOtherGamesCommands();
 	}
 	
 	/** 
