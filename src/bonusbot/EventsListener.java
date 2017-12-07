@@ -46,7 +46,7 @@ class EventsListener {
 				( amountonserver == 3 ? "rd" : "th" ) );
 			Util.sendMessage( guild.getChannelByID( greetUserChannelID ), "Welcome "+event.getUser().mention()
 					+"!\nYou are the "+amountonserver+suffix+" user 🎉"
-					+"\nPlease read 'informations' in 'important' category." );
+					+"\nPlease read 'informations' in 'important' category!" );
 			
 		}
 	}
