@@ -20,8 +20,8 @@ public class Settings {
 	static String name = "Bonus-Bot";
 	/** playing-text of the bot */
 	static String playing = "Bonus-community";
-	/** name of the language-channel where you can use language-commands */
-	public static String languageChannel = "";
+	/** name of the roles-channel where you can use commands to get roles */
+	public static String rolesChannel = "";
 	/** name of the audio-channel where you can use audio-commands */
 	public static String audioChannel = "";
 	/** name of the channel where the audio-info gets posted (embed) */
@@ -62,8 +62,8 @@ public class Settings {
 			if ( jsonObject.containsKey( "playing" ) ) 
 				playing = (String) jsonObject.get( "playing" );
 			
-			if ( jsonObject.containsKey( "languageChannel" ) )
-				languageChannel = (String) jsonObject.get( "languageChannel" );
+			if ( jsonObject.containsKey( "rolesChannel" ) )
+				rolesChannel = (String) jsonObject.get( "rolesChannel" );
 			if ( jsonObject.containsKey( "audioChannel" ) )
 				audioChannel = (String) jsonObject.get( "audioChannel" );
 			if ( jsonObject.containsKey( "audioInfoChannel" ) )

@@ -29,7 +29,7 @@ public class Language {
 		final ICommand requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isLanguageChannel( event.getChannel().getLongID() ) ) {
+				if ( guildext.isRolesChannel( event.getChannel().getLongID() ) ) {
 					IRole role = null;
 					switch ( cmd ) {
 						case "deutsch":
