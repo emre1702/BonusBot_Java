@@ -70,14 +70,14 @@ public class GuildExtends {
 	}
 	
 	/**
-	 * Check if the language-channel is not set and the ID is it. 
-	 * Needed to check if we can use language-commands in this channel.
+	 * Check if the roles-channel is not set and the ID is it. 
+	 * Needed to check if we can use roles-commands in this channel.
 	 * @param ID Long-ID of the channel we want to check.
-	 * @return if the language-channel is not set or the ID is the language-channel.
+	 * @return if the roles-channel is not set or the ID is the roles-channel.
 	 */
-	public final boolean isLanguageChannel ( final Long ID ) {
-		final Long languagechannelID = this.getLanguageChannelID();
-		return ( languagechannelID == null || languagechannelID.equals( ID ) );
+	public final boolean isRolesChannel ( final Long ID ) {
+		final Long roleschannelID = this.getRolesChannelID();
+		return ( roleschannelID == null || roleschannelID.equals( ID ) );
 	} 
 	
 	/**
@@ -102,12 +102,12 @@ public class GuildExtends {
 	}
 	
 	/**
-	 * Getter for the ID of the language-channel in this guild.
-	 * @return LongID of the language-channel or null if not exists.
+	 * Getter for the ID of the roles-channel in this guild.
+	 * @return LongID of the roles-channel or null if not exists.
 	 */
-	public final Long getLanguageChannelID() {
-		if ( Settings.languageChannel != "" ) {
-			final List<IChannel> channel = guild.getChannelsByName( Settings.languageChannel );
+	public final Long getRolesChannelID() {
+		if ( Settings.rolesChannel != "" ) {
+			final List<IChannel> channel = guild.getChannelsByName( Settings.rolesChannel );
 			if ( !channel.isEmpty() ) {
 				return channel.get( 0 ).getLongID();
 			}
@@ -206,6 +206,34 @@ public class GuildExtends {
 	public final Long getTurkishRoleID() {
 		if ( Settings.turkishRole != "" ) {
 			final List<IRole> roles = guild.getRolesByName( Settings.turkishRole );
+			if ( !roles.isEmpty() ) {
+				return roles.get( 0 ).getLongID();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Getter for the ID of the role for the RocketLeague-section.
+	 * @return LongID of the rocketleague-section role or null if not exists
+	 */
+	public final Long getRocketLeagueRoleID() {
+		if ( Settings.rocketleagueRole != "" ) {
+			final List<IRole> roles = guild.getRolesByName( Settings.rocketleagueRole );
+			if ( !roles.isEmpty() ) {
+				return roles.get( 0 ).getLongID();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Getter for the ID of the role for the PUBG-section.
+	 * @return LongID of the PUBG-section role or null if not exists
+	 */
+	public final Long getPUBGRoleID() {
+		if ( Settings.pubgRole != "" ) {
+			final List<IRole> roles = guild.getRolesByName( Settings.pubgRole );
 			if ( !roles.isEmpty() ) {
 				return roles.get( 0 ).getLongID();
 			}

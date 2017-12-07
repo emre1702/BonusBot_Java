@@ -36,6 +36,10 @@ public class Settings {
 	public static String germanRole = "";
 	/** name of the turkish-section role (!turkish/!türkce) */
 	public static String turkishRole = "";
+	/** name of the RocketLeague-section role (!rocketleague) */
+	public static String rocketleagueRole = "";
+	/** name of the PUBG-section role (!pubg!) */
+	public static String pubgRole = "";
 	/** name of the what-emoji, used for some outputs */
 	public static String whatEmoji = "what";
 	/** name of the haha-emoji, used for some outputs */
@@ -79,6 +83,11 @@ public class Settings {
 				germanRole = (String) jsonObject.get( "germanRole" );
 			if ( jsonObject.containsKey( "turkishRole" ) )
 				turkishRole = (String) jsonObject.get( "turkishRole" );
+			
+			if ( jsonObject.containsKey( "rocketleagueRole" ) )
+				rocketleagueRole = (String) jsonObject.get( "rocketleagueRole" );
+			if ( jsonObject.containsKey( "pubgRole" ) )
+				pubgRole = (String) jsonObject.get( "pubgRole" );
 			
 			if ( jsonObject.containsKey( "whatEmoji" ) )
 				whatEmoji = (String) jsonObject.get( "whatEmoji" );
