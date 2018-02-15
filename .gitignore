@@ -48,3 +48,4 @@ Temporary Items
 /discordbot.log
 /target/.gitignore
 *.class
+/target/
