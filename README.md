@@ -92,20 +92,8 @@ But DON'T delete "token" and the "EmojiID" settings, these are important.
 ## How can I use it?
 
 ### Download
-First of all you have to download it.  
-Head over to the releases-tab:  
-[Releases](https://github.com/emre1702/BonusBot/releases)  
-
-Here you can choose between:  
-- BonusBot_vX_X.jar  
-  - Choose this if you are just lazy or don't want to download the future updates. This file contains every package, even when they won't change in future updates. The main-program is not even 100 KB big.    
-  - If you chose this, also download bonusbot.conf.  
-- BonusBot_vX_X_SingleOnly.jar  
-  - Choose this if you already got all the packages and only want to update your bot.  
-  - If you chose this, you should also download bonusbot.conf.  
-- BonusBot_vX_X_SingleAll.jar  
-  - Choose this if it's the first time you are downloading the packages and want to download the updates in the future easily.  
-  - Contains everything you need.  
+First of all you have to download it.
+Then you have to export it to a package (.jar). 
 
 ### Settings
 Now you can change the settings in bonusbot.conf.  
@@ -162,11 +150,4 @@ You can deactivate a optional setting by deleting the line or using "" (empty st
 ### Start
 
 Just put it somewhere and start it with:  
-java -jar bonusbot.jar   
-Or whatever the name is.
-
-
-## Can I just use your bot?
-
-Later with another release. 
-Have to change some things.
+java -jar [FileName].jar   
