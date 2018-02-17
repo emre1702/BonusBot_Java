@@ -88,8 +88,9 @@ public class GuildExtends {
 	 */
 	public final boolean isAdmin ( IUser user ) {
 		List<IRole> roles = guild.getRolesForUser( user );
-		for ( int i = 0; i < Settings.admins.length; ++i ) {
-			if ( roles.contains( guild.getRolesByName( Settings.admins[i] ).get( 0 ) ) )
+		for ( String adminrolename : Settings.admins ) {
+			List<IRole> adminroles = guild.getRolesByName( adminrolename );
+			if ( adminroles.size() > 0 && roles.contains( adminroles.get( 0 ) ) )
 				return true;
 		}
 		return false;
