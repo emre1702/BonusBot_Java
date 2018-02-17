@@ -48,6 +48,11 @@ public class Lang {
 		english.put( "length", "length" );
 		english.put( "channel", "channel" );
 		english.put( "number", "number" );
+		english.put( "usage", "Usage" );
+		english.put( "user", "user" );
+		english.put( "amount_messages", "amount messages" );
+		english.put( "user_not_found", "User not found!" );
+		english.put( "got_deleted", "Messages got deleted." );
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -78,6 +83,11 @@ public class Lang {
 		german.put( "length", "Länge" );
 		german.put( "channel", "Kanal" );
 		german.put( "number", "Zahl" );
+		german.put( "usage", "Nutzung" );
+		german.put( "user", "Nutzer" );
+		german.put( "amount_messages", "Anzahl Nachrichten" );
+		german.put( "user_not_found", "Nutzer nicht gefunden!" );
+		german.put( "got_deleted", "Nachrichten wurden gelöscht." );
 		
 		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
@@ -108,6 +118,11 @@ public class Lang {
 		turkish.put( "length", "uzunlugu" );
 		turkish.put( "channel", "kanal" );
 		turkish.put( "number", "numara" );
+		turkish.put( "usage", "Kullanim" );
+		turkish.put( "user", "kisi" );
+		turkish.put( "amount_messages", "mesaj sayisi" );
+		turkish.put( "user_not_found", "Kullanici bulunamadi!" );
+		turkish.put( "got_deleted", "mesajlar silindi." );
 		
 		languageMap.put( "english", english );
 		languageMap.put( "german", german );
