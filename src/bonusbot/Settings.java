@@ -20,6 +20,8 @@ public class Settings {
 	static String name = "Bonus-Bot";
 	/** playing-text of the bot */
 	static String playing = "Bonus-community";
+	/** admin roles */
+	public static String[] admins;
 	/** name of the roles-channel where you can use commands to get roles */
 	public static String rolesChannel = "";
 	/** name of the audio-channel where you can use audio-commands */
@@ -65,6 +67,20 @@ public class Settings {
 				name = (String) jsonObject.get( "name" );
 			if ( jsonObject.containsKey( "playing" ) ) 
 				playing = (String) jsonObject.get( "playing" );
+			
+			if ( jsonObject.containsKey( "admin" ) ) {
+				String adminwithcomma = (String) jsonObject.get( "admin" );
+				if ( adminwithcomma.indexOf( ',' ) != -1 ) {
+					admins = adminwithcomma.split( "," );
+				} else {
+					admins = new String[1];
+					admins[0] = adminwithcomma;
+				}
+			} else {
+				admins = new String[1];
+				admins[0] = "";
+			}
+				
 			
 			if ( jsonObject.containsKey( "rolesChannel" ) )
 				rolesChannel = (String) jsonObject.get( "rolesChannel" );

@@ -81,6 +81,21 @@ public class GuildExtends {
 	} 
 	
 	/**
+	 * Check if the user got any of the admin roles.
+	 * Needed for the admin-commands.
+	 * @param user User to check.
+	 * @return if the user got an admin role.
+	 */
+	public final boolean isAdmin ( IUser user ) {
+		List<IRole> roles = guild.getRolesForUser( user );
+		for ( int i = 0; i < Settings.admins.length; ++i ) {
+			if ( roles.contains( guild.getRolesByName( Settings.admins[i] ).get( 0 ) ) )
+				return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Check if the user has the role to play audio or everyone can play it (audioBotUserRoleID is not set)
 	 * @param user The user we want to check.
 	 * @return If user can use audio-commands.
