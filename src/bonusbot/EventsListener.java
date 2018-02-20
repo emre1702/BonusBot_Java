@@ -40,7 +40,7 @@ class EventsListener {
 		final Long greetUserChannelID = guildext.getGreetUserChannelID(); 
 		if ( greetUserChannelID != null ) {
 			final IGuild guild = event.getGuild();
-			final int amountonserver = guild.getTotalMemberCount();
+			final int amountonserver = guild.getUsers().size();
 			final String suffix = amountonserver == 1 ? "st" : 
 				( amountonserver == 2 ? "nd" :
 				( amountonserver == 3 ? "rd" : "th" ) );
