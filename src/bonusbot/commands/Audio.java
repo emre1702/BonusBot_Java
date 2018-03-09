@@ -7,7 +7,11 @@ import sx.blah.discord.handle.obj.IEmoji;
 import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IVoiceChannel;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
@@ -24,6 +28,10 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
  *
  */
 public class Audio {
+	private final static String musicFolderPath = "music/";
+	private final static int maxFolderMusicInQueue = 40;
+	
+	private final static List<String> musicFolders = new ArrayList<String>();
 	
 	private final static boolean joinVoiceChannel ( MessageReceivedEvent event ) {
 		final IVoiceChannel botVoiceChannel = event.getClient().getOurUser().getVoiceStateForGuild(event.getGuild()).getChannel();
@@ -49,10 +57,50 @@ public class Audio {
 	}
 	
 	/**
+	 * Plays the folder recursively.
+	 * @param path The path of start-folder.
+	 * @param event Event for loadAndPlay function.
+	 * @param amountfiles The number of the file - used for safety, so you can't load too many files.
+	 * @throws IOException 
+	 */
+	private final static void playFolderRecursive ( final String path, final MessageReceivedEvent event, AtomicReference<Integer> amountfiles ) throws IOException {
+		File currentDir = new File ( path );
+    	File[] files = currentDir.listFiles();
+    	for ( File file : files ) {
+    		if ( amountfiles.get().intValue() < maxFolderMusicInQueue ) {
+	    		if ( !file.isDirectory() ) {
+	    			amountfiles.set( amountfiles.get() + 1 );
+	    			bonusbot.Audio.loadAndPlay ( event, file.getCanonicalPath(), true );
+	    		} else 
+	    			playFolderRecursive ( file.getPath(), event, amountfiles );
+    		}
+    	}
+    }
+	
+	private final static void loadMusicFolders() {
+		try {
+			File dir = new File ( musicFolderPath );
+			File[] files = dir.listFiles();
+			for ( File file : files ) {
+				if ( file.isDirectory() ) {
+					musicFolders.add( file.getPath().split( "/" )[1] );
+				}
+			}
+		} catch ( Exception e ) {
+			e.printStackTrace ( Logging.getPrintWrite() );
+		}
+	}
+	
+	/**
 	 * Create the audio-commands.
 	 */
 	// Load that way so Handler is first fully loaded before creating the commands.
 	final static void createAudioCommands () {
+		
+		loadMusicFolders();
+		Handler.commandMap.put ( "refreshfolder", ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+			loadMusicFolders();
+		} );
 		
 		/** Bot joins the voice-channel. */
 		final ICommand joinChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
@@ -141,6 +189,38 @@ public class Audio {
         Handler.commandMap.put ( "queue", playAudio );
         Handler.commandMap.put ( "qplay", playAudio );
         Handler.commandMap.put ( "qyt", playAudio );
+        
+        /** Plays a whole folder */
+        final ICommand playAudioFolder = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        	try {
+        		final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+        		if ( guildext.isAudioChannel( event.getChannel().getLongID() ) ) {
+        			if ( guildext.canPlayAudio( event.getAuthor() ) ) {
+        				if ( args.size() > 0 ) {
+        					final String searchStr = String.join(" ", args);
+        					if ( musicFolders.contains( searchStr ) ) {
+	        					if ( joinVoiceChannel ( event ) ) {		
+						            // Turn the args back into a string separated by space
+					            	
+					            	AtomicReference<Integer> amountfiles = new AtomicReference<Integer>();
+					            	amountfiles.set( 0 );
+					            	playFolderRecursive ( musicFolderPath+searchStr, event, amountfiles );
+								}
+        					}
+        				} else {
+        					Util.sendMessage( event.getChannel(), "Folders:" );
+        					for ( String file : musicFolders ) {
+        						Util.sendMessage( event.getChannel(), file );
+        					}
+        				}
+        					
+        			}
+        		}
+        	} catch ( Exception e ) {
+				e.printStackTrace( Logging.getPrintWrite() );
+			}
+        };
+        Handler.commandMap.put( "playfolder", playAudioFolder );
         
         /** Pauses or resumes the player */
         final ICommand pauseResumePlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
