@@ -42,12 +42,17 @@ public class AudioInfo {
 			builder.withAuthorName( user.getDisplayName( guild ) );
 			builder.withAuthorIcon( user.getAvatarURL() );
 			builder.withColor( 0, 0, 150 );
-			builder.withDescription( info.uri );
+			if ( info.isStream ) {
+				builder.withDescription( info.uri );
+				builder.withUrl( info.uri );
+			} else 
+				builder.withDescription( info.uri.substring( info.uri.indexOf( "/" ) + 1 ) );
+				
 			builder.withFooterText( "Audio-info" );
 			//builder.withImage( "https://www.youtube.com/yts/img/yt_1200-vfl4C3T0K.png" );
 			builder.withThumbnail( "https://lh3.googleusercontent.com/Ned_Tu_ge6GgJZ_lIO_5mieIEmjDpq9kfgD05wapmvzcInvT4qQMxhxq_hEazf8ZsqA=w300" );
 			builder.withTitle( info.title );
-			builder.withUrl( info.uri );
+			
 			final int minutes = (int) (Math.floor( info.length / 60000 ));
 			final int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
 			builder.appendField( "Status:", "playing", false );
