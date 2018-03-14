@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
+import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RequestBuffer;
 
@@ -85,6 +86,46 @@ public class Util {
 	        RequestBuffer.request(() -> {
 	            try{
 	                channel.sendMessage(object);
+	            } catch (DiscordException e){
+	            	e.printStackTrace ( Logging.getPrintWrite() );
+	            }
+	        });
+		} catch ( Exception e ) {
+	 		e.printStackTrace ( Logging.getPrintWrite() );
+	 	}
+	}
+	
+	/**
+	 * Send a message to the audio channel of the guild.
+	 * @param guild The guild.
+	 * @param message The message.
+	 */
+	public final static void sendMessage ( final IGuild guild, final String message ) {
+		try {
+	        // This might look weird but it'll be explained in another page.
+	        RequestBuffer.request(() -> {
+	            try{
+	            	guild.getChannelsByName( Settings.audioChannel ).get( 0 ).sendMessage(message);
+	            } catch (DiscordException e){
+	            	e.printStackTrace ( Logging.getPrintWrite() );
+	            }
+	        });
+		} catch ( Exception e ) {
+	 		e.printStackTrace ( Logging.getPrintWrite() );
+	 	}
+	}
+	
+	/**
+	 * Send a object to the audio channel of the guild.
+	 * @param guild The guild.
+	 * @param object The object.
+	 */
+	public final static void sendMessage ( final IGuild guild, final EmbedObject object ) {
+		try {
+	        // This might look weird but it'll be explained in another page.
+	        RequestBuffer.request(() -> {
+	            try{
+	            	guild.getChannelsByName( Settings.audioChannel ).get( 0 ).sendMessage(object);
 	            } catch (DiscordException e){
 	            	e.printStackTrace ( Logging.getPrintWrite() );
 	            }
