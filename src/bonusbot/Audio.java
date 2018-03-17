@@ -25,7 +25,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class Audio {
 	
 	/** AudioPlayerManager for LavaPlayer */
-	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
+	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager(); 
 	private static YoutubeSearchProvider youtubeSearch;
 	
 	/** Register sources of audio for LavaPlayer and load YoutubeSearchProvider */
