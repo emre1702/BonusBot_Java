@@ -6,7 +6,9 @@ import bonusbot.guild.GuildExtends;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
 import sx.blah.discord.handle.impl.events.guild.member.UserJoinEvent;
+import sx.blah.discord.handle.obj.ActivityType;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.StatusType;
 
 /**
  * Listener for Discord4J events.
@@ -22,7 +24,7 @@ class EventsListener {
 	@EventSubscriber
 	public final void onReady ( final ReadyEvent event ) {
 		event.getClient().changeUsername( Settings.name );
-		event.getClient().changePlayingText( Settings.playing );
+		event.getClient().changePresence( StatusType.ONLINE, ActivityType.PLAYING, Settings.playing );
 		
 		final List<IGuild> guilds = event.getClient().getGuilds();
 		for ( IGuild guild : guilds ) {
