@@ -30,6 +30,8 @@ public class Settings {
 	public static String audioInfoChannel = "";
 	/** name of the channel where the user joining the user get greeted */
 	public static String greetUserChannel = "";
+	/** name of the informations channel */
+	public static String infoChannel = "";
 	/** name of the role which can use audio-commands */
 	public static String audiobotUserRole = "";
 	/** name of the english-section role (!english) */
@@ -90,6 +92,8 @@ public class Settings {
 				audioInfoChannel = (String) jsonObject.get( "audioInfoChannel" );
 			if ( jsonObject.containsKey( "greetUserChannel" ) )
 				greetUserChannel = (String) jsonObject.get( "greetUserChannel" );
+			if ( jsonObject.containsKey( "infoChannel" ) ) 
+				infoChannel = (String) jsonObject.get( "infoChannel" );
 			
 			if ( jsonObject.containsKey( "audiobotUserRole" ) )
 				audiobotUserRole = (String) jsonObject.get( "audiobotUserRole" );

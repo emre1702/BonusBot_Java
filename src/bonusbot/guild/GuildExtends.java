@@ -117,6 +117,20 @@ public class GuildExtends {
 		return this.audiomanager.manager;
 	}
 	
+	/** 
+	 * Getter for the Infomations-channel in this guild.
+	 * @return IChannel The informations-channel or null if not exists.
+	 */
+	public final IChannel getInformationsChannel () {
+		if ( Settings.infoChannel != "" ) {
+			List<IChannel> channels = guild.getChannelsByName( Settings.infoChannel );
+			if ( !channels.isEmpty() ) {
+				return channels.get( 0 );
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Getter for the ID of the roles-channel in this guild.
 	 * @return LongID of the roles-channel or null if not exists.
@@ -160,14 +174,14 @@ public class GuildExtends {
 	}
 	
 	/**
-	 * Getter for the ID of the channel where we want to greet new user in this guild.
-	 * @return LongID of the greet-user-channel or null if not exists.
+	 * Getter for the channel where we want to greet new user in this guild.
+	 * @return IChannel of the greet-user-channel or null if not exists.
 	 */
-	public final Long getGreetUserChannelID() {
+	public final IChannel getGreetUserChannel() {
 		if ( Settings.greetUserChannel != "" ) {
-			final List<IChannel> channel = guild.getChannelsByName( Settings.greetUserChannel );
-			if ( !channel.isEmpty() ) {
-				return channel.get( 0 ).getLongID();
+			final List<IChannel> channels = guild.getChannelsByName( Settings.greetUserChannel );
+			if ( !channels.isEmpty() ) {
+				return channels.get( 0 );
 			}
 		}
 		return null;
