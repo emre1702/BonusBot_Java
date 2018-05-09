@@ -2,6 +2,7 @@ package bonusbot;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IGuild;
@@ -53,6 +54,8 @@ public class Lang {
 		english.put( "amount_messages", "amount messages" );
 		english.put( "user_not_found", "User not found!" );
 		english.put( "got_deleted", "Messages got deleted." );
+		english.put( "stopped_the_audio", "Audio stopped!" );
+		english.put( "will_stop_audio_after_time", "Audio will stop after {1} seconds!" );
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -88,6 +91,8 @@ public class Lang {
 		german.put( "amount_messages", "Anzahl Nachrichten" );
 		german.put( "user_not_found", "Nutzer nicht gefunden!" );
 		german.put( "got_deleted", "Nachrichten wurden gelöscht." );
+		german.put( "stopped_the_audio", "Audio wurde gestoppt!" );
+		german.put( "will_stop_audio_after_time", "Audio wird nach {1} Sekunden gestoppt!" );
 		
 		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
@@ -123,6 +128,8 @@ public class Lang {
 		turkish.put( "amount_messages", "mesaj sayisi" );
 		turkish.put( "user_not_found", "Kullanici bulunamadi!" );
 		turkish.put( "got_deleted", "mesajlar silindi." );
+		turkish.put( "stopped_the_audio", "Ses durduruldu!" );
+		turkish.put( "will_stop_audio_after_time", "Ses {1} saniye sonra durduralacak!" );
 		
 		languageMap.put( "english", english );
 		languageMap.put( "german", german );
@@ -152,5 +159,31 @@ public class Lang {
 			} 
 		}
 		return languageMap.get( language ).get( str );
+	}
+	
+	/**
+	 * Get language-string for specific user in the specific guild.
+	 * Also replace {1} with replace1
+	 * @param str The index for the value.
+	 * @param user The user who will get the message (needed for checking the language)
+	 * @param guild Your guild where you want to send the message.
+	 * @param replace1 The string to replace {1}
+	 * @return The string for the users language.
+	 */
+	public final static String getLang ( final String str, final IUser user, final IGuild guild, final String replace1 ) {
+		String language = "english";
+		final List<IRole> roles = user.getRolesForGuild( guild );
+		final GuildExtends guildext = GuildExtends.get( guild );
+		final Long germanRoleID = guildext.getGermanRoleID(); 
+		
+		if ( germanRoleID != null && roles.contains( guild.getRoleByID( germanRoleID ) ) ) {
+			language = "german";
+		} else {
+			final Long turkishRoleID = guildext.getTurkishRoleID(); 
+			if ( turkishRoleID != null && roles.contains( guild.getRoleByID( turkishRoleID ) ) ) {
+				language = "turkish";
+			} 
+		}
+		return languageMap.get( language ).get( str ).replaceAll( Pattern.quote( "{1}" ), replace1 );
 	}
 }

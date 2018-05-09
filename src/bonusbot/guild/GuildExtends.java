@@ -3,6 +3,7 @@ package bonusbot.guild;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 
@@ -30,6 +31,8 @@ public class GuildExtends {
 	private IGuild guild;
 	/** The found numbers of !ytsearch for !ytplay */
 	public AudioPlaylist ytsearchlist;
+	/** Timer to stop the audio on e.g. !stop 5 */
+	public Timer stopAudioTimer = new Timer();
 	
 	/**
 	 * Constructor 
@@ -291,5 +294,15 @@ public class GuildExtends {
 			return guild.getEmojiByName( Settings.hahaEmoji );
 		}
 		return null;
+	}
+	
+	/** 
+	 * Stops the audio-timer.
+	 * @return 
+	 */
+	public final void stopTheAudioTimer() {
+		stopAudioTimer.cancel();
+		stopAudioTimer.purge();
+		stopAudioTimer = new Timer();
 	}
 }
