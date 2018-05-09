@@ -4,6 +4,8 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventListener;
 
+import sx.blah.discord.handle.obj.IGuild;
+
 /**
  * Holder for both the player and a track scheduler for one guild.
  */
@@ -19,11 +21,11 @@ public class GuildAudioManager {
 	 * Creates a player and a track scheduler.
 	 * @param manager Audio player manager to use for creating the player.
 	 */
-	public GuildAudioManager(final AudioPlayerManager manager) {
+	public GuildAudioManager(final AudioPlayerManager manager, final IGuild guild) {
 		player = manager.createPlayer();
 		player.setVolume( 5 );
 		provider = new AudioProvider(player);
-		scheduler = new TrackScheduler(player);
+		scheduler = new TrackScheduler(player, guild);
 	}
 	
 	/**

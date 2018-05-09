@@ -81,9 +81,11 @@ public class Audio {
 		try {
 			File dir = new File ( musicFolderPath );
 			File[] files = dir.listFiles();
-			for ( File file : files ) {
-				if ( file.isDirectory() ) {
-					musicFolders.add( file.getPath().split( "/" )[1] );
+			if ( files != null ) {
+				for ( File file : files ) {
+					if ( file.isDirectory() ) {
+						musicFolders.add( file.getPath().split( "/" )[1] );
+					}
 				}
 			}
 		} catch ( Exception e ) {
@@ -264,6 +266,7 @@ public class Audio {
 							scheduler.getQueue().clear();
 							scheduler.nextTrack();
 							AudioInfo.changeAudioInfoStatus( event.getGuild(), "stopped" );
+							AudioInfo.refreshAudioInfoQueue( event.getGuild(), scheduler );
 						} else {
 							final IEmoji whatemoji = guildext.getWhatEmoji();
 							if ( whatemoji == null ) {
@@ -280,6 +283,43 @@ public class Audio {
 			}
         };
         Handler.commandMap.put( "stop", stopPlayer );
+        
+        /** Stops the player */
+        final ICommand removeFromQueue = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+        	try {
+				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
+						if ( args.size() > 0 ) {
+							final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
+							if ( channel != null ) {
+								try {
+									final int queueindex = Integer.parseInt( args.get( 0 ) );
+									final TrackScheduler scheduler = GuildExtends.get(event.getGuild()).getAudioManager().getScheduler();
+									scheduler.remove( queueindex );
+									AudioInfo.refreshAudioInfoQueue( event.getGuild(), scheduler );
+								} catch ( NumberFormatException e ) {
+									Util.sendMessage( event.getChannel(), Lang.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
+								}
+							} else {
+								final IEmoji whatemoji = guildext.getWhatEmoji();
+								if ( whatemoji == null ) {
+									Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
+								} else {
+									Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Util.getEmojiString( whatemoji ) );
+									event.getMessage().addReaction( ReactionEmoji.of ( whatemoji ));
+								}
+							}
+						}
+					}
+        		}
+			} catch ( Exception e ) {
+				e.printStackTrace ( Logging.getPrintWrite() );
+			}
+        };
+        Handler.commandMap.put( "delqueue", removeFromQueue );
+        Handler.commandMap.put( "removequeue", removeFromQueue );
+        Handler.commandMap.put( "entqueue", removeFromQueue );
 		
         /** Skips the current playing audio */
         final ICommand skipAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
@@ -416,7 +456,7 @@ public class Audio {
 										bonusbot.Audio.play( guildext.getAudioManager(), track.makeClone(), author );
 									} else {
 										Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", author, event.getGuild() ) + track.getInfo().title);
-										bonusbot.Audio.queue( guildext.getAudioManager(), track.makeClone(), author );
+										bonusbot.Audio.queue( event.getGuild(), guildext.getAudioManager(), track.makeClone(), author );
 									}
 								}
 							}

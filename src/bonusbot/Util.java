@@ -8,6 +8,7 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RequestBuffer;
 
@@ -22,7 +23,7 @@ public class Util {
 	 * Get LocalDateTime now for Europe/Paris timezone.
 	 * @return LocalDateTime.now for Europe/Paris timezone.
 	 */
-	final static LocalDateTime getLocalDateTime ( ) {
+	public final static LocalDateTime getLocalDateTime ( ) {
 		return LocalDateTime.now( ZoneId.of( "Europe/Paris" ) );
 	}
 	
@@ -60,19 +61,29 @@ public class Util {
 	 * @param message The message we want to send.
 	 */
 	public final static void sendMessage ( final IChannel channel, final String message ) {
-		try {
-	        // This might look weird but it'll be explained in another page.
-	        RequestBuffer.request(() -> {
-	            try{
-	                channel.sendMessage(message);
-	            } catch (DiscordException e){
-	            	e.printStackTrace ( Logging.getPrintWrite() );
-	            }
-	        });
-		} catch ( Exception e ) {
-	 		e.printStackTrace ( Logging.getPrintWrite() );
-	 	}
+        RequestBuffer.request(() -> {
+            try{
+                channel.sendMessage(message);
+            } catch (DiscordException e){
+            	e.printStackTrace ( Logging.getPrintWrite() );
+            }
+        });
     }
+	
+	/**
+	 * Edits a message with RequestBuffer.
+	 * @param msg
+	 * @param obj
+	 */
+	public final static void editMessage ( IMessage msg, EmbedObject obj ) {
+		RequestBuffer.request(() -> {
+            try{
+            	msg.edit( obj );
+            } catch (DiscordException e){
+            	e.printStackTrace ( Logging.getPrintWrite() );
+            }
+        });
+	}
 	
 	/**
 	 * Send a EmbedObject to the specific channel.

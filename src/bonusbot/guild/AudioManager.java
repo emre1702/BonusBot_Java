@@ -10,6 +10,7 @@ import bonusbot.AudioInfo;
 import bonusbot.Logging;
 import bonusbot.Util;
 import lavaplayer.GuildAudioManager;
+import lavaplayer.Track;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
@@ -31,7 +32,7 @@ public class AudioManager {
 	 * @return The GuildMusicManager of the guild.
 	 */
 	AudioManager ( final IGuild guild, final AudioPlayerManager playerManager ) {
-		manager = new GuildAudioManager ( playerManager );
+		manager = new GuildAudioManager( playerManager, guild );
         
 		manager.getPlayer().addListener(new AudioEventAdapter() {
         	/*@Override
@@ -48,18 +49,22 @@ public class AudioManager {
         	public void onTrackStart ( AudioPlayer player, AudioTrack track ) {
         		try {
         			TrackScheduler scheduler = manager.getScheduler();
-        			EmbedObject object = AudioInfo.createAudioInfo ( track, scheduler.userqueue.poll(), guild, scheduler.datequeue.poll() );
-        			final GuildExtends guildext = GuildExtends.get( guild );
-        			final Long audioInfoChannelID = guildext.getAudioInfoChannelID();
-                	if ( audioInfoChannelID != null ) {
-            			IChannel musicinfochannel = guild.getChannelByID( audioInfoChannelID );
-            			MessageHistory msghist = musicinfochannel.getFullMessageHistory();
-            			if ( msghist.isEmpty() ) {
-            				Util.sendMessage( musicinfochannel, object );
-            			} else {
-            				msghist.getEarliestMessage().edit( object );
-            			}
-            		}
+        			Track startedTrack = scheduler.getNext();
+        			if ( startedTrack != null ) {
+	        			EmbedObject object = AudioInfo.createAudioInfo ( startedTrack.audio, startedTrack.user, guild, startedTrack.date, scheduler );
+	        			final GuildExtends guildext = GuildExtends.get( guild );
+	        			final Long audioInfoChannelID = guildext.getAudioInfoChannelID();
+	        	    	if ( audioInfoChannelID != null ) {
+	        				IChannel musicinfochannel = guild.getChannelByID( audioInfoChannelID );
+	        				MessageHistory msghist = musicinfochannel.getFullMessageHistory();
+	        				if ( msghist.isEmpty() ) {
+	        					Util.sendMessage( musicinfochannel, object );
+	        				} else {
+	        					msghist.getEarliestMessage().edit( object );
+	        				}
+	        			}
+	                	AudioInfo.changeAudioInfoStatus( guild, "playing" );
+        			}
         		} catch ( Exception e ) {
         	 		e.printStackTrace ( Logging.getPrintWrite() );
         	 	}

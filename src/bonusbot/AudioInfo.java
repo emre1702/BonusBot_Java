@@ -1,6 +1,7 @@
 package bonusbot;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,8 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import bonusbot.guild.GuildExtends;
+import lavaplayer.Track;
+import lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmbed;
@@ -27,6 +30,31 @@ public class AudioInfo {
 	private final static Map<Long, EmbedObject> guildlastembed = new HashMap<Long, EmbedObject>();
 	
 	/**
+	 * Add queue infos to the embedbuilder
+	 * @param queue
+	 * @param builder
+	 */
+	private final static List<String> getQueueInfos ( List<Track> queue ) {
+		List<String> queuestrlist = new ArrayList<String>();
+		String queuestr = "";
+		int queuei = 0;
+		for ( Track track : queue ) {
+			++queuei;
+			AudioTrackInfo queuetrackinfo = track.audio.getInfo();
+			if ((queuestr + queuei+". "+queuetrackinfo.title+"\n").length() > EmbedBuilder.FIELD_CONTENT_LIMIT) {
+				queuestrlist.add( queuestr );
+				queuestr = queuei+". "+queuetrackinfo.title+"\n";
+			} else {
+				queuestr += queuei+". "+queuetrackinfo.title+"\n";
+			}				
+		}
+		if ( queuei == 0 )
+			queuestr = "-";
+		queuestrlist.add( queuestr );
+		return queuestrlist;
+	}
+	
+	/**
 	 * Creates the EmbedObject with informations the audiotrack for audio-info channel.
 	 * @param audiotrack The audiotrack we want to get the infos of.
 	 * @param user User who added the audiotrack.
@@ -34,7 +62,7 @@ public class AudioInfo {
 	 * @param dateadded Date when the audio got added.
 	 * @return EmbedObject with infos for the audio-info channel.
 	 */
-	public final static EmbedObject createAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded ) {
+	public final static EmbedObject createAudioInfo ( final AudioTrack audiotrack, final IUser user, final IGuild guild, final LocalDateTime dateadded, final TrackScheduler scheduler ) {
 		try {
 			final EmbedBuilder builder = new EmbedBuilder();
 			final AudioTrackInfo info = audiotrack.getInfo();
@@ -55,10 +83,15 @@ public class AudioInfo {
 			
 			final int minutes = (int) (Math.floor( info.length / 60000 ));
 			final int seconds = (int)(Math.floor( info.length / 1000 ) % 60 );
-			builder.appendField( "Status:", "playing", false );
-			builder.appendField( "Volume:", String.valueOf( GuildExtends.get ( guild ).getAudioManager().getPlayer().getVolume() ), false );
-			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), false );
-			builder.appendField( "Added:", Util.getTimestamp ( dateadded ), false );
+			builder.appendField( "Status:", "playing", true );
+			builder.appendField( "Volume:", String.valueOf( GuildExtends.get ( guild ).getAudioManager().getPlayer().getVolume() ), true );
+			builder.appendField( "Length:", minutes + ":" + ( seconds >= 10 ? seconds : "0"+seconds ), true );
+			builder.appendField( "Added:", Util.getTimestamp ( dateadded ), true );
+			
+			List<String> queueinfos = getQueueInfos( scheduler.getQueue() );
+			for ( int i = 0; i < queueinfos.size(); ++i ) {
+				builder.appendField( "Queue:", queueinfos.get( i ), false );
+			}
 			
 			EmbedObject obj = builder.build();
 			
@@ -100,7 +133,7 @@ public class AudioInfo {
 				if ( audioinfochannel != null ) {
 					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
 					if ( msg != null ) {
-						msg.edit( obj );
+						Util.editMessage( msg, obj );
 					}
 				}
 			}
@@ -126,7 +159,35 @@ public class AudioInfo {
 				if ( audioinfochannel != null ) {
 					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
 					if ( msg != null ) {
-						msg.edit( obj );
+						Util.editMessage( msg, obj );
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Change the queue-info in the EmbedObject.
+	 * If the audio-info is available, refresh it there.
+	 * @param guild Guild where you want to change the EmbedObject.
+	 * @param scheduler The TrackScheduler to get the queue.
+	 */
+	public final static void refreshAudioInfoQueue ( final IGuild guild, final TrackScheduler scheduler ) {
+		final EmbedObject obj = getLastAudioInfo ( guild );
+		if ( obj != null && obj.fields.length > 4 ) {
+			List<String> queueinfos = getQueueInfos( scheduler.getQueue() );
+			for ( int i = 0; i < queueinfos.size(); ++i ) {
+				obj.fields[4+i].value = queueinfos.get( i );
+			}
+
+			final GuildExtends guildext = GuildExtends.get( guild );
+			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
+			if ( audioinfochannelID != null ) {
+				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
+				if ( audioinfochannel != null ) {
+					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
+					if ( msg != null ) {
+						Util.editMessage( msg, obj );
 					}
 				}
 			}
@@ -159,7 +220,7 @@ public class AudioInfo {
 		}
 		return obj;
 	}
-	
+
 	/**
 	 * Get the YouTube search result at !ytsearch for !ytplay/!ytqueue
 	 * @param guild The guild where !ytsearch got written.
