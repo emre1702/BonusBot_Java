@@ -33,6 +33,8 @@ public class GuildExtends {
 	public AudioPlaylist ytsearchlist;
 	/** Timer to stop the audio on e.g. !stop 5 */
 	public Timer stopAudioTimer = new Timer();
+	/** Timer to pause/resume the audio on e.g. !pause 5 */
+	public Timer pauseresumeAudioTimer = new Timer();
 	
 	/**
 	 * Constructor 
@@ -297,12 +299,22 @@ public class GuildExtends {
 	}
 	
 	/** 
-	 * Stops the audio-timer.
+	 * Stops the stop-audio-timer.
 	 * @return 
 	 */
-	public final void stopTheAudioTimer() {
+	public final void stopTheStopAudioTimer() {
 		stopAudioTimer.cancel();
 		stopAudioTimer.purge();
 		stopAudioTimer = new Timer();
+	}
+	
+	/** 
+	 * Stops the pause/resume-audio-timer.
+	 * @return 
+	 */
+	public final void stopThePauseResumeAudioTimer() {
+		pauseresumeAudioTimer.cancel();
+		pauseresumeAudioTimer.purge();
+		pauseresumeAudioTimer = new Timer();
 	}
 }

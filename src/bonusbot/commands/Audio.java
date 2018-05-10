@@ -99,9 +99,10 @@ public class Audio {
 	
 	/**
 	 * Stops the music
+	 * @param guild
 	 */
 	private final static void stopAudio( IGuild guild ) {
-		GuildExtends.get( guild ).stopTheAudioTimer();
+		GuildExtends.get( guild ).stopTheStopAudioTimer();
 		final TrackScheduler scheduler = GuildExtends.get(guild).getAudioManager().getScheduler();
 		scheduler.getQueue().clear();
 		scheduler.nextTrack();
@@ -109,11 +110,24 @@ public class Audio {
 		AudioInfo.refreshAudioInfoQueue( guild, scheduler );
 	}
 	
+	private final static void pauseresumeAudio( IGuild guild, boolean paused ) {
+		GuildExtends guildext = GuildExtends.get(guild);
+		final AudioPlayer player = guildext.getAudioManager().getPlayer();
+		guildext.stopThePauseResumeAudioTimer();
+		player.setPaused( paused );
+		AudioInfo.changeAudioInfoStatus( guild, paused ? "paused" : "playing" );
+	}
+	
 	/**
 	 * Create the audio-commands.
 	 */
 	// Load that way so Handler is first fully loaded before creating the commands.
 	final static void createAudioCommands () {
+		
+		final Map<Character, Integer> timeEndingMultiplicator = new HashMap<Character, Integer>();
+        timeEndingMultiplicator.put( 's', 1 );
+        timeEndingMultiplicator.put( 'm', 60 );
+        timeEndingMultiplicator.put( 'h', 3600 );
 		
 		loadMusicFolders();
 		Handler.commandMap.put ( "refreshfolder", ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
@@ -243,21 +257,45 @@ public class Audio {
         /** Pauses or resumes the player */
         final ICommand pauseResumePlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
-				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+        		IGuild guild = event.getGuild();
+				final GuildExtends guildext = GuildExtends.get( guild );
 				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
-							final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
-							boolean paused = cmd.equals( "pause" );
-							player.setPaused( paused );
-							AudioInfo.changeAudioInfoStatus( event.getGuild(), paused ? "paused" : "playing" );
+							if ( args.size() > 0 ) {
+								String aftertimestr = args.get( 0 );
+								char aftertimeending = aftertimestr.charAt( aftertimestr.length() - 1 );
+								try {
+									int multiplicator = 1;
+									if ( timeEndingMultiplicator.containsKey( aftertimeending ) ) {
+										aftertimestr = aftertimestr.substring( 0, aftertimestr.length() - 1);
+										multiplicator = timeEndingMultiplicator.get( aftertimeending );
+									} 
+									int aftertime = Integer.parseInt( aftertimestr ) * multiplicator;
+									if ( aftertime > 0 ) {
+										guildext.stopThePauseResumeAudioTimer();
+										boolean paused = cmd.equals( "pause" );
+										guildext.pauseresumeAudioTimer.schedule( new TimerTask() {
+								        	@Override
+								        	public void run() {
+								        		pauseresumeAudio( guild, paused );
+								        	}
+										}, aftertime * 1000 );
+										Util.sendMessage( event.getChannel(), Lang.getLang ( paused ? "will_pause_audio_after_time" : "will_resume_audio_after_time", event.getAuthor(), event.getGuild(), String.valueOf( aftertime ) ) );
+										return;
+									}  
+								} catch ( NumberFormatException e ) {
+									Util.sendMessage( event.getChannel(), Lang.getLang ( "first_has_to_be_int", event.getAuthor(), guild ) );
+								}
+							} 
+							pauseresumeAudio( guild, cmd.equals( "pause" ) );
 						} else {
 							final IEmoji whatemoji = guildext.getWhatEmoji();
 							if ( whatemoji == null ) {
-								Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
+								Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), guild ) );
 							} else {
-								Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() )+Util.getEmojiString( whatemoji ) );
+								Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), guild )+Util.getEmojiString( whatemoji ) );
 								event.getMessage().addReaction( ReactionEmoji.of ( whatemoji ));
 							}
 						}
@@ -269,11 +307,6 @@ public class Audio {
         };
         Handler.commandMap.put ( "pause", pauseResumePlayer );
         Handler.commandMap.put ( "resume", pauseResumePlayer );
-        
-        final Map<Character, Integer> timeEndingMultiplicator = new HashMap<Character, Integer>();
-        timeEndingMultiplicator.put( 's', 1 );
-        timeEndingMultiplicator.put( 'm', 60 );
-        timeEndingMultiplicator.put( 'h', 3600 );
 
         /** Stops the player */
         final ICommand stopPlayer = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
@@ -295,7 +328,7 @@ public class Audio {
 									} 
 									int aftertime = Integer.parseInt( aftertimestr ) * multiplicator;
 									if ( aftertime > 0 ) {
-										guildext.stopTheAudioTimer();
+										guildext.stopTheStopAudioTimer();
 										guildext.stopAudioTimer.schedule( new TimerTask() {
 								        	@Override
 								        	public void run() {

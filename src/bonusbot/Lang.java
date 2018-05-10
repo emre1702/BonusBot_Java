@@ -55,7 +55,9 @@ public class Lang {
 		english.put( "user_not_found", "User not found!" );
 		english.put( "got_deleted", "Messages got deleted." );
 		english.put( "stopped_the_audio", "Audio stopped!" );
-		english.put( "will_stop_audio_after_time", "Audio will stop after {1} seconds!" );
+		english.put( "will_stop_audio_after_time", "Audio will stop after {1} second(s)!" );
+		english.put( "will_pause_audio_after_time", "Audio will pause after {1} second(s)!" );
+		english.put( "will_resume_audio_after_time", "Audio will resume after {1} second(s)!" );
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -92,7 +94,9 @@ public class Lang {
 		german.put( "user_not_found", "Nutzer nicht gefunden!" );
 		german.put( "got_deleted", "Nachrichten wurden gelöscht." );
 		german.put( "stopped_the_audio", "Audio wurde gestoppt!" );
-		german.put( "will_stop_audio_after_time", "Audio wird nach {1} Sekunden gestoppt!" );
+		german.put( "will_stop_audio_after_time", "Audio wird nach {1} Sekunde(n) gestoppt!" );
+		german.put( "will_pause_audio_after_time", "Audio wird nach {1} Sekunde(n) pausiert!" );
+		german.put( "will_resume_audio_after_time", "Audio wird nach {1} Sekunde(n) fortgesetzt!" );
 		
 		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
@@ -130,6 +134,8 @@ public class Lang {
 		turkish.put( "got_deleted", "mesajlar silindi." );
 		turkish.put( "stopped_the_audio", "Ses durduruldu!" );
 		turkish.put( "will_stop_audio_after_time", "Ses {1} saniye sonra durduralacak!" );
+		turkish.put( "will_pause_audio_after_time", "Sese {1} saniye sonra ara verilecek!" );
+		turkish.put( "will_resume_audio_after_time", "Ses {1} saniye sonra devam edecek!" );
 		
 		languageMap.put( "english", english );
 		languageMap.put( "german", german );
