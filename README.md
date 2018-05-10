@@ -153,8 +153,8 @@ You can deactivate a optional setting by deleting the line or using "" (empty st
 - whatEmoji / hahaEmoji / tadaEmoji  
   - Emoji-names for messages (e.g. on "!8ball" the whatEmoji is used)  
   - default: "what" / "haha" / "tada"  
-  - deactivated: no emojis will be used  
-etc. 
+  - deactivated: no emojis will be used   
+- etc ... 
 
 ### Start
 
