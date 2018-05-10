@@ -43,26 +43,24 @@ Only usable in languageChannel, not usable when it's deactivated.
 #### audio
 Only usable in audioChannel, usable everywhere when it's deactivated.
 
-- play [url/empty]  
+- play [?url]  
   - Joins your channel and plays an audio (without changing the queue).  
-    Use '!play' without arguments to resume an audio.  
+  Use '!play' without arguments to resume an audio.  
 - queue [url]  
   - Joins your server and puts audio in the queue.  
   If there is no audio playing, it gets played directly.  
-- ytsearch [text] [showamount = 5]  
-  - Searchs in YouTube and outputs the result.  
-  Amount of result depends on showamount.  
-  Needed for !ytplay and !ytqueue.
-- ytplay [number]  
-  - Plays the audio at specific place in result of ytsearch.  
-- ytqueue [number]  
-  - Queues the audio at specific place in result of ytsearch.  
-- pause  
-  - Pauses the audio.  
-- resume  
+- stop [?time = 0]  
+  - Stops the audio and deletes the queue.  
+  Use time to let the audio stop after a time (seconds).  
+  If you want to use minutes, use m at the time (e.g. !stop 1m - h for hours).  
+- pause [?time = 0] 
+  - Pauses the audio.    
+  Same for time here as in stop.  
+- resume [?time = 0]
   - Resumes the audio.  
-- skip
-  - Skips the current audio.  
+  Same for time here as in stop.  
+- skip  
+  - Skips the current audio. 
 - volume [0-200]  
   - Changes the volume.  
 - join
@@ -73,6 +71,16 @@ Only usable in audioChannel, usable everywhere when it's deactivated.
   - Shows infos about the audio getting played.  
 - position [0-100]  
   - Sets the audio-position (argument in percent)  
+- delqueue [number]
+  - Removes a song from the queue at the number/index.  
+- ytsearch [text] [showamount = 5]  
+  - Searchs in YouTube and outputs the result.  
+  Amount of result depends on showamount.  
+  Needed for !ytplay and !ytqueue.  
+- ytplay [number]  
+  - Plays the audio at specific place in result of ytsearch.  
+- ytqueue [number]  
+  - Queues the audio at specific place in result of ytsearch.       
 
 #### rest
 Usable everywhere
@@ -146,6 +154,7 @@ You can deactivate a optional setting by deleting the line or using "" (empty st
   - Emoji-names for messages (e.g. on "!8ball" the whatEmoji is used)  
   - default: "what" / "haha" / "tada"  
   - deactivated: no emojis will be used  
+etc. 
 
 ### Start
 
