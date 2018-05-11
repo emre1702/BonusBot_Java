@@ -58,40 +58,45 @@ public class Audio {
 	 * @param trackUrl URL of the audio the author want to have played.
 	 * @param queue If it should be added to the queue or played right now.
 	 */
-	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean queue ) {
+	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean isqueue, final boolean isplaylist) {
 		final IChannel channel = event.getChannel();
 		final GuildAudioManager audioManager = GuildExtends.get(channel.getGuild()).getAudioManager();
 
 		final AudioLoadResultHandler handler = new AudioLoadResultHandler() {
+			
 			@Override
 		    public void trackLoaded(AudioTrack track) {
-		        
-				if ( queue ) {
+				if ( isqueue ) {
 					Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
 		    		queue(event.getGuild(), audioManager, track, event.getAuthor());
 		    	} else {
 		    		Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": "+ track.getInfo().title);
 		    		play(audioManager, track, event.getAuthor());
 		    	}
-		        
 		    }
 
 		    @Override
 		    public void playlistLoaded(AudioPlaylist playlist) {
-		    	AudioTrack firstTrack = playlist.getSelectedTrack();
-
-		    	if (firstTrack == null) {
-		    		firstTrack = playlist.getTracks().get(0);
-		    	}
-				
-		    	if ( queue ) {
-		    		Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title );
-		    		queue(event.getGuild(), audioManager, firstTrack, event.getAuthor());
+		    	if ( isplaylist ) {
+		    		if ( isqueue ) {
+			    		for ( AudioTrack track : playlist.getTracks() ) {
+			    			queue( event.getGuild(), audioManager, track, event.getAuthor() );
+			    		}
+		    		} else {
+		    			for ( AudioTrack track : playlist.getTracks() ) {
+		    				play( audioManager, track, event.getAuthor() );
+			    		}
+		    		}
+		    		Util.sendMessage( channel, Lang.getLang ( isqueue ? "adding_to_queue_playlist" : "playing_playlist", event.getAuthor(), event.getGuild() ) + playlist.getName() );
 		    	} else {
-		    		Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": " + firstTrack.getInfo().title );
-		    		play(audioManager, firstTrack, event.getAuthor());
+		    		AudioTrack selectedTrack = playlist.getSelectedTrack();
+
+			    	if (selectedTrack == null) {
+			    		selectedTrack = playlist.getTracks().get(0);
+			    	}
+			    	trackLoaded( selectedTrack );
+			    	Util.sendMessage( channel, Lang.getLang( "how_to_add_playlist", event.getAuthor(), event.getGuild() ) );
 		    	}
-		        
 		    }
 
 		    @Override

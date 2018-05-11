@@ -74,7 +74,7 @@ public class Audio {
     		if ( amountfiles.get().intValue() < maxFolderMusicInQueue ) {
 	    		if ( !file.isDirectory() ) {
 	    			amountfiles.set( amountfiles.get() + 1 );
-	    			bonusbot.Audio.loadAndPlay ( event, file.getCanonicalPath(), true );
+	    			bonusbot.Audio.loadAndPlay ( event, file.getCanonicalPath(), true, false );
 	    		} else 
 	    			playFolderRecursive ( file.getPath(), event, amountfiles );
     		}
@@ -203,7 +203,7 @@ public class Audio {
 				            	final String searchStr = String.join(" ", args);
 					
 				            	final boolean addtoqueue = cmd.equals( "queue" ) || cmd.equals( "qplay" ) || cmd.equals( "qyt" );
-					            bonusbot.Audio.loadAndPlay ( event, searchStr, addtoqueue );
+					            bonusbot.Audio.loadAndPlay ( event, searchStr, addtoqueue, false );
 							}
 			            } else {
 			            	final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
@@ -221,6 +221,35 @@ public class Audio {
         Handler.commandMap.put ( "queue", playAudio );
         Handler.commandMap.put ( "qplay", playAudio );
         Handler.commandMap.put ( "qyt", playAudio );
+        
+        /** Plays a playlist from a source (URL). */
+		final ICommand playAudioPlaylist = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
+			try {
+				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {         
+						if ( args.size() > 0 ) {
+							if ( joinVoiceChannel ( event ) ) {		
+					            // Turn the args back into a string separated by space
+				            	final String searchStr = String.join(" ", args);
+					
+				            	final boolean addtoqueue = cmd.equals( "playlistqueue" ) || cmd.equals( "queueplaylist" ) || cmd.equals( "plqueue" ) || cmd.equals( "queuepl" );
+					            bonusbot.Audio.loadAndPlay ( event, searchStr, addtoqueue, true );
+							}
+			            }
+					}
+				}
+			} catch ( Exception e ) {
+				e.printStackTrace( Logging.getPrintWrite() );
+			}
+        };
+        Handler.commandMap.put ( "playplaylist", playAudioPlaylist );
+        Handler.commandMap.put ( "playlist", playAudioPlaylist );
+        Handler.commandMap.put ( "pl", playAudioPlaylist );
+        Handler.commandMap.put ( "playlistqueue", playAudioPlaylist );
+        Handler.commandMap.put ( "queueplaylist", playAudioPlaylist );
+        Handler.commandMap.put ( "plqueue", playAudioPlaylist );
+        Handler.commandMap.put ( "queuepl", playAudioPlaylist );
         
         /** Plays a whole folder */
         final ICommand playAudioFolder = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {

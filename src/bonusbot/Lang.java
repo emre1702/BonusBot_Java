@@ -39,12 +39,13 @@ public class Lang {
 		english.put( "volume_usage_2", "volume [0-200]' to change the volume!" );
 		english.put( "not_played_audio_so_far", "I haven't played audio so far." );
 		english.put( "adding_to_queue", "Adding to queue: " );
-		english.put( "first_track_of_playlist", "first track of playlist" );
+		english.put( "adding_to_queue_playlist", "Adding playlist to queue: " );
 		english.put( "nothing_found_by", "Nothing found by " );
 		english.put( "could_not_play", "Could not play: " );
 		english.put( "skipped", "Skipped this track." );
 		english.put( "skipped_nothing_left", "Skipped this track, nothing left." );
 		english.put( "playing", "playing" );
+		english.put( "playing_playlist", "Playing playlist: " );
 		english.put( "url", "url" );
 		english.put( "length", "length" );
 		english.put( "channel", "channel" );
@@ -58,6 +59,7 @@ public class Lang {
 		english.put( "will_stop_audio_after_time", "Audio will stop after {1} second(s)!" );
 		english.put( "will_pause_audio_after_time", "Audio will pause after {1} second(s)!" );
 		english.put( "will_resume_audio_after_time", "Audio will resume after {1} second(s)!" );
+		english.put( "how_to_add_playlist", "If you wanted to add the whole playlist, please use \"!playlist [url]\" or \"!playlistqueue [url]\"." );
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -78,12 +80,13 @@ public class Lang {
 		german.put( "volume_usage_2", "volume [0-200]' um die Lautstärke zu veränden." );
 		german.put( "not_played_audio_so_far", "Ich habe bisher nichts abgespielt." );
 		german.put( "adding_to_queue", "Füge der Warteschleife hinzu: " );
-		german.put( "first_track_of_playlist", "Erster Song der Playliste" );
+		german.put( "adding_to_queue_playlist", "Füge Playlist der Warteschleife hinzu: " );
 		german.put( "nothing_found_by", "Nichts gefunden bei " );
 		german.put( "could_not_play", "Konnte nicht abspielen: " );
 		german.put( "skipped", "Überspringe das jetzige Audio." );
 		german.put( "skipped_nothing_left", "Überspringe das jetzige Audio, nichts ist mehr übrig." );
 		german.put( "playing", "Spiele ab" );
+		german.put( "playing_playlist", "Spiele Playlist ab: " );
 		german.put( "url", "Link" );
 		german.put( "length", "Länge" );
 		german.put( "channel", "Kanal" );
@@ -97,6 +100,7 @@ public class Lang {
 		german.put( "will_stop_audio_after_time", "Audio wird nach {1} Sekunde(n) gestoppt!" );
 		german.put( "will_pause_audio_after_time", "Audio wird nach {1} Sekunde(n) pausiert!" );
 		german.put( "will_resume_audio_after_time", "Audio wird nach {1} Sekunde(n) fortgesetzt!" );
+		german.put( "how_to_add_playlist", "Wenn du die Playlist ganz abspielen lassen willst, nutze bitte \"!playlist [url]\" oder \"!playlistqueue [url]\"." );
 		
 		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
@@ -117,12 +121,13 @@ public class Lang {
 		turkish.put( "volume_usage_2", "volume [0-200]' kullan!" );
 		turkish.put( "not_played_audio_so_far", "Simdiye kadar bisey oynatmadim." );
 		turkish.put( "adding_to_queue", "Kuyruga ekliyorum: " );
-		turkish.put( "first_track_of_playlist", "calma listesinin ilk sesi" );
+		turkish.put( "adding_to_queue_playlist", "Playlisti kuyruga ekliyorum: " );
 		turkish.put( "nothing_found_by", "Bisey bulunamadi: " );
 		turkish.put( "could_not_play", "Oynanamadi: " );
 		turkish.put( "skipped", "Bu sesi atladim" );
 		turkish.put( "skipped_nothing_left", "Bu sesi atladim, baska kalmadi." );
 		turkish.put( "playing", "oynaniyor" );
+		turkish.put( "playing_playlist", "Playlist oynaniyor: " );
 		turkish.put( "url", "url" );
 		turkish.put( "length", "uzunlugu" );
 		turkish.put( "channel", "kanal" );
@@ -136,6 +141,7 @@ public class Lang {
 		turkish.put( "will_stop_audio_after_time", "Ses {1} saniye sonra durduralacak!" );
 		turkish.put( "will_pause_audio_after_time", "Sese {1} saniye sonra ara verilecek!" );
 		turkish.put( "will_resume_audio_after_time", "Ses {1} saniye sonra devam edecek!" );
+		turkish.put( "how_to_add_playlist", "Playlistin bütününü oynatmak istiyorsan lüften \"!playlist [url]\" yada \"!playlistqueue [url]\" kullan." );
 		
 		languageMap.put( "english", english );
 		languageMap.put( "german", german );
