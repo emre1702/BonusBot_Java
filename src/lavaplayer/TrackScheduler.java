@@ -75,9 +75,14 @@ public class TrackScheduler {
 	/**
 	 * Removes a Track from queue.
 	 * @param index
+	 * @return 
 	 */
-	public synchronized void remove( final int index ) {
+	public synchronized Track remove( final int index ) {
+		if ( queue.size() <= index )
+			return null;
+		Track removedtrack = queue.get( index );
 		queue.remove( index );
+		return removedtrack;
 	}
 	
 	/**

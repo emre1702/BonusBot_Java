@@ -60,6 +60,8 @@ public class Lang {
 		english.put( "will_pause_audio_after_time", "Audio will pause after {1} second(s)!" );
 		english.put( "will_resume_audio_after_time", "Audio will resume after {1} second(s)!" );
 		english.put( "how_to_add_playlist", "If you wanted to add the whole playlist, please use \"!playlist [url]\" or \"!playlistqueue [url]\"." );
+		english.put( "track_removed_from_queue", "The track got removed from queue: " );
+		english.put( "index_not_in_queue", "The index is not in the queue!" );
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -101,6 +103,8 @@ public class Lang {
 		german.put( "will_pause_audio_after_time", "Audio wird nach {1} Sekunde(n) pausiert!" );
 		german.put( "will_resume_audio_after_time", "Audio wird nach {1} Sekunde(n) fortgesetzt!" );
 		german.put( "how_to_add_playlist", "Wenn du die Playlist ganz abspielen lassen willst, nutze bitte \"!playlist [url]\" oder \"!playlistqueue [url]\"." );
+		german.put( "track_removed_from_queue", "Der Track wurde von der Warteschlange entfernt: " );
+		german.put( "index_not_in_queue", "Der Index ist nicht in der Warteschlange!" );
 		
 		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
@@ -142,6 +146,8 @@ public class Lang {
 		turkish.put( "will_pause_audio_after_time", "Sese {1} saniye sonra ara verilecek!" );
 		turkish.put( "will_resume_audio_after_time", "Ses {1} saniye sonra devam edecek!" );
 		turkish.put( "how_to_add_playlist", "Playlistin bütününü oynatmak istiyorsan lüften \"!playlist [url]\" yada \"!playlistqueue [url]\" kullan." );
+		turkish.put( "track_removed_from_queue", "Ses kuyruktan kaldirildi: " );
+		turkish.put( "index_not_in_queue", "Numara kuyrukta degil!" );
 		
 		languageMap.put( "english", english );
 		languageMap.put( "german", german );

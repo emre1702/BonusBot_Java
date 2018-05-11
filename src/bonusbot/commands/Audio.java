@@ -1,5 +1,6 @@
 package bonusbot.commands;
 
+import lavaplayer.Track;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
@@ -402,8 +403,12 @@ public class Audio {
 								try {
 									final int queueindex = Integer.parseInt( args.get( 0 ) ) - 1;
 									final TrackScheduler scheduler = GuildExtends.get(event.getGuild()).getAudioManager().getScheduler();
-									scheduler.remove( queueindex );
-									AudioInfo.refreshAudioInfoQueue( event.getGuild(), scheduler );
+									Track deletedsong = scheduler.remove( queueindex );
+									if ( deletedsong != null ) {
+										Util.sendMessage( event.getChannel(), Lang.getLang( "track_removed_from_queue", event.getAuthor(), event.getGuild() ) + deletedsong.audio.getInfo().title );
+										AudioInfo.refreshAudioInfoQueue( event.getGuild(), scheduler );
+									} else 
+										Util.sendMessage( event.getChannel(), Lang.getLang( "index_not_in_queue", event.getAuthor(), event.getGuild() ) );
 								} catch ( NumberFormatException e ) {
 									Util.sendMessage( event.getChannel(), Lang.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 								}
