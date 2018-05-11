@@ -61,33 +61,47 @@ public class Audio {
 	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean isqueue, final boolean isplaylist) {
 		final IChannel channel = event.getChannel();
 		final GuildAudioManager audioManager = GuildExtends.get(channel.getGuild()).getAudioManager();
-
+		final IGuild guild = event.getGuild();
+		final IUser author = event.getAuthor();
+		
 		final AudioLoadResultHandler handler = new AudioLoadResultHandler() {
 			
 			@Override
 		    public void trackLoaded(AudioTrack track) {
 				if ( isqueue ) {
-					Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
-		    		queue(event.getGuild(), audioManager, track, event.getAuthor());
+					Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), guild ) + track.getInfo().title);
+		    		queue(guild, audioManager, track, author, true);
 		    	} else {
-		    		Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": "+ track.getInfo().title);
-		    		play(audioManager, track, event.getAuthor());
+		    		Util.sendMessage(channel, Lang.getLang ( "playing", author, guild ) + ": "+ track.getInfo().title);
+		    		play(audioManager, track, author);
 		    	}
 		    }
 
 		    @Override
 		    public void playlistLoaded(AudioPlaylist playlist) {
 		    	if ( isplaylist ) {
+		    		int i = 0;
 		    		if ( isqueue ) {
 			    		for ( AudioTrack track : playlist.getTracks() ) {
-			    			queue( event.getGuild(), audioManager, track, event.getAuthor() );
+			    			queue( guild, audioManager, track, author, false );
+			    			if ( i == 100 )
+		    					break;
+		    				++i;
 			    		}
 		    		} else {
+		    			audioManager.getScheduler().clearQueue();
 		    			for ( AudioTrack track : playlist.getTracks() ) {
-		    				play( audioManager, track, event.getAuthor() );
+		    				if ( i == 0 )
+		    					play( audioManager, track, author );
+		    				else 
+		    					queue( guild, audioManager, track, author, false );
+		    				if ( i == 100 )
+		    					break;
+		    				++i;
 			    		}
 		    		}
-		    		Util.sendMessage( channel, Lang.getLang ( isqueue ? "adding_to_queue_playlist" : "playing_playlist", event.getAuthor(), event.getGuild() ) + playlist.getName() );
+		    		Util.sendMessage( channel, Lang.getLang ( isqueue ? "adding_to_queue_playlist" : "playing_playlist", author, guild ) + playlist.getName() );
+		    		AudioInfo.refreshAudioInfoQueue( guild, audioManager.getScheduler() );
 		    	} else {
 		    		AudioTrack selectedTrack = playlist.getSelectedTrack();
 
@@ -95,22 +109,22 @@ public class Audio {
 			    		selectedTrack = playlist.getTracks().get(0);
 			    	}
 			    	trackLoaded( selectedTrack );
-			    	Util.sendMessage( channel, Lang.getLang( "how_to_add_playlist", event.getAuthor(), event.getGuild() ) );
+			    	Util.sendMessage( channel, Lang.getLang( "how_to_add_playlist", author, guild ) );
 		    	}
 		    }
 
 		    @Override
 		    public void noMatches() {
-		    	Util.sendMessage(channel, Lang.getLang ( "nothing_found_by", event.getAuthor(), event.getGuild() ) + trackUrl);
+		    	Util.sendMessage( channel, Lang.getLang ( "nothing_found_by", author, guild ) + trackUrl );
 		    }
 
 		    @Override
 		    public void loadFailed(FriendlyException exception) {
-		    	Util.sendMessage(channel, Lang.getLang ( "could_not_play", event.getAuthor(), event.getGuild() ) + exception.getMessage());
+		    	Util.sendMessage( channel, Lang.getLang ( "could_not_play", author, guild ) + exception.getMessage() );
 		    }
 		      
 		};
-		playerManager.loadItemOrdered(audioManager, trackUrl, handler );
+		playerManager.loadItemOrdered( audioManager, trackUrl, handler );
 	}
 
 	/**
@@ -134,11 +148,12 @@ public class Audio {
 	 * @param track AudioTrack the user want to have played.
 	 * @param user User who added the track (used later for language).
 	 */
-	public final static void queue ( final IGuild guild, final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
+	public final static void queue ( final IGuild guild, final GuildAudioManager audioManager, final AudioTrack track, final IUser user, final boolean refreshAudioInfo ) {
 		try {
 			final TrackScheduler scheduler = audioManager.getScheduler();
 			scheduler.queue( track, user );
-			AudioInfo.refreshAudioInfoQueue( guild, scheduler );
+			if (refreshAudioInfo)
+				AudioInfo.refreshAudioInfoQueue( guild, scheduler );
 		} catch ( Exception e ) {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
 	 	}

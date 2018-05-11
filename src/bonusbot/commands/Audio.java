@@ -563,7 +563,7 @@ public class Audio {
 										bonusbot.Audio.play( guildext.getAudioManager(), track.makeClone(), author );
 									} else {
 										Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", author, event.getGuild() ) + track.getInfo().title);
-										bonusbot.Audio.queue( event.getGuild(), guildext.getAudioManager(), track.makeClone(), author );
+										bonusbot.Audio.queue( event.getGuild(), guildext.getAudioManager(), track.makeClone(), author, true );
 									}
 								}
 							}

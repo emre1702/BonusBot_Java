@@ -34,6 +34,11 @@ public class TrackScheduler {
 		this.guild = guild;
 	}
 	
+	/**
+	 * Plays a track.
+	 * @param track
+	 * @param user
+	 */
 	public synchronized void play ( final AudioTrack track, final IUser user ) {
 		queue.add( new Track( track, user, Util.getLocalDateTime() ) );
 		AudioInfo.changeAudioInfoStatus( guild, "loading" );
@@ -56,6 +61,10 @@ public class TrackScheduler {
 		return playing;
 	}
 	
+	/**
+	 * Removes a Track from queue.
+	 * @param audio
+	 */
 	public synchronized void remove( final AudioTrack audio ) {
 		for ( int i = queue.size() - 1; i >= 0; --i ) {
 			if ( queue.get( i ).audio.equals( audio ) )
@@ -63,8 +72,19 @@ public class TrackScheduler {
 		}
 	}
 	
+	/**
+	 * Removes a Track from queue.
+	 * @param index
+	 */
 	public synchronized void remove( final int index ) {
 		queue.remove( index );
+	}
+	
+	/**
+	 * Clears the queue.
+	 */
+	public synchronized void clearQueue() {
+		queue.clear();
 	}
 	
 	/**
@@ -97,6 +117,10 @@ public class TrackScheduler {
 		return this.queue;
 	}
 
+	/**
+	 * Get the next Track.
+	 * @return
+	 */
 	public Track getNext () {
 		if ( queue.size() > 0 ) {
 			Track track = queue.get( 0 );
