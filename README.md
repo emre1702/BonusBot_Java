@@ -73,7 +73,7 @@ Only usable in audioChannel, usable everywhere when it's deactivated.
   - Sets the audio-position (argument in percent)  
 - delqueue [number]
   - Removes a song from the queue at the number/index.  
-- ytsearch [text] [showamount = 5]  
+- ytsearch [text] [?showamount = 5]  
   - Searchs in YouTube and outputs the result.  
   Amount of result depends on showamount.  
   Needed for !ytplay and !ytqueue.  
