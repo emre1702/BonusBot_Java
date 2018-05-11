@@ -400,7 +400,7 @@ public class Audio {
 							final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 							if ( channel != null ) {
 								try {
-									final int queueindex = Integer.parseInt( args.get( 0 ) );
+									final int queueindex = Integer.parseInt( args.get( 0 ) ) - 1;
 									final TrackScheduler scheduler = GuildExtends.get(event.getGuild()).getAudioManager().getScheduler();
 									scheduler.remove( queueindex );
 									AudioInfo.refreshAudioInfoQueue( event.getGuild(), scheduler );
