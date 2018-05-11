@@ -63,50 +63,50 @@ public class Audio {
 		final GuildAudioManager audioManager = GuildExtends.get(channel.getGuild()).getAudioManager();
 
 		final AudioLoadResultHandler handler = new AudioLoadResultHandler() {
-		      @Override
-		      public void trackLoaded(AudioTrack track) {
+			@Override
+		    public void trackLoaded(AudioTrack track) {
 		        
-		        if ( queue ) {
-		        	Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
-		        	queue(event.getGuild(), audioManager, track, event.getAuthor());
-		        } else {
-		        	Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": "+ track.getInfo().title);
-		        	play(audioManager, track, event.getAuthor());
-		        }
+				if ( queue ) {
+					Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + track.getInfo().title);
+		    		queue(event.getGuild(), audioManager, track, event.getAuthor());
+		    	} else {
+		    		Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": "+ track.getInfo().title);
+		    		play(audioManager, track, event.getAuthor());
+		    	}
 		        
-		      }
+		    }
 
-		      @Override
-		      public void playlistLoaded(AudioPlaylist playlist) {
-		        AudioTrack firstTrack = playlist.getSelectedTrack();
+		    @Override
+		    public void playlistLoaded(AudioPlaylist playlist) {
+		    	AudioTrack firstTrack = playlist.getSelectedTrack();
 
-		        if (firstTrack == null) {
-		          firstTrack = playlist.getTracks().get(0);
-		        }
-
-		        if ( queue ) {
-		        	Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title );
-		        	queue(event.getGuild(), audioManager, firstTrack, event.getAuthor());
-		        } else {
-		        	Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": " + firstTrack.getInfo().title );
-		        	play(audioManager, firstTrack, event.getAuthor());
-		        }
+		    	if (firstTrack == null) {
+		    		firstTrack = playlist.getTracks().get(0);
+		    	}
+				
+		    	if ( queue ) {
+		    		Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), event.getGuild() ) + firstTrack.getInfo().title );
+		    		queue(event.getGuild(), audioManager, firstTrack, event.getAuthor());
+		    	} else {
+		    		Util.sendMessage(channel, Lang.getLang ( "playing", event.getAuthor(), event.getGuild() ) + ": " + firstTrack.getInfo().title );
+		    		play(audioManager, firstTrack, event.getAuthor());
+		    	}
 		        
-		      }
+		    }
 
-		      @Override
-		      public void noMatches() {
-		    	  Util.sendMessage(channel, Lang.getLang ( "nothing_found_by", event.getAuthor(), event.getGuild() ) + trackUrl);
-		      }
+		    @Override
+		    public void noMatches() {
+		    	Util.sendMessage(channel, Lang.getLang ( "nothing_found_by", event.getAuthor(), event.getGuild() ) + trackUrl);
+		    }
 
-		      @Override
-		      public void loadFailed(FriendlyException exception) {
-		    	  Util.sendMessage(channel, Lang.getLang ( "could_not_play", event.getAuthor(), event.getGuild() ) + exception.getMessage());
-		      }
+		    @Override
+		    public void loadFailed(FriendlyException exception) {
+		    	Util.sendMessage(channel, Lang.getLang ( "could_not_play", event.getAuthor(), event.getGuild() ) + exception.getMessage());
+		    }
 		      
 		};
 		playerManager.loadItemOrdered(audioManager, trackUrl, handler );
-	  }
+	}
 
 	/**
 	 * Play the AudioTrack
