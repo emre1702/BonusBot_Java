@@ -13,6 +13,7 @@ import bonusbot.guild.GuildExtends;
 import lavaplayer.Track;
 import lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
+import sx.blah.discord.api.internal.json.objects.EmbedObject.EmbedFieldObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmbed;
 import sx.blah.discord.handle.obj.IGuild;
@@ -176,7 +177,20 @@ public class AudioInfo {
 		final EmbedObject obj = getLastAudioInfo ( guild );
 		if ( obj != null && obj.fields.length > 4 ) {
 			List<String> queueinfos = getQueueInfos( scheduler.getQueue() );
-			for ( int i = 0; i < queueinfos.size(); ++i ) {
+			int queueinfossize = queueinfos.size();
+			if ( obj.fields.length != 4 + queueinfossize ) {
+				EmbedFieldObject[] newarr = new EmbedFieldObject[4+queueinfossize];
+				System.arraycopy( obj.fields, 0, newarr, 0, 4 );
+				obj.fields = newarr;
+				for ( int i = 4; i < 4+queueinfossize; ++i ) {
+					obj.fields[i] = new EmbedFieldObject();
+					obj.fields[i].inline = false;
+					obj.fields[i].name = "Queue:";
+					obj.fields[i].value = "test";
+				}
+			}
+			
+			for ( int i = 0; i < queueinfossize; ++i ) {
 				obj.fields[4+i].value = queueinfos.get( i );
 			}
 
