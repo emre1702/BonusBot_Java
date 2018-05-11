@@ -80,7 +80,11 @@ Only usable in audioChannel, usable everywhere when it's deactivated.
 - ytplay [number]  
   - Plays the audio at specific place in result of ytsearch.  
 - ytqueue [number]  
-  - Queues the audio at specific place in result of ytsearch.       
+  - Queues the audio at specific place in result of ytsearch.    
+- pl [url]  
+  - Clears the queue and plays a whole playlist (max. 100 audio).  
+- plqueue [url]  
+  - Adds a whole playlist in the queue (max. 100 audios).     
 
 #### rest
 Usable everywhere
