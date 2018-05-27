@@ -71,12 +71,11 @@ public class AudioInfo {
 			builder.withAuthorName( user.getDisplayName( guild ) );
 			builder.withAuthorIcon( user.getAvatarURL() );
 			builder.withColor( 0, 0, 150 );
-			String url = info.uri.substring( info.uri.indexOf( "/" ) + 1 );
 			if ( info.isStream ) {
-				builder.withDescription( url );
-				builder.withUrl( url );
+				builder.withDescription( info.uri );
+				builder.withUrl( info.uri );
 			} else 
-				builder.withDescription( url );
+				builder.withDescription( info.uri );
 				
 			builder.withFooterText( "Audio-info" );
 			//builder.withImage( "https://www.youtube.com/yts/img/yt_1200-vfl4C3T0K.png" );
