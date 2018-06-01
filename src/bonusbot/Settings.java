@@ -30,6 +30,16 @@ public class Settings {
 	public static String audioInfoChannel = "";
 	/** name of the channel where the user joining the user get greeted */
 	public static String greetUserChannel = "";
+	/** name of the channel where it will get logged if a user leaves the guild */
+	public static String userLeaveLogChannel = "";
+	/** name of the channel where it will get logged if a message gets edited */
+	public static String messageUpdateLogChannel = "";
+	/** name of the channel where it will get logged if a message gets deleted */
+	public static String messageDeleteLogChannel = "";
+	/** name of the channel where it will get logged if a user gets banned */
+	public static String userBanLogChannel = "";
+	/** name of the channel where it will get logged if a user gets unbanned */
+	public static String userPardonLogChannel = "";
 	/** name of the informations channel */
 	public static String infoChannel = "";
 	/** name of the role which can use audio-commands */
@@ -94,6 +104,16 @@ public class Settings {
 				greetUserChannel = (String) jsonObject.get( "greetUserChannel" );
 			if ( jsonObject.containsKey( "infoChannel" ) ) 
 				infoChannel = (String) jsonObject.get( "infoChannel" );
+			if (jsonObject.containsKey("userLeaveLogChannel")) 
+				userLeaveLogChannel = (String) jsonObject.get("userLeaveLogChannel");
+			if (jsonObject.containsKey("messageUpdateLogChannel")) 
+				messageUpdateLogChannel = (String) jsonObject.get("messageUpdateLogChannel");
+			if (jsonObject.containsKey("messageDeleteLogChannel")) 
+				messageDeleteLogChannel = (String) jsonObject.get("messageDeleteLogChannel");
+			if (jsonObject.containsKey("userBanLogChannel")) 
+				userBanLogChannel = (String) jsonObject.get("userBanLogChannel");
+			if (jsonObject.containsKey("userPardonLogChannel")) 
+				userPardonLogChannel = (String) jsonObject.get("userPardonLogChannel");			
 			
 			if ( jsonObject.containsKey( "audiobotUserRole" ) )
 				audiobotUserRole = (String) jsonObject.get( "audiobotUserRole" );

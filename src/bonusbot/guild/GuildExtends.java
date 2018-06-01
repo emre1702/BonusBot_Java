@@ -178,19 +178,64 @@ public class GuildExtends {
 		return null;
 	}
 	
-	/**
-	 * Getter for the channel where we want to greet new user in this guild.
-	 * @return IChannel of the greet-user-channel or null if not exists.
-	 */
-	public final IChannel getGreetUserChannel() {
-		if ( Settings.greetUserChannel != "" ) {
-			final List<IChannel> channels = guild.getChannelsByName( Settings.greetUserChannel );
+	private IChannel getChannel(String name) {
+		if (name != "") {
+			final List<IChannel> channels = guild.getChannelsByName(name);
 			if ( !channels.isEmpty() ) {
 				return channels.get( 0 );
 			}
 		}
 		return null;
 	}
+	
+	/**
+	 * Getter for the channel where we want to greet new user in this guild.
+	 * @return IChannel of the greet-user-channel or null if not exists.
+	 */
+	public final IChannel getGreetUserChannel() {
+		return getChannel(Settings.greetUserChannel);
+	}
+	
+	/**
+	 * Getter for the channel where we want to log when a user leaves the channel
+	 * @return IChannel
+	 */
+	public IChannel getUserLeaveLogChannel() {
+		return getChannel(Settings.userLeaveLogChannel);
+	}
+	
+	/**
+	 * Getter for the channel where we want to log when a message gets edited
+	 * @return IChannel
+	 */
+	public IChannel getMessageUpdateLogChannel() {
+		return getChannel(Settings.messageUpdateLogChannel);
+	}
+	
+	/**
+	 * Getter for the channel where we want to log when a message gets deleted
+	 * @return IChannel
+	 */
+	public IChannel getMessageDeleteLogChannel() {
+		return getChannel(Settings.messageDeleteLogChannel);
+	}
+	
+	/**
+	 * Getter for the channel where we want to log when a user gets banned
+	 * @return IChannel
+	 */
+	public IChannel getUserBanLogChannel() {
+		return getChannel(Settings.userBanLogChannel);
+	}
+	
+	/**
+	 * Getter for the channel where we want to log when a user gets unbanned
+	 * @return IChannel
+	 */
+	public IChannel getUserPardonLogChannel() {
+		return getChannel(Settings.userPardonLogChannel);
+	}
+	
 	
 	/**
 	 * Getter for the ID of the role who should be able to use audio-commands.
