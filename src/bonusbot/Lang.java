@@ -52,6 +52,8 @@ public class Lang {
 		english.put( "number", "number" );
 		english.put( "usage", "Usage" );
 		english.put( "user", "user" );
+		english.put( "reason", "reason" );
+		english.put( "del_messages_for_days", "delete messages for days" );
 		english.put( "amount_messages", "amount messages" );
 		english.put( "user_not_found", "User not found!" );
 		english.put( "got_deleted", "Messages got deleted." );
@@ -95,6 +97,8 @@ public class Lang {
 		german.put( "number", "Zahl" );
 		german.put( "usage", "Nutzung" );
 		german.put( "user", "Nutzer" );
+		german.put( "reason", "Grund" );
+		german.put( "del_messages_for_days", "Lösche Nachrichten seit Tage" );
 		german.put( "amount_messages", "Anzahl Nachrichten" );
 		german.put( "user_not_found", "Nutzer nicht gefunden!" );
 		german.put( "got_deleted", "Nachrichten wurden gelöscht." );
@@ -138,6 +142,8 @@ public class Lang {
 		turkish.put( "number", "numara" );
 		turkish.put( "usage", "Kullanim" );
 		turkish.put( "user", "kisi" );
+		turkish.put( "reason", "sebep" );
+		turkish.put( "del_messages_for_days", "son X günlerin mesajlarini sil" );
 		turkish.put( "amount_messages", "mesaj sayisi" );
 		turkish.put( "user_not_found", "Kullanici bulunamadi!" );
 		turkish.put( "got_deleted", "mesajlar silindi." );
