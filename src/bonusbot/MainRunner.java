@@ -1,6 +1,7 @@
 package bonusbot;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
+import sx.blah.discord.handle.obj.IUser;
 
 /**
  * Main-method
@@ -9,6 +10,8 @@ import sx.blah.discord.api.events.EventDispatcher;
  */
 public class MainRunner {
 	
+	private static IDiscordClient client;
+	
 	/**
 	 * static void main
 	 * @param args Console-args, not used
@@ -16,7 +19,7 @@ public class MainRunner {
 	public static void main ( final String[] args ) {
 		try {
 			Settings.loadSettings();
-			final IDiscordClient client = Client.createClient(Settings.token, true);
+			client = Client.createClient(Settings.token, true);
 			
 			final EventDispatcher dispatcher = client.getDispatcher();
 			dispatcher.registerListener(new bonusbot.commands.Handler());
@@ -24,6 +27,10 @@ public class MainRunner {
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());
 		}
+	}
+	
+	public static boolean isBot(IUser user) {
+		return client.getOurUser().equals(user);
 	}
 }
 
