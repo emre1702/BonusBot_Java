@@ -9,6 +9,7 @@ import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.DiscordException;
 import sx.blah.discord.util.RequestBuffer;
 
@@ -175,5 +176,9 @@ public class Util {
 	public final static boolean isNumeric ( String str ) {  
 	    return str.matches("[-+]?\\d*\\.?\\d+");  
 	} 
+	
+	public static String getUniqueName(IUser user) {
+		return String.format("%s#%s", user.getName(), user.getDiscriminator());
+	}
 
 }
