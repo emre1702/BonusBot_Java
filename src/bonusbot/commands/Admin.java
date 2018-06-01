@@ -79,9 +79,8 @@ public class Admin {
 						if ( args.size() > 1 ) {
 							if ( StringUtils.isNumeric( args.get( 1 ) ) )
 								deleteamount = Integer.parseInt( args.get( 1 ) );
-							List<IUser> users = guild.getUsersByName( args.get( 0 ) );
-							if ( users.size() > 0 ) {
-								IUser user = users.get( 0 );
+							IUser user = guildext.getUserFromMention(args.get(0));
+							if ( user != null ) {
 								int amountdeleted = deleteLastMessages ( channel, user, deleteamount );
 								Util.sendMessage( channel, amountdeleted + " " + Lang.getLang( "got_deleted", author, guild ) );
 							} else 
@@ -94,7 +93,7 @@ public class Admin {
 						}
 					} else {
 						Util.sendMessage( channel, Lang.getLang( "usage", author, guild ) + ": "+Settings.prefix+"delete "
-								+ " ["+Lang.getLang( "user", author, guild ) +"]" 
+								+ " [@"+Lang.getLang( "user", author, guild ) +"]" 
 								+ " ["+Lang.getLang( "amount_messages", author, guild )+" = 100]" );
 					}
 				}
@@ -115,9 +114,8 @@ public class Admin {
 					if (args.size() > 2 && StringUtils.isNumeric(args.get(2))) {
 						deletemessagesfordays = Integer.parseInt(args.get(2));
 					}
-					List<IUser> users = guild.getUsersByName(args.get(0));
-					if ( users.size() > 0 ) {
-						IUser user = users.get(0);
+					IUser user = guildext.getUserFromMention(args.get(0));
+					if ( user != null ) {
 						String reason = args.get(1);
 						String adminname = Util.getUniqueName(author);
 						user.getOrCreatePMChannel().sendMessage("You got banned by "+adminname+" from "+guild.getName()+". Reason: "+reason);
@@ -126,7 +124,7 @@ public class Admin {
 						Util.sendMessage( channel, Lang.getLang( "user_not_found", event.getAuthor(), guild ) );
 				} else {
 					Util.sendMessage(channel, Lang.getLang("usage", author, guild) + ": "+Settings.prefix+"ban "
-							+ " ["+Lang.getLang( "user", author, guild ) +"]" 
+							+ " [@"+Lang.getLang( "user", author, guild ) +"]" 
 							+ " ["+Lang.getLang( "reason", author, guild )+"]"
 							+ " ["+Lang.getLang("del_messages_for_days", author, guild)+" = 0]");
 				}

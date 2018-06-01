@@ -362,4 +362,16 @@ public class GuildExtends {
 		pauseresumeAudioTimer.purge();
 		pauseresumeAudioTimer = new Timer();
 	}
+	
+	/**
+	 * Get the user from a mention string
+	 * @param mention The mention
+	 * @return IUser The user
+	 */
+	public IUser getUserFromMention ( String mention ) {
+		try {
+			return guild.getUserByID( Long.parseUnsignedLong(mention.replaceAll("[^0-9]", "") ) );
+		} catch ( Exception e ) {}
+		return null;
+	}
 }
