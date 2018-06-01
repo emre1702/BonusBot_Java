@@ -8,7 +8,6 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
 import bonusbot.AudioInfo;
 import bonusbot.Logging;
-import bonusbot.Util;
 import lavaplayer.GuildAudioManager;
 import lavaplayer.Track;
 import lavaplayer.TrackScheduler;
@@ -16,6 +15,7 @@ import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
 import sx.blah.discord.util.MessageHistory;
+import sx.blah.discord.util.RequestBuffer;
 
 /**
  * Manage the GuildAudioManager for a guild.
@@ -57,11 +57,13 @@ public class AudioManager {
 	        	    	if ( audioInfoChannelID != null ) {
 	        				IChannel musicinfochannel = guild.getChannelByID( audioInfoChannelID );
 	        				MessageHistory msghist = musicinfochannel.getFullMessageHistory();
-	        				if ( msghist.isEmpty() ) {
-	        					Util.sendMessage( musicinfochannel, object );
-	        				} else {
-	        					msghist.getEarliestMessage().edit( object );
-	        				}
+	        				RequestBuffer.request(() -> {
+        		            	if (msghist.isEmpty()) {
+        		            		musicinfochannel.sendMessage(object);
+    	        				} else {
+    	        					msghist.getEarliestMessage().edit( object );
+    	        				}
+	        		        });
 	        			}
 	                	AudioInfo.changeAudioInfoStatus( guild, "playing" );
         			}
