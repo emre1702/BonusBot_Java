@@ -104,7 +104,35 @@ public class Admin {
 		};
 		Handler.commandMap.put ( "delmsg", deleteLastMessagesOfUserInChannel );
 		
-	
+		ICommand banUser = (String cmd, MessageReceivedEvent event, List<String> args) -> {
+			GuildExtends guildext = GuildExtends.get( event.getGuild() );
+			if ( guildext.isAdmin ( event.getAuthor() ) ) {
+				IUser author = event.getAuthor();
+				IGuild guild = event.getGuild();
+				IChannel channel = event.getChannel();
+				if (args.size() > 1) {
+					int deletemessagesfordays = 0;
+					if (args.size() > 2 && StringUtils.isNumeric(args.get(2))) {
+						deletemessagesfordays = Integer.parseInt(args.get(2));
+					}
+					List<IUser> users = guild.getUsersByName(args.get(0));
+					if ( users.size() > 0 ) {
+						IUser user = users.get(0);
+						String reason = args.get(1);
+						String adminname = Util.getUniqueName(author);
+						user.getOrCreatePMChannel().sendMessage("You got banned by "+adminname+" from "+guild.getName()+". Reason: "+reason);
+						guild.banUser(user, adminname+" - "+reason, deletemessagesfordays);
+					} else 
+						Util.sendMessage( channel, Lang.getLang( "user_not_found", event.getAuthor(), guild ) );
+				} else {
+					Util.sendMessage(channel, Lang.getLang("usage", author, guild) + ": "+Settings.prefix+"ban "
+							+ " ["+Lang.getLang( "user", author, guild ) +"]" 
+							+ " ["+Lang.getLang( "reason", author, guild )+"]"
+							+ " ["+Lang.getLang("del_messages_for_days", author, guild)+" = 0]");
+				}
+			}
+		};
+		Handler.commandMap.put("ban", banUser);
 	}
 	
 }
