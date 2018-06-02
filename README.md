@@ -1,7 +1,11 @@
 # BonusBot
 
 This is a bot for Discord, written in Java.  
-It uses LavaPlayer and Discord4J.  
+It uses:  
+* [Discord4J](https://github.com/Discord4J/Discord4J)  
+* [LavaPlayer](https://github.com/sedmelluq/lavaplayer)  
+* [Spotify-Web-API-Java](https://github.com/thelinmichael/spotify-web-api-java)  
+* etc. (like Google API)
 
 
 ## What can the bot do?  
