@@ -37,6 +37,22 @@
   		<artifactId>spotify-web-api-java</artifactId>
   		<version>master-SNAPSHOT</version>
 	</dependency>
+	<dependency>
+   		<groupId>com.google.guava</groupId>
+   		<artifactId>guava</artifactId>
+   		<version>18.0</version>
+	</dependency>
+	<dependency>
+    	<groupId>com.google.api-client</groupId>
+    	<artifactId>google-api-client</artifactId>
+    	<version>1.23.0</version>
+	</dependency>
+	<dependency>
+    	<groupId>com.google.apis</groupId>
+    	<artifactId>google-api-services-youtube</artifactId>
+    	<version>v3-rev202-1.18.0-rc</version>
+	</dependency>
+	
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>

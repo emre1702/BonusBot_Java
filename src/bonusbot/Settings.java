@@ -20,6 +20,12 @@ public class Settings {
 	static String name = "Bonus-Bot";
 	/** playing-text of the bot */
 	static String playing = "Bonus-community";
+	/** youtube api key for Spotify */
+	public static String youtubeAPIKey = "";
+	/** Spotify client ID */
+	public static String spotifyClientID = "";
+	/** Spotify client secret */
+	public static String spotifyClientSecret = "";
 	/** admin roles */
 	public static String[] admins;
 	/** name of the roles-channel where you can use commands to get roles */
@@ -80,6 +86,13 @@ public class Settings {
 			if ( jsonObject.containsKey( "playing" ) ) 
 				playing = (String) jsonObject.get( "playing" );
 			
+			if (jsonObject.containsKey("youtubeAPIKey"))
+				youtubeAPIKey = (String) jsonObject.get("youtubeAPIKey");
+			if (jsonObject.containsKey("spotifyClientID"))
+				spotifyClientID = (String) jsonObject.get("spotifyClientID");
+			if (jsonObject.containsKey("spotifyClientSecret"))
+				spotifyClientSecret = (String) jsonObject.get("spotifyClientSecret");
+			
 			if ( jsonObject.containsKey( "admin" ) ) {
 				String adminwithcomma = (String) jsonObject.get( "admin" );
 				if ( adminwithcomma.indexOf( ',' ) != -1 ) {
@@ -93,7 +106,6 @@ public class Settings {
 				admins[0] = "";
 			}
 				
-			
 			if ( jsonObject.containsKey( "rolesChannel" ) )
 				rolesChannel = (String) jsonObject.get( "rolesChannel" );
 			if ( jsonObject.containsKey( "audioChannel" ) )

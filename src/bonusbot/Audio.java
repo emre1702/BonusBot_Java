@@ -4,6 +4,12 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
+import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.beam.BeamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
 import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeSearchProvider;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
@@ -13,6 +19,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import bonusbot.guild.GuildExtends;
 import lavaplayer.GuildAudioManager;
 import lavaplayer.TrackScheduler;
+import spotify.SpotifyAudioSourceManager;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
@@ -31,9 +38,20 @@ public class Audio {
 	
 	/** Register sources of audio for LavaPlayer and load YoutubeSearchProvider */
 	static {
+		YoutubeAudioSourceManager youtubemanger = new YoutubeAudioSourceManager();
+		
+		playerManager.registerSourceManager(youtubemanger);
+		playerManager.registerSourceManager(new SpotifyAudioSourceManager(
+				Settings.spotifyClientID, Settings.spotifyClientSecret, Settings.youtubeAPIKey, youtubemanger));
+		playerManager.registerSourceManager(new HttpAudioSourceManager());
+		playerManager.registerSourceManager(new VimeoAudioSourceManager());
+		playerManager.registerSourceManager(new BandcampAudioSourceManager());
+		playerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
+		playerManager.registerSourceManager(new BeamAudioSourceManager());
+		playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
+		
 		AudioSourceManagers.registerRemoteSources( playerManager );
 		AudioSourceManagers.registerLocalSource( playerManager );
-		youtubeSearch = new YoutubeSearchProvider( playerManager.source( YoutubeAudioSourceManager.class ) );
 	}
 	
 	/**
