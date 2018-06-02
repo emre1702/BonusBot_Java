@@ -177,8 +177,24 @@ public class Util {
 	    return str.matches("[-+]?\\d*\\.?\\d+");  
 	} 
 	
+	/**
+	 * Get a users unique name (Name#Discriminator)
+	 * @param user
+	 * @return unique name
+	 */
 	public static String getUniqueName(IUser user) {
 		return String.format("%s#%s", user.getName(), user.getDiscriminator());
+	}
+	
+	/**
+	 * Get a random integer number
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static int random(int min, int max) {
+		int range = (max - min) + 1;
+		return (int)(Math.random() * range) + min;
 	}
 
 }

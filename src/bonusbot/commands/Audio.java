@@ -581,5 +581,14 @@ public class Audio {
 		};
 		Handler.commandMap.put( "ytplay", playQueueYoutube );
 		Handler.commandMap.put( "ytqueue", playQueueYoutube );
+		
+		final ICommand toggleShuffleMode = (String cmd, MessageReceivedEvent event, List<String> args) -> {
+			final GuildExtends guildext = GuildExtends.get( event.getGuild() );
+			if (guildext.canPlayAudio(event.getAuthor())) {
+				boolean newshuffle = guildext.getAudioManager().getScheduler().toggleShuffle();
+				Util.sendMessage(event.getChannel(), Lang.getLang("shuffle_mode_"+(newshuffle ? "on" : "off"), event.getAuthor(), event.getGuild()));
+			}
+		};
+		Handler.commandMap.put("shuffle", toggleShuffleMode);
 	}
 }

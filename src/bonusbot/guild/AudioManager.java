@@ -49,7 +49,7 @@ public class AudioManager {
         	public void onTrackStart ( AudioPlayer player, AudioTrack track ) {
         		try {
         			TrackScheduler scheduler = manager.getScheduler();
-        			Track startedTrack = scheduler.getNext();
+        			Track startedTrack = scheduler.getCurrent();
         			if ( startedTrack != null ) {
 	        			EmbedObject object = AudioInfo.createAudioInfo ( startedTrack.audio, startedTrack.user, guild, startedTrack.date, scheduler );
 	        			final GuildExtends guildext = GuildExtends.get( guild );

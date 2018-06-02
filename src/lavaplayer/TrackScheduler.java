@@ -21,6 +21,7 @@ public class TrackScheduler {
 	private final List<Track> queue = Collections.synchronizedList( new ArrayList<Track>() );
 	private final AudioPlayer player; 
 	private final IGuild guild;
+	private boolean shuffle = false;
 	
 	/**
 	 * Constructor for TrackScheduler 
@@ -99,7 +100,13 @@ public class TrackScheduler {
 	public synchronized AudioTrack nextTrack() {
 		final AudioTrack currentTrack = player.getPlayingTrack();
 		if ( queue.size() > 0 ) {
-			final Track nextTrack = queue.get( 0 );
+			int index = shuffle ? Util.random(0, queue.size()-1) : 0;
+			final Track nextTrack = queue.get(index);
+			
+			if (index != 0) {
+				Track track = remove(index);
+				queue.add(0, track);
+			}
 	
 			// Start the next track, regardless of if something is already playing or not. In case queue was empty, we are
 			// giving null to startTrack, which is a valid argument and will simply stop the player.
@@ -121,6 +128,17 @@ public class TrackScheduler {
 	public List<Track> getQueue() {
 		return this.queue;
 	}
+	
+	/**
+	 * Return the current Track.
+	 * @return
+	 */
+	public Track getCurrent() {
+		if (queue.size() > 0) {
+			return remove(0);
+		}
+		return null;
+	}
 
 	/**
 	 * Get the next Track.
@@ -128,10 +146,18 @@ public class TrackScheduler {
 	 */
 	public Track getNext () {
 		if ( queue.size() > 0 ) {
-			Track track = queue.get( 0 );
-			queue.remove( 0 );
-			return track;
+			int index = shuffle ? Util.random(0, queue.size()-1) : 0;
+			return remove(index);
 		} 
 		return null;
+	}
+	
+	/**
+	 * Toggle shuffle mode (for random play instead of going from 1 to n in queue.
+	 * @return new shuffle mode
+	 */
+	public boolean toggleShuffle() {
+		shuffle = !shuffle;
+		return shuffle;
 	}
 }

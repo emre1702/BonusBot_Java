@@ -64,6 +64,8 @@ public class Lang {
 		english.put( "how_to_add_playlist", "If you wanted to add the whole playlist, please use \"!playlist [url]\" or \"!playlistqueue [url]\"." );
 		english.put( "track_removed_from_queue", "The track got removed from queue: " );
 		english.put( "index_not_in_queue", "The index is not in the queue!" );
+		english.put( "shuffle_mode_on", "Shuffle-mode is now on" );
+		english.put( "shuffle_mode_off", "Shuffle-mode deactivated" );
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -109,6 +111,8 @@ public class Lang {
 		german.put( "how_to_add_playlist", "Wenn du die Playlist ganz abspielen lassen willst, nutze bitte \"!playlist [url]\" oder \"!playlistqueue [url]\"." );
 		german.put( "track_removed_from_queue", "Der Track wurde von der Warteschlange entfernt: " );
 		german.put( "index_not_in_queue", "Der Index ist nicht in der Warteschlange!" );
+		german.put( "shuffle_mode_on", "Shuffle-Modus ist nun an" );
+		german.put( "shuffle_mode_off", "Shuffle-Modus deaktiviert" );
 		
 		final Map<String, String> turkish = new HashMap<String, String>();
 		turkish.put( "yes", "Evet" );
@@ -154,6 +158,8 @@ public class Lang {
 		turkish.put( "how_to_add_playlist", "Playlistin bütününü oynatmak istiyorsan lüften \"!playlist [url]\" yada \"!playlistqueue [url]\" kullan." );
 		turkish.put( "track_removed_from_queue", "Ses kuyruktan kaldirildi: " );
 		turkish.put( "index_not_in_queue", "Numara kuyrukta degil!" );
+		turkish.put( "shuffle_mode_on", "Shuffle acildi" );
+		turkish.put( "shuffle_mode_off", "Shuffle kapatildi" );
 		
 		languageMap.put( "english", english );
 		languageMap.put( "german", german );
