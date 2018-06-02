@@ -7,12 +7,14 @@ It uses LavaPlayer and Discord4J.
 ## What can the bot do?  
 
 It can play audio from:
-* YouTube
-* SoundCloud
-* Bandcamp
-* Vimeo
-* Twitch streams
-* Local files
+* YouTube  
+* Spotify  
+* SoundCloud  
+* Bandcamp  
+* Vimeo  
+* Twitch streams  
+* Beam   
+* Local files  
 * HTTP URLs  
 
 More informations about the audio:  
@@ -84,7 +86,9 @@ Only usable in audioChannel, usable everywhere when it's deactivated.
 - pl [url]  
   - Clears the queue and plays a whole playlist (max. 100 audio).  
 - plqueue [url]  
-  - Adds a whole playlist in the queue (max. 100 audios).     
+  - Adds a whole playlist in the queue (max. 100 audios).   
+- shuffle  
+  - Toggles the shuffle-mode.  
 
 #### rest
 Usable everywhere
