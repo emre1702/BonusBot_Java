@@ -21,7 +21,7 @@ public class TrackScheduler {
 	private final List<Track> queue = Collections.synchronizedList( new ArrayList<Track>() );
 	private final AudioPlayer player; 
 	private final IGuild guild;
-	private boolean shuffle = false;
+	private boolean shuffle = true;
 	
 	/**
 	 * Constructor for TrackScheduler 
