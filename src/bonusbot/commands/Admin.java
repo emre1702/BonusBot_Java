@@ -131,6 +131,15 @@ public class Admin {
 			}
 		};
 		Handler.commandMap.put("ban", banUser);
+		
+		/*ICommand test = (String cmd, MessageReceivedEvent event, List<String> args) -> {
+			IChannel ch = GuildExtends.get(event.getGuild()).getWebhookChannel();
+			IMessage message = ch.getPinnedMessages().get(0);
+			IEmbed embed = message.getEmbeds().get(0);
+			System.out.println(embed.getTitle());
+			System.out.println(embed.getDescription());
+		};
+		Handler.commandMap.put("test", test);*/
 	}
 	
 }
