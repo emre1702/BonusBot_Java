@@ -66,6 +66,7 @@ public class Lang {
 		english.put( "index_not_in_queue", "The index is not in the queue!" );
 		english.put( "shuffle_mode_on", "Shuffle-mode is now on" );
 		english.put( "shuffle_mode_off", "Shuffle-mode deactivated" );
+		english.put( "add_webhook_to_service", "Please add the Webhook to your service to be able to use the Webhooker.\nID: {1}\nToken: {2}\nFor GitHub: {3}");
 		
 		final Map<String, String> german = new HashMap<String, String>();
 		german.put( "yes", "Ja" );
@@ -168,27 +169,18 @@ public class Lang {
 	}
 	
 	/**
-	 * Get language-string for specific user in the specific guild.
-	 * @param str The index for the value.
-	 * @param user The user who will get the message (needed for checking the language)
-	 * @param guild Your guild where you want to send the message.
-	 * @return The string for the users language.
+	 * Get language-string for a specific language.
+	 * @param str
+	 * @param language
+	 * @param replaces
+	 * @return
 	 */
-	public final static String getLang ( final String str, final IUser user, final IGuild guild ) {
-		String language = "english";
-		final List<IRole> roles = user.getRolesForGuild( guild );
-		final GuildExtends guildext = GuildExtends.get( guild );
-		final Long germanRoleID = guildext.getGermanRoleID(); 
-		
-		if ( germanRoleID != null && roles.contains( guild.getRoleByID( germanRoleID ) ) ) {
-			language = "german";
-		} else {
-			final Long turkishRoleID = guildext.getTurkishRoleID(); 
-			if ( turkishRoleID != null && roles.contains( guild.getRoleByID( turkishRoleID ) ) ) {
-				language = "turkish";
-			} 
+	private final static String getLang(String str, String language, String... replaces) {
+		String result = languageMap.get( language ).get( str );
+		for (int i=0; i < replaces.length; ++i) {
+			result = result.replaceAll(Pattern.quote( "{"+(i+1)+"}" ), replaces[i]);
 		}
-		return languageMap.get( language ).get( str );
+		return result;
 	}
 	
 	/**
@@ -197,10 +189,10 @@ public class Lang {
 	 * @param str The index for the value.
 	 * @param user The user who will get the message (needed for checking the language)
 	 * @param guild Your guild where you want to send the message.
-	 * @param replace1 The string to replace {1}
+	 * @param replaces The optional strings to replace {1}, {2} ...
 	 * @return The string for the users language.
 	 */
-	public final static String getLang ( final String str, final IUser user, final IGuild guild, final String replace1 ) {
+	public final static String getLang ( final String str, final IUser user, final IGuild guild, String... replaces ) {
 		String language = "english";
 		final List<IRole> roles = user.getRolesForGuild( guild );
 		final GuildExtends guildext = GuildExtends.get( guild );
@@ -214,6 +206,16 @@ public class Lang {
 				language = "turkish";
 			} 
 		}
-		return languageMap.get( language ).get( str ).replaceAll( Pattern.quote( "{1}" ), replace1 );
+		return getLang(str, language, replaces);
+	}
+	
+	/**
+	 * Get language-string in the default language.
+	 * @param str
+	 * @param replaces
+	 * @return
+	 */
+	public static String getLang(String str, String... replaces) {
+		return getLang(str, "english", replaces);
 	}
 }
