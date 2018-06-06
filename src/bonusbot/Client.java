@@ -10,6 +10,7 @@ import sx.blah.discord.util.DiscordException;
  *
  */
 public class Client {
+	private static IDiscordClient client;
 	
 	/**
 	 * Creates the client for the bot.
@@ -22,13 +23,19 @@ public class Client {
         	final ClientBuilder clientBuilder = new ClientBuilder(); // Creates the ClientBuilder instance
             clientBuilder.withToken(token); // Adds the login info to the builder
             if (login) {
-                return clientBuilder.login(); // Creates the client instance and logs the client in
+            	client = clientBuilder.login(); // Creates the client instance and logs the client in
+            	return client;
             } else {
-                return clientBuilder.build(); // Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself
+            	client = clientBuilder.build(); // Creates the client instance but it doesn't log the client in yet, you would have to call client.login() yourself
+                return client; 
             }
         } catch (DiscordException e) { // This is thrown if there was a problem building the client
             e.printStackTrace ( Logging.getPrintWrite() );
             return null;
         }
+	}
+	
+	public static IDiscordClient get() {
+		return client;
 	}
 }
