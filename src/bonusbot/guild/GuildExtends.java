@@ -9,7 +9,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 
 import bonusbot.Audio;
 import bonusbot.Settings;
+import bonusbot.Util;
 import lavaplayer.GuildAudioManager;
+import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
 import sx.blah.discord.handle.obj.IGuild;
@@ -61,6 +63,14 @@ public class GuildExtends {
         }
 
         return guildext;
+	}
+	
+	/**
+	 * Getter for the IGuild of a GuildExtends.
+	 * @return
+	 */
+	public IGuild getGuild() {
+		return guild;
 	}
 	
 	/**
@@ -236,6 +246,13 @@ public class GuildExtends {
 		return getChannel(Settings.userPardonLogChannel);
 	}
 	
+	/**
+	 * Getter for the channel where the webhook is active.
+	 * @return IChannel
+	 */
+	public IChannel getWebhookChannel() {
+		return getChannel(Settings.webhookChannel);
+	}
 	
 	/**
 	 * Getter for the ID of the role who should be able to use audio-commands.
@@ -374,4 +391,20 @@ public class GuildExtends {
 		} catch ( Exception e ) {}
 		return null;
 	}
+	
+	/**
+	 * Send the webhook info embed object to all guild
+	 * @param obj
+	 */
+	public static void sendWebhookInfosToAllGuilds(List<EmbedObject> objs) {
+		for (GuildExtends guildext : guildExtendsObjects.values()) {
+			IChannel webhookchannel = guildext.getWebhookChannel();
+			if (webhookchannel != null) {
+				for (int i=0; i < objs.size(); ++i) {
+					Util.sendMessage(webhookchannel, objs.get(i));
+				}
+			}
+		}
+	}
+
 }

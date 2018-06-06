@@ -46,6 +46,12 @@ public class Settings {
 	public static String userBanLogChannel = "";
 	/** name of the channel where it will get logged if a user gets unbanned */
 	public static String userPardonLogChannel = "";
+	/** name of the webhooker */
+	public static String webhookName = "";
+	/** name of the channel where we will post the webhook pushes */
+	public static String webhookChannel = "";
+	/** port of the HttpServer for custom webhook (if you want to use this, don't use webhookName!) */
+	public static int httpServerPort = -1;
 	/** name of the informations channel */
 	public static String infoChannel = "";
 	/** name of the role which can use audio-commands */
@@ -125,7 +131,14 @@ public class Settings {
 			if (jsonObject.containsKey("userBanLogChannel")) 
 				userBanLogChannel = (String) jsonObject.get("userBanLogChannel");
 			if (jsonObject.containsKey("userPardonLogChannel")) 
-				userPardonLogChannel = (String) jsonObject.get("userPardonLogChannel");			
+				userPardonLogChannel = (String) jsonObject.get("userPardonLogChannel");	
+			
+			if (jsonObject.containsKey("webhookName")) 
+				webhookName = (String) jsonObject.get("webhookName");
+			if (jsonObject.containsKey("webhookChannel")) 
+				webhookChannel = (String) jsonObject.get("webhookChannel");
+			if (jsonObject.containsKey("httpServerPort"))
+				httpServerPort = ((Long) jsonObject.get("httpServerPort")).intValue();
 			
 			if ( jsonObject.containsKey( "audiobotUserRole" ) )
 				audiobotUserRole = (String) jsonObject.get( "audiobotUserRole" );

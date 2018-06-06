@@ -2,6 +2,7 @@ package bonusbot;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.handle.obj.IUser;
+import webhook.BonusHttpServer;
 
 /**
  * Main-method
@@ -10,8 +11,6 @@ import sx.blah.discord.handle.obj.IUser;
  */
 public class MainRunner {
 	
-	private static IDiscordClient client;
-	
 	/**
 	 * static void main
 	 * @param args Console-args, not used
@@ -19,7 +18,10 @@ public class MainRunner {
 	public static void main ( final String[] args ) {
 		try {
 			Settings.loadSettings();
-			client = Client.createClient(Settings.token, true);
+			if (Settings.webhookName.equals("") && Settings.httpServerPort != -1) {
+				new BonusHttpServer(Settings.httpServerPort);
+			}
+			IDiscordClient client = Client.createClient(Settings.token, true);
 			
 			final EventDispatcher dispatcher = client.getDispatcher();
 			dispatcher.registerListener(new bonusbot.commands.Handler());
@@ -30,7 +32,7 @@ public class MainRunner {
 	}
 	
 	public static boolean isBot(IUser user) {
-		return client.getOurUser().equals(user);
+		return Client.get().getOurUser().equals(user);
 	}
 }
 

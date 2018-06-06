@@ -7,6 +7,9 @@ import sx.blah.discord.api.events.EventSubscriber;
 //import sx.blah.discord.handle.audit.ActionType;
 //import sx.blah.discord.handle.audit.entry.TargetedEntry;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.webhook.WebhookCreateEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.webhook.WebhookEvent;
+import sx.blah.discord.handle.impl.events.guild.channel.webhook.WebhookUpdateEvent;
 //import sx.blah.discord.handle.impl.events.guild.channel.message.MessageDeleteEvent;
 //import sx.blah.discord.handle.impl.events.guild.channel.message.MessageUpdateEvent;
 //import sx.blah.discord.handle.impl.events.guild.member.UserBanEvent;
@@ -16,6 +19,7 @@ import sx.blah.discord.handle.impl.events.guild.member.UserLeaveEvent;
 import sx.blah.discord.handle.obj.ActivityType;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IWebhook;
 import sx.blah.discord.handle.obj.StatusType;
 
 /**
@@ -25,19 +29,37 @@ import sx.blah.discord.handle.obj.StatusType;
  */
 class EventsListener {
 	
+	private static void checkGuildWebhook(GuildExtends guildext) {
+		IChannel webhookchannel = guildext.getWebhookChannel();
+		if (webhookchannel != null) {
+			List<IWebhook> webhooks = webhookchannel.getWebhooks();
+			if (webhooks.isEmpty()) {
+				IWebhook hook = webhookchannel.createWebhook(Settings.webhookName, Client.get().getOurUser().getAvatar());
+				String githuburl = String.format("https://canary.discordapp.com/api/webhooks/%s/%s/github", hook.getStringID(), hook.getToken());
+				Util.sendMessage(guildext.getGuild(), Lang.getLang("add_webhook_to_service", hook.getStringID(), hook.getToken(), githuburl));
+			}
+		}
+	}
+	
 	/**
 	 * When the bot is ready.
 	 * @param event ReadyEvent from Discord4J
 	 */
 	@EventSubscriber
 	public final void onReady ( final ReadyEvent event ) {
-		event.getClient().changeUsername( Settings.name );
-		event.getClient().changePresence( StatusType.ONLINE, ActivityType.PLAYING, Settings.playing );
-		
-		final List<IGuild> guilds = event.getClient().getGuilds();
-		for ( IGuild guild : guilds ) {
-			new GuildExtends ( guild );
+		try {
+			event.getClient().changeUsername( Settings.name );
+			event.getClient().changePresence( StatusType.ONLINE, ActivityType.PLAYING, Settings.playing );
+			
+			final List<IGuild> guilds = event.getClient().getGuilds();
+			for ( IGuild guild : guilds ) {
+				GuildExtends guildext = new GuildExtends ( guild );
+				checkGuildWebhook(guildext);
+			}
+		} catch (Exception e) {
+			e.printStackTrace(Logging.getPrintWrite());
 		}
+		
 	}
 	
 	/**
@@ -117,4 +139,19 @@ class EventsListener {
 			Util.sendMessage(logchannel, msg);
 		}
 	}*/
+	
+	@EventSubscriber 
+	public void onWebhookEditRequest(WebhookEvent event) {
+		Util.sendMessage(event.getGuild(), event.getWebhook().toString() + " by " + event.getWebhook().getDefaultName());
+	}
+	
+	@EventSubscriber 
+	public void onWebhookCreate(WebhookCreateEvent event) {
+		Util.sendMessage(event.getGuild(), event.getWebhook().toString()  + " by " + event.getWebhook().getDefaultName());
+	}
+	
+	@EventSubscriber 
+	public void onWebhookUpdate(WebhookUpdateEvent event) {
+		Util.sendMessage(event.getGuild(), event.getOldWebhook().toString() + " to " + event.getNewWebhook().toString()  + " by " + event.getWebhook().getDefaultName());
+	}
 }
