@@ -7,9 +7,6 @@ import sx.blah.discord.api.events.EventSubscriber;
 //import sx.blah.discord.handle.audit.ActionType;
 //import sx.blah.discord.handle.audit.entry.TargetedEntry;
 import sx.blah.discord.handle.impl.events.ReadyEvent;
-import sx.blah.discord.handle.impl.events.guild.channel.webhook.WebhookCreateEvent;
-import sx.blah.discord.handle.impl.events.guild.channel.webhook.WebhookEvent;
-import sx.blah.discord.handle.impl.events.guild.channel.webhook.WebhookUpdateEvent;
 //import sx.blah.discord.handle.impl.events.guild.channel.message.MessageDeleteEvent;
 //import sx.blah.discord.handle.impl.events.guild.channel.message.MessageUpdateEvent;
 //import sx.blah.discord.handle.impl.events.guild.member.UserBanEvent;
@@ -19,6 +16,7 @@ import sx.blah.discord.handle.impl.events.guild.member.UserLeaveEvent;
 import sx.blah.discord.handle.obj.ActivityType;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.obj.IWebhook;
 import sx.blah.discord.handle.obj.StatusType;
 
@@ -90,7 +88,8 @@ class EventsListener {
 		GuildExtends guildext = GuildExtends.get( event.getGuild() );
 		IChannel logchannel = guildext.getUserLeaveLogChannel();
 		if (logchannel != null) {
-			String msg = event.getUser().mention() + " has left the guild.";
+			IUser user = event.getUser();
+			String msg = user.mention() + "(" + Util.getUniqueName(user)+") has left the guild.";
 			Util.sendMessage(logchannel, msg);
 		}
 	}
@@ -138,7 +137,7 @@ class EventsListener {
 			String msg = "Message from "+event.getAuthor().mention()+" got deleted by "+auditlog.getResponsibleUser().mention()+" in "+event.getChannel().mention()+":\n" + event.getMessage().getContent();
 			Util.sendMessage(logchannel, msg);
 		}
-	}*/
+	}
 	
 	@EventSubscriber 
 	public void onWebhookEditRequest(WebhookEvent event) {
@@ -153,5 +152,5 @@ class EventsListener {
 	@EventSubscriber 
 	public void onWebhookUpdate(WebhookUpdateEvent event) {
 		Util.sendMessage(event.getGuild(), event.getOldWebhook().toString() + " to " + event.getNewWebhook().toString()  + " by " + event.getWebhook().getDefaultName());
-	}
+	}*/
 }
