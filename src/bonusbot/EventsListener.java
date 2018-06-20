@@ -89,7 +89,7 @@ class EventsListener {
 		IChannel logchannel = guildext.getUserLeaveLogChannel();
 		if (logchannel != null) {
 			IUser user = event.getUser();
-			String msg = user.mention() + "(" + Util.getUniqueName(user)+") has left the guild.";
+			String msg = user.mention() + " (" + Util.getUniqueName(user)+") has left the guild.";
 			Util.sendMessage(logchannel, msg);
 		}
 	}
