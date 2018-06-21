@@ -37,7 +37,6 @@ public class Settings {
 		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 		try {
 			settingsMap = mapper.readValue(new FileReader("bonusbot.conf"), Map.class);
-			System.out.println(settingsMap.get("token"));
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());
 		}
