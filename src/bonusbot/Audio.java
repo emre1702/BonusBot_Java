@@ -27,25 +27,27 @@ import sx.blah.discord.handle.obj.IUser;
 
 /**
  * Audio-class.
+ * 
  * @author emre1702
  *
  */
 public class Audio {
-	
+
 	/** AudioPlayerManager for LavaPlayer */
-	private static final AudioPlayerManager playerManager = new DefaultAudioPlayerManager(); 
+	private static AudioPlayerManager playerManager = new DefaultAudioPlayerManager();
 	private static YoutubeSearchProvider youtubeSearch;
-	
+
 	/** Register sources of audio for LavaPlayer and load YoutubeSearchProvider */
 	static {
 		YoutubeAudioSourceManager youtubemanger = new YoutubeAudioSourceManager();
-		
+
 		playerManager.registerSourceManager(youtubemanger);
 		String spotifyClientID = Settings.get("spotifyClientID");
 		String spotifyClientSecret = Settings.get("spotifyClientSecret");
 		String youtubeAPIKey = Settings.get("youtubeAPIKey");
 		if (spotifyClientID != null && spotifyClientSecret != null && youtubeAPIKey != null) {
-			playerManager.registerSourceManager(new SpotifyAudioSourceManager(spotifyClientID, spotifyClientSecret, youtubeAPIKey, youtubemanger));
+			playerManager.registerSourceManager(
+					new SpotifyAudioSourceManager(spotifyClientID, spotifyClientSecret, youtubeAPIKey, youtubemanger));
 		}
 		playerManager.registerSourceManager(new HttpAudioSourceManager());
 		playerManager.registerSourceManager(new VimeoAudioSourceManager());
@@ -53,152 +55,175 @@ public class Audio {
 		playerManager.registerSourceManager(new TwitchStreamAudioSourceManager());
 		playerManager.registerSourceManager(new BeamAudioSourceManager());
 		playerManager.registerSourceManager(new SoundCloudAudioSourceManager());
-		
-		AudioSourceManagers.registerRemoteSources( playerManager );
-		AudioSourceManagers.registerLocalSource( playerManager );
+
+		AudioSourceManagers.registerRemoteSources(playerManager);
+		AudioSourceManagers.registerLocalSource(playerManager);
 	}
-	
+
 	/**
 	 * Get the AudioPlayerManager for the bot from LavaPlayer.
+	 * 
 	 * @return AudioPlayerManager
 	 */
-	public final static AudioPlayerManager getPlayerManager () {
+	public static AudioPlayerManager getPlayerManager() {
 		return playerManager;
 	}
-	
+
 	/**
-	 * Get the YoutubeSearchProvider to be able to search for Youtube-Videos (from LavaPlayer).
+	 * Get the YoutubeSearchProvider to be able to search for Youtube-Videos (from
+	 * LavaPlayer).
+	 * 
 	 * @return YoutubeSearchProvider
 	 */
-	public final static YoutubeSearchProvider getYoutubeSearchProvider ( ) {
+	public static YoutubeSearchProvider getYoutubeSearchProvider() {
 		return youtubeSearch;
 	}
-	
+
 	/**
 	 * Loads an audio and plays it afterwards.
-	 * @param event The event to determine the channel (information-output), guild and the author (for language).
-	 * @param trackUrl URL of the audio the author want to have played.
-	 * @param queue If it should be added to the queue or played right now.
+	 * 
+	 * @param event
+	 *            The event to determine the channel (information-output), guild and
+	 *            the author (for language).
+	 * @param trackUrl
+	 *            URL of the audio the author want to have played.
+	 * @param queue
+	 *            If it should be added to the queue or played right now.
 	 */
-	public final static void loadAndPlay(final MessageReceivedEvent event, final String trackUrl, final boolean isqueue, final boolean isplaylist) {
-		final IChannel channel = event.getChannel();
-		final GuildAudioManager audioManager = GuildExtends.get(channel.getGuild()).getAudioManager();
-		final IGuild guild = event.getGuild();
-		final IUser author = event.getAuthor();
-		
-		final AudioLoadResultHandler handler = new AudioLoadResultHandler() {
-			
+	public static void loadAndPlay(MessageReceivedEvent event, String trackUrl, boolean isqueue, boolean isplaylist) {
+		IChannel channel = event.getChannel();
+		GuildAudioManager audioManager = GuildExtends.get(channel.getGuild()).getAudioManager();
+		IGuild guild = event.getGuild();
+		IUser author = event.getAuthor();
+
+		AudioLoadResultHandler handler = new AudioLoadResultHandler() {
+
 			@Override
-		    public void trackLoaded(AudioTrack track) {
-				if ( isqueue ) {
-					Util.sendMessage(channel, Lang.getLang ( "adding_to_queue", event.getAuthor(), guild ) + track.getInfo().title);
-		    		queue(guild, audioManager, track, author, true);
-		    	} else {
-		    		Util.sendMessage(channel, Lang.getLang ( "playing", author, guild ) + ": "+ track.getInfo().title);
-		    		play(audioManager, track, author);
-		    	}
-		    }
+			public void trackLoaded(AudioTrack track) {
+				if (isqueue) {
+					Util.sendMessage(channel,
+							Lang.getLang("adding_to_queue", event.getAuthor(), guild) + track.getInfo().title);
+					queue(guild, audioManager, track, author, true);
+				} else {
+					Util.sendMessage(channel, Lang.getLang("playing", author, guild) + ": " + track.getInfo().title);
+					play(audioManager, track, author);
+				}
+			}
 
-		    @Override
-		    public void playlistLoaded(AudioPlaylist playlist) {
-		    	if ( isplaylist ) {
-		    		int i = 0;
-		    		if ( isqueue ) {
-			    		for ( AudioTrack track : playlist.getTracks() ) {
-			    			queue( guild, audioManager, track, author, false );
-			    			if ( i == 100 )
-		    					break;
-		    				++i;
-			    		}
-		    		} else {
-		    			audioManager.getScheduler().clearQueue();
-		    			for ( AudioTrack track : playlist.getTracks() ) {
-		    				if ( i == 0 )
-		    					play( audioManager, track, author );
-		    				else 
-		    					queue( guild, audioManager, track, author, false );
-		    				if ( i == 100 )
-		    					break;
-		    				++i;
-			    		}
-		    		}
-		    		Util.sendMessage( channel, Lang.getLang ( isqueue ? "adding_to_queue_playlist" : "playing_playlist", author, guild ) + playlist.getName() );
-		    		AudioInfo.refreshAudioInfoQueue( guild, audioManager.getScheduler() );
-		    	} else {
-		    		AudioTrack selectedTrack = playlist.getSelectedTrack();
+			@Override
+			public void playlistLoaded(AudioPlaylist playlist) {
+				if (isplaylist) {
+					int i = 0;
+					if (isqueue) {
+						for (AudioTrack track : playlist.getTracks()) {
+							queue(guild, audioManager, track, author, false);
+							if (i == 100)
+								break;
+							++i;
+						}
+					} else {
+						audioManager.getScheduler().clearQueue();
+						for (AudioTrack track : playlist.getTracks()) {
+							if (i == 0)
+								play(audioManager, track, author);
+							else
+								queue(guild, audioManager, track, author, false);
+							if (i == 100)
+								break;
+							++i;
+						}
+					}
+					Util.sendMessage(channel,
+							Lang.getLang(isqueue ? "adding_to_queue_playlist" : "playing_playlist", author, guild)
+									+ playlist.getName());
+					AudioInfo.refreshAudioInfoQueue(guild, audioManager.getScheduler());
+				} else {
+					AudioTrack selectedTrack = playlist.getSelectedTrack();
 
-			    	if (selectedTrack == null) {
-			    		selectedTrack = playlist.getTracks().get(0);
-			    	}
-			    	trackLoaded( selectedTrack );
-			    	Util.sendMessage( channel, Lang.getLang( "how_to_add_playlist", author, guild ) );
-		    	}
-		    }
+					if (selectedTrack == null) {
+						selectedTrack = playlist.getTracks().get(0);
+					}
+					trackLoaded(selectedTrack);
+					Util.sendMessage(channel, Lang.getLang("how_to_add_playlist", author, guild));
+				}
+			}
 
-		    @Override
-		    public void noMatches() {
-		    	Util.sendMessage( channel, Lang.getLang ( "nothing_found_by", author, guild ) + trackUrl );
-		    }
+			@Override
+			public void noMatches() {
+				Util.sendMessage(channel, Lang.getLang("nothing_found_by", author, guild) + trackUrl);
+			}
 
-		    @Override
-		    public void loadFailed(FriendlyException exception) {
-		    	Util.sendMessage( channel, Lang.getLang ( "could_not_play", author, guild ) + exception.getMessage() );
-		    }
-		      
+			@Override
+			public void loadFailed(FriendlyException exception) {
+				Util.sendMessage(channel, Lang.getLang("could_not_play", author, guild) + exception.getMessage());
+			}
+
 		};
-		playerManager.loadItemOrdered( audioManager, trackUrl, handler );
+		playerManager.loadItemOrdered(audioManager, trackUrl, handler);
 	}
 
 	/**
 	 * Play the AudioTrack
-	 * @param audioManager The GuildAudioManager of the guild.
-	 * @param track AudioTrack the user want to have played.
-	 * @param user User who added the track (used later for language).
+	 * 
+	 * @param audioManager
+	 *            The GuildAudioManager of the guild.
+	 * @param track
+	 *            AudioTrack the user want to have played.
+	 * @param user
+	 *            User who added the track (used later for language).
 	 */
-	public final static void play ( final GuildAudioManager audioManager, final AudioTrack track, final IUser user ) {
+	public static void play(GuildAudioManager audioManager, AudioTrack track, IUser user) {
 		try {
-			final TrackScheduler scheduler = audioManager.getScheduler();
-			scheduler.play( track, user );
-		} catch ( Exception e ) {
-	 		e.printStackTrace ( Logging.getPrintWrite() );
-	 	}
+			TrackScheduler scheduler = audioManager.getScheduler();
+			scheduler.play(track, user);
+		} catch (Exception e) {
+			e.printStackTrace(Logging.getPrintWrite());
+		}
 	}
-	
+
 	/**
 	 * Puts the AudioTrack into the queue.
-	 * @param audioManager The GuildAudioManager of the guild.
-	 * @param track AudioTrack the user want to have played.
-	 * @param user User who added the track (used later for language).
+	 * 
+	 * @param audioManager
+	 *            The GuildAudioManager of the guild.
+	 * @param track
+	 *            AudioTrack the user want to have played.
+	 * @param user
+	 *            User who added the track (used later for language).
 	 */
-	public final static void queue ( final IGuild guild, final GuildAudioManager audioManager, final AudioTrack track, final IUser user, final boolean refreshAudioInfo ) {
+	public static void queue(IGuild guild, GuildAudioManager audioManager, AudioTrack track, IUser user,
+			boolean refreshAudioInfo) {
 		try {
-			final TrackScheduler scheduler = audioManager.getScheduler();
-			scheduler.queue( track, user );
+			TrackScheduler scheduler = audioManager.getScheduler();
+			scheduler.queue(track, user);
 			if (refreshAudioInfo)
-				AudioInfo.refreshAudioInfoQueue( guild, scheduler );
-		} catch ( Exception e ) {
-	 		e.printStackTrace ( Logging.getPrintWrite() );
-	 	}
+				AudioInfo.refreshAudioInfoQueue(guild, scheduler);
+		} catch (Exception e) {
+			e.printStackTrace(Logging.getPrintWrite());
+		}
 	}
-	
+
 	/**
 	 * Skips the current track.
-	 * @param event Event from command, used for channel (output), guild and author (language).
+	 * 
+	 * @param event
+	 *            Event from command, used for channel (output), guild and author
+	 *            (language).
 	 */
-	public final static void skipTrack ( final MessageReceivedEvent event ) {
-		final IChannel channel = event.getChannel();
-		final GuildAudioManager audioManager = GuildExtends.get(event.getGuild()).getAudioManager();
-		final int size = audioManager.getScheduler().getQueue().size();
-		final AudioTrack oldtrack = audioManager.getScheduler().nextTrack();
-	    
-	    if ( oldtrack != null || size > 0 ) {
-		    if ( size > 0 ) 
-		    	Util.sendMessage ( channel, Lang.getLang ( "skipped", event.getAuthor(), event.getGuild() ) );
-		    else {
-		    	Util.sendMessage ( channel, Lang.getLang ( "skipped_nothing_left", event.getAuthor(), event.getGuild() ) );
-		    	AudioInfo.changeAudioInfoStatus( event.getGuild(), "skipped" );
-		    }
-	    }
+	public static void skipTrack(MessageReceivedEvent event) {
+		IChannel channel = event.getChannel();
+		GuildAudioManager audioManager = GuildExtends.get(event.getGuild()).getAudioManager();
+		int size = audioManager.getScheduler().getQueue().size();
+		AudioTrack oldtrack = audioManager.getScheduler().nextTrack();
+
+		if (oldtrack != null || size > 0) {
+			if (size > 0)
+				Util.sendMessage(channel, Lang.getLang("skipped", event.getAuthor(), event.getGuild()));
+			else {
+				Util.sendMessage(channel, Lang.getLang("skipped_nothing_left", event.getAuthor(), event.getGuild()));
+				AudioInfo.changeAudioInfoStatus(event.getGuild(), "skipped");
+			}
+		}
 	}
-	
+
 }

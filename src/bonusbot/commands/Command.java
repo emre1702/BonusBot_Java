@@ -1,4 +1,5 @@
 package bonusbot.commands;
+
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  */
 interface ICommand {
 
-    /** Interface for a command to be implemented in the command map */
-    void runCommand( final String commandName, final MessageReceivedEvent event, final List<String> args );
+	/** Interface for a command to be implemented in the command map */
+	void runCommand(String commandName, MessageReceivedEvent event, List<String> args);
 
 }

@@ -6,55 +6,56 @@ import sx.blah.discord.handle.audio.AudioEncodingType;
 import sx.blah.discord.handle.audio.IAudioProvider;
 
 /**
- * This is a wrapper around AudioPlayer which makes it behave as an IAudioProvider for D4J. As D4J calls canProvide
- * before every call to provide(), we pull the frame in canProvide() and use the frame we already pulled in
- * provide().
+ * This is a wrapper around AudioPlayer which makes it behave as an
+ * IAudioProvider for D4J. As D4J calls canProvide before every call to
+ * provide(), we pull the frame in canProvide() and use the frame we already
+ * pulled in provide().
  */
 public class AudioProvider implements IAudioProvider {
 	/** AudioPlayer for LavaPlayer */
-	private final AudioPlayer audioPlayer;
+	private AudioPlayer audioPlayer;
 	/** Last frame of AudioFrame */
 	private AudioFrame lastFrame;
-	
+
 	/**
-	 * @param audioPlayer Audio player to wrap.
+	 * @param audioPlayer
+	 *            Audio player to wrap.
 	 */
-	public AudioProvider ( final AudioPlayer audioPlayer ) {
+	public AudioProvider(AudioPlayer audioPlayer) {
 		this.audioPlayer = audioPlayer;
 	}
-	
+
 	/** When bot is ready. */
 	@Override
 	public boolean isReady() {
 		if (lastFrame == null) {
 			lastFrame = audioPlayer.provide();
 		}
-		
+
 		return lastFrame != null;
 	}
-	
+
 	/** Provide **/
 	@Override
 	public byte[] provide() {
 		if (lastFrame == null) {
 			lastFrame = audioPlayer.provide();
 		}
-		
-		final byte[] data = lastFrame != null ? lastFrame.data : null;
+
+		byte[] data = lastFrame != null ? lastFrame.data : null;
 		lastFrame = null;
-		
+
 		return data;
 	}
-	
+
 	/** get channels */
 	@Override
 	public int getChannels() {
 		return 2;
 	}
-	
-	/** 
-	 * get audio-encoding type
-	 * Use Opus for Discord
+
+	/**
+	 * get audio-encoding type Use Opus for Discord
 	 */
 	@Override
 	public AudioEncodingType getAudioEncodingType() {

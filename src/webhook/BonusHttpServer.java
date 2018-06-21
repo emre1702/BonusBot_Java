@@ -7,9 +7,9 @@ import com.sun.net.httpserver.HttpServer;
 
 import bonusbot.Logging;
 
-public class BonusHttpServer {	
+public class BonusHttpServer {
 	private HttpServer server;
-	
+
 	public BonusHttpServer(int port) {
 		try {
 			server = HttpServer.create(new InetSocketAddress(port), 0);
@@ -23,7 +23,7 @@ public class BonusHttpServer {
 			e.printStackTrace(Logging.getPrintWrite());
 		}
 	}
-	
+
 	public void Stop() {
 		server.stop(0);
 	}

@@ -11,55 +11,62 @@ import sx.blah.discord.handle.obj.IGuild;
  */
 public class GuildAudioManager {
 	/** AudioPlayer from LavalPlayer */
-	private final AudioPlayer player;
+	private AudioPlayer player;
 	/** AudioProvider */
-	private final AudioProvider provider;
+	private AudioProvider provider;
 	/** TrackScheduler */
-	private final TrackScheduler scheduler;
-	
+	private TrackScheduler scheduler;
+
 	/**
 	 * Creates a player and a track scheduler.
-	 * @param manager Audio player manager to use for creating the player.
+	 * 
+	 * @param manager
+	 *            Audio player manager to use for creating the player.
 	 */
-	public GuildAudioManager(final AudioPlayerManager manager, final IGuild guild) {
+	public GuildAudioManager(AudioPlayerManager manager, IGuild guild) {
 		player = manager.createPlayer();
-		player.setVolume( 5 );
+		player.setVolume(5);
 		provider = new AudioProvider(player);
 		scheduler = new TrackScheduler(player, guild);
 	}
-	
+
 	/**
 	 * Adds a listener to be registered for audio events.
-	 * @param listener The AudioEventListener you want to add.
+	 * 
+	 * @param listener
+	 *            The AudioEventListener you want to add.
 	 */
-	public void addAudioListener(final AudioEventListener listener) {
+	public void addAudioListener(AudioEventListener listener) {
 		player.addListener(listener);
 	}
-	
+
 	/**
 	 * Removes a listener that was registered for audio events.
-	 * @param listener The AudioEventListener you want to remove.
+	 * 
+	 * @param listener
+	 *            The AudioEventListener you want to remove.
 	 */
-	public void removeAudioListener(final AudioEventListener listener) {
+	public void removeAudioListener(AudioEventListener listener) {
 		player.removeListener(listener);
 	}
-	
+
 	/**
 	 * @return The scheduler for AudioTracks.
 	 */
 	public TrackScheduler getScheduler() {
 		return this.scheduler;
 	}
-	
+
 	/**
 	 * @return Wrapper around AudioPlayer to use it as an AudioSendHandler.
 	 */
 	public AudioProvider getAudioProvider() {
 		return provider;
 	}
-	
+
 	/**
 	 * Get the AudioPlayer.
+	 * 
 	 * @return AudioPlayer
 	 */
 	public AudioPlayer getPlayer() {

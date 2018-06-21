@@ -32,7 +32,7 @@ public class Handlers {
 			he.sendResponseHeaders(200, response.length());
 			OutputStream os = he.getResponseBody();
 			os.write(response.getBytes());
-			
+
 			os.close();
 		}
 	}
@@ -70,8 +70,7 @@ public class Handlers {
 			OutputStream os = he.getResponseBody();
 			os.write(response.toString().getBytes());
 			os.close();
-			
-			
+
 		}
 
 	}
@@ -98,9 +97,9 @@ public class Handlers {
 
 		}
 	}
-	
+
 	private static Gson gson = new Gson();
-	
+
 	/** Define in these classes, what you want to retrieve from the informations */
 	class WhatWeWant {
 		SenderInfos sender;
@@ -109,52 +108,60 @@ public class Handlers {
 		HeadCommit head_commit;
 		CommitInfo[] commits;
 	}
+
 	class SenderInfos {
 		String login;
 		String avatar_url;
 		String url;
 	}
+
 	class RepositoryInfo {
 		String name;
 	}
+
 	class HeadCommit {
 		String url;
 	}
+
 	class CommitInfo {
 		String id;
 		String message;
 		String url;
 		CommitterInfo committer;
 	}
+
 	class CommitterInfo {
 		String name;
 	}
-	
+
 	/**
 	 * Used to create the EmbedObject from the informations.
+	 * 
 	 * @param parameters
 	 * @return
 	 */
 	public static List<EmbedObject> getEmbedObject(Map<String, Object> parameters) {
 		List<EmbedObject> list = new ArrayList<EmbedObject>();
-		try {	
+		try {
 			WhatWeWant obj = gson.fromJson((String) parameters.get("payload"), WhatWeWant.class);
-			
+
 			EmbedBuilder builder = new EmbedBuilder();
 			builder.withAuthorIcon(obj.sender.avatar_url);
 			builder.withAuthorName(obj.sender.login);
 			builder.withAuthorUrl(obj.sender.url);
 			builder.withColor(0, 0, 150);
-			
+
 			String[] splitedref = obj.ref.split(Pattern.quote("/"));
-			builder.withTitle("["+obj.repository.name+":"+splitedref[splitedref.length-1]+"] "+obj.commits.length+" new commit(s).");
+			builder.withTitle("[" + obj.repository.name + ":" + splitedref[splitedref.length - 1] + "] "
+					+ obj.commits.length + " new commit(s).");
 			builder.withUrl(obj.head_commit.url);
-			
+
 			String content = "";
-			for (int i=0; i < obj.commits.length; ++i) {
+			for (int i = 0; i < obj.commits.length; ++i) {
 				CommitInfo commit = obj.commits[i];
-				String msg = "[`"+commit.id.substring(0,7)+"`]("+commit.url+") "+commit.message+" - "+commit.committer.name+"\n";
-				if ((content+msg).length() > EmbedBuilder.DESCRIPTION_CONTENT_LIMIT) {
+				String msg = "[`" + commit.id.substring(0, 7) + "`](" + commit.url + ") " + commit.message + " - "
+						+ commit.committer.name + "\n";
+				if ((content + msg).length() > EmbedBuilder.DESCRIPTION_CONTENT_LIMIT) {
 					builder.withDescription(content);
 					list.add(builder.build());
 					content = "";

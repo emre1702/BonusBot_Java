@@ -20,13 +20,14 @@ import sx.blah.discord.handle.obj.IUser;
 
 /**
  * Manage more informations for the specific guild.
+ * 
  * @author emre1702
  *
  */
 public class GuildExtends {
 
 	/** The object for the specific guild(ID) */
-	private final static Map<Long, GuildExtends> guildExtendsObjects = new HashMap<>();
+	private static Map<Long, GuildExtends> guildExtendsObjects = new HashMap<>();
 	/** The AudioManager for the guild */
 	private AudioManager audiomanager;
 	/** The guild */
@@ -37,93 +38,104 @@ public class GuildExtends {
 	public Timer stopAudioTimer = new Timer();
 	/** Timer to pause/resume the audio on e.g. !pause 5 */
 	public Timer pauseresumeAudioTimer = new Timer();
-	
+
 	/**
-	 * Constructor 
-	 * Create AudioManager for the guild.
-	 * @param guild The guild.
+	 * Constructor Create AudioManager for the guild.
+	 * 
+	 * @param guild
+	 *            The guild.
 	 */
-	public GuildExtends ( final IGuild guild ) {
-		guildExtendsObjects.put( guild.getLongID(), this );
-		this.audiomanager = new AudioManager ( guild, Audio.getPlayerManager() );
+	public GuildExtends(IGuild guild) {
+		guildExtendsObjects.put(guild.getLongID(), this);
+		this.audiomanager = new AudioManager(guild, Audio.getPlayerManager());
 		this.guild = guild;
 	}
-	
+
 	/**
 	 * Get the object for the specific guild.
-	 * @param guild The guild whose object we want to retrieve.
+	 * 
+	 * @param guild
+	 *            The guild whose object we want to retrieve.
 	 * @return The GuildExtends object for the guild.
 	 */
-	public synchronized final static GuildExtends get ( final IGuild guild ) {
-		final long guildId = guild.getLongID();
-		GuildExtends guildext = guildExtendsObjects.get ( guildId );
+	public synchronized static GuildExtends get(IGuild guild) {
+		long guildId = guild.getLongID();
+		GuildExtends guildext = guildExtendsObjects.get(guildId);
 
-        if ( guildext == null ) {
-        	guildext = new GuildExtends ( guild );
-        }
+		if (guildext == null) {
+			guildext = new GuildExtends(guild);
+		}
 
-        return guildext;
+		return guildext;
 	}
-	
+
 	/**
 	 * Getter for the IGuild of a GuildExtends.
+	 * 
 	 * @return
 	 */
 	public IGuild getGuild() {
 		return guild;
 	}
-	
-	public final boolean isAudioChannel(IChannel channel) {
+
+	public boolean isAudioChannel(IChannel channel) {
 		return channel.equals(getChannel("audioChannel"));
 	}
-	
-	public final boolean isRolesChannel(IChannel channel) {
+
+	public boolean isRolesChannel(IChannel channel) {
 		return channel.equals(getChannel("audioChannel"));
-	} 
-	
+	}
+
 	/**
-	 * Check if the user got any of the admin roles.
-	 * Needed for the admin-commands.
-	 * @param user User to check.
+	 * Check if the user got any of the admin roles. Needed for the admin-commands.
+	 * 
+	 * @param user
+	 *            User to check.
 	 * @return if the user got an admin role.
 	 */
-	public final boolean isAdmin ( IUser user ) {
+	public boolean isAdmin(IUser user) {
 		String[] adminrolenames = Settings.get("admins");
 		if (adminrolenames != null) {
-			List<IRole> roles = guild.getRolesForUser( user );
-			for ( String adminrolename : adminrolenames ) {
-				List<IRole> adminroles = guild.getRolesByName( adminrolename );
-				if ( adminroles.size() > 0 && roles.contains( adminroles.get( 0 ) ) )
+			List<IRole> roles = guild.getRolesForUser(user);
+			for (String adminrolename : adminrolenames) {
+				List<IRole> adminroles = guild.getRolesByName(adminrolename);
+				if (adminroles.size() > 0 && roles.contains(adminroles.get(0)))
 					return true;
 			}
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Check if the user has the role to play audio or everyone can play it (audioBotUserRoleID is not set)
-	 * @param user The user we want to check.
+	 * Check if the user has the role to play audio or everyone can play it
+	 * (audioBotUserRoleID is not set)
+	 * 
+	 * @param user
+	 *            The user we want to check.
 	 * @return If user can use audio-commands.
 	 */
-	public final boolean canPlayAudio ( IUser user ) {
+	public boolean canPlayAudio(IUser user) {
 		IRole audiorole = this.getRole("audiobotUserRole");
-		if ( audiorole == null )
+		if (audiorole == null)
 			return true;
 		return user.hasRole(audiorole);
 	}
-	
+
 	/**
 	 * Getter for the GuildAudioManager for the guild.
+	 * 
 	 * @return GuildAudioManager for the guild
 	 */
-	public final GuildAudioManager getAudioManager () {
+	public GuildAudioManager getAudioManager() {
 		return this.audiomanager.manager;
 	}
-	
+
 	/**
-	 * Getter for a channel for the guild.
-	 * Possible keys are in bonusbot.conf (e.g. languageChannel).
-	 * @param key Channel key (written in bonusbot.conf)
+	 * Getter for a channel for the guild. Possible keys are in bonusbot.conf (e.g.
+	 * languageChannel).
+	 * 
+	 * @param key
+	 *            Channel key (written in bonusbot.conf)
 	 * @return
 	 */
 	public IChannel getChannel(String key) {
@@ -131,23 +143,23 @@ public class GuildExtends {
 		if (channelname != null) {
 			List<IChannel> channels = guild.getChannelsByName(channelname);
 			if (!channels.isEmpty()) {
-				return channels.get( 0 );
+				return channels.get(0);
 			}
 		}
 		return null;
 	}
-	
+
 	public IRole getRole(String key) {
 		String rolename = Settings.get(key);
 		if (rolename != null) {
 			List<IRole> roles = guild.getRolesByName(rolename);
 			if (!roles.isEmpty()) {
-				return roles.get( 0 );
+				return roles.get(0);
 			}
 		}
 		return null;
 	}
-	
+
 	public IEmoji getEmoji(String key) {
 		String emojiname = Settings.get(key);
 		if (emojiname != null) {
@@ -155,48 +167,54 @@ public class GuildExtends {
 		}
 		return null;
 	}
-	
-	/** 
+
+	/**
 	 * Stops the stop-audio-timer.
-	 * @return 
+	 * 
+	 * @return
 	 */
-	public final void stopTheStopAudioTimer() {
+	public void stopTheStopAudioTimer() {
 		stopAudioTimer.cancel();
 		stopAudioTimer.purge();
 		stopAudioTimer = new Timer();
 	}
-	
-	/** 
+
+	/**
 	 * Stops the pause/resume-audio-timer.
-	 * @return 
+	 * 
+	 * @return
 	 */
-	public final void stopThePauseResumeAudioTimer() {
+	public void stopThePauseResumeAudioTimer() {
 		pauseresumeAudioTimer.cancel();
 		pauseresumeAudioTimer.purge();
 		pauseresumeAudioTimer = new Timer();
 	}
-	
+
 	/**
 	 * Get the user from a mention string
-	 * @param mention The mention
+	 * 
+	 * @param mention
+	 *            The mention
 	 * @return IUser The user
 	 */
-	public IUser getUserFromMention ( String mention ) {
+	public IUser getUserFromMention(String mention) {
 		try {
-			return guild.getUserByID( Long.parseUnsignedLong(mention.replaceAll("[^0-9]", "") ) );
-		} catch ( Exception e ) {}
+			return guild.getUserByID(Long.parseUnsignedLong(mention.replaceAll("[^0-9]", "")));
+		} catch (Exception e) {
+		}
 		return null;
 	}
-	
+
 	/**
 	 * Send the webhook info embed object to all guild
+	 * 
 	 * @param obj
 	 */
 	public static void sendWebhookInfosToAllGuilds(List<EmbedObject> objs) {
 		for (GuildExtends guildext : guildExtendsObjects.values()) {
 			IChannel webhookchannel = guildext.getChannel("webhookChannel");
 			if (webhookchannel != null) {
-				for (int i=0; i < objs.size(); ++i) {
+				for (int i = 0; i < objs.size(); ++i) {
 					Util.sendMessage(webhookchannel, objs.get(i));
 				}
 			}
