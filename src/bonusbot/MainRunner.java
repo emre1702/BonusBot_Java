@@ -18,10 +18,10 @@ public class MainRunner {
 	public static void main ( final String[] args ) {
 		try {
 			Settings.loadSettings();
-			if (Settings.webhookName.equals("") && Settings.httpServerPort != -1) {
-				new BonusHttpServer(Settings.httpServerPort);
+			if (Settings.get("webhookName") == null && Settings.<Integer>get("httpServerPort") != -1) {
+				new BonusHttpServer(Settings.<Integer>get("httpServerPort"));
 			}
-			IDiscordClient client = Client.createClient(Settings.token, true);
+			IDiscordClient client = Client.createClient(Settings.get("token"), true);
 			
 			final EventDispatcher dispatcher = client.getDispatcher();
 			dispatcher.registerListener(new bonusbot.commands.Handler());

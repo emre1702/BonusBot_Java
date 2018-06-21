@@ -48,7 +48,7 @@ public class Audio {
 				channel.join();
 			} else {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				final IEmoji whatemoji = guildext.getWhatEmoji();
+				IEmoji whatemoji = guildext.getEmoji("what");
 				if ( whatemoji == null ) {
 					Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
 				} else {
@@ -139,13 +139,13 @@ public class Audio {
 		final ICommand joinChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						final IVoiceChannel channel = event.getAuthor().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
 							channel.join();
 						} else {
-							final IEmoji whatemoji = guildext.getWhatEmoji();
+							final IEmoji whatemoji = guildext.getEmoji("what");
 							if ( whatemoji == null ) {
 								Util.sendMessage( event.getChannel(), Lang.getLang ( "You_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
 							} else {
@@ -165,7 +165,7 @@ public class Audio {
 		final ICommand leaveChannel = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
@@ -176,7 +176,7 @@ public class Audio {
 					         channel.leave();
 							
 						} else {
-							final IEmoji whatemoji = guildext.getWhatEmoji();
+							final IEmoji whatemoji = guildext.getEmoji("what");
 							if ( whatemoji == null ) {
 								Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
 							} else {
@@ -196,7 +196,7 @@ public class Audio {
 		final ICommand playAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {         
 						if ( args.size() > 0 ) {
 							if ( joinVoiceChannel ( event ) ) {		
@@ -227,7 +227,7 @@ public class Audio {
 		final ICommand playAudioPlaylist = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {         
 						if ( args.size() > 0 ) {
 							if ( joinVoiceChannel ( event ) ) {		
@@ -256,7 +256,7 @@ public class Audio {
         final ICommand playAudioFolder = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
         		final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-        		if ( guildext.isAudioChannel( event.getChannel().getLongID() ) ) {
+        		if ( guildext.isAudioChannel( event.getChannel() ) ) {
         			if ( guildext.canPlayAudio( event.getAuthor() ) ) {
         				if ( args.size() > 0 ) {
         					final String searchStr = String.join(" ", args);
@@ -289,7 +289,7 @@ public class Audio {
         	try {
         		IGuild guild = event.getGuild();
 				final GuildExtends guildext = GuildExtends.get( guild );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
 						if ( channel != null ) {
@@ -321,7 +321,7 @@ public class Audio {
 							} 
 							pauseresumeAudio( guild, cmd.equals( "pause" ) );
 						} else {
-							final IEmoji whatemoji = guildext.getWhatEmoji();
+							final IEmoji whatemoji = guildext.getEmoji("what");
 							if ( whatemoji == null ) {
 								Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), guild ) );
 							} else {
@@ -343,7 +343,7 @@ public class Audio {
         	try {
         		IGuild guild = event.getGuild();
 				final GuildExtends guildext = GuildExtends.get( guild );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( guild ).getChannel();
 						if ( channel != null ) {
@@ -375,7 +375,7 @@ public class Audio {
 							Util.sendMessage( event.getChannel(), Lang.getLang ( "stopped_the_audio", event.getAuthor(), event.getGuild() ) );
 							stopAudio( guild );
 						} else {
-							final IEmoji whatemoji = guildext.getWhatEmoji();
+							final IEmoji whatemoji = guildext.getEmoji("what");
 							if ( whatemoji == null ) {
 								Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
 							} else {
@@ -395,7 +395,7 @@ public class Audio {
         final ICommand removeFromQueue = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						if ( args.size() > 0 ) {
 							final IVoiceChannel channel = event.getClient().getOurUser().getVoiceStateForGuild( event.getGuild() ).getChannel();
@@ -413,7 +413,7 @@ public class Audio {
 									Util.sendMessage( event.getChannel(), Lang.getLang ( "first_has_to_be_int", event.getAuthor(), event.getGuild() ) );
 								}
 							} else {
-								final IEmoji whatemoji = guildext.getWhatEmoji();
+								final IEmoji whatemoji = guildext.getEmoji("what");
 								if ( whatemoji == null ) {
 									Util.sendMessage( event.getChannel(), Lang.getLang ( "I_not_in_voice_channel", event.getAuthor(), event.getGuild() ) );
 								} else {
@@ -436,7 +436,7 @@ public class Audio {
         final ICommand skipAudio = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						bonusbot.Audio.skipTrack(event);
 					}
@@ -452,7 +452,7 @@ public class Audio {
         final ICommand setVolume = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						if ( args.size() > 0 ) {
 							try {
@@ -467,7 +467,7 @@ public class Audio {
 							final AudioPlayer player = GuildExtends.get(event.getGuild()).getAudioManager().getPlayer();
 							Util.sendMessage( event.getChannel(), Lang.getLang ( "current_volume", event.getAuthor(), event.getGuild() )+player.getVolume()
 								+".\n" + Lang.getLang ( "volume_usage_1", event.getAuthor(), event.getGuild() ) 
-								+ Settings.prefix+Lang.getLang ( "volume_usage_2", event.getAuthor(), event.getGuild() ) );
+								+ Settings.get("prefix")+Lang.getLang ( "volume_usage_2", event.getAuthor(), event.getGuild() ) );
 							
 						}
 					}
@@ -497,7 +497,7 @@ public class Audio {
         final ICommand setAudioPosition = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
         	try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						if ( args.size() > 0 ) {
 							try {
@@ -523,7 +523,7 @@ public class Audio {
 		final ICommand searchYoutube = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						if ( args.size() > 0 ) {	
 							int showamount = 5;
@@ -549,7 +549,7 @@ public class Audio {
 		final ICommand playQueueYoutube = ( final String cmd, final MessageReceivedEvent event, final List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isAudioChannel ( event.getChannel().getLongID() ) ) {
+				if ( guildext.isAudioChannel ( event.getChannel() ) ) {
 					if ( guildext.canPlayAudio ( event.getAuthor() ) ) {
 						if ( joinVoiceChannel ( event ) ) {		
 							if ( guildext.ytsearchlist != null ) {

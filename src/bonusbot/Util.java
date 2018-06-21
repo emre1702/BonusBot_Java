@@ -3,6 +3,7 @@ import java.time.LocalDateTime;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
@@ -108,40 +109,51 @@ public class Util {
 	}
 	
 	/**
-	 * Send a message to the audio channel of the guild.
+	 * Send a message to the guilds bot message channel of the guild.
 	 * @param guild The guild.
 	 * @param message The message.
 	 */
 	public final static void sendMessage ( final IGuild guild, final String message ) {
 		try {
-	        // This might look weird but it'll be explained in another page.
-	        RequestBuffer.request(() -> {
-	            try{
-	            	guild.getChannelsByName( Settings.audioChannel ).get( 0 ).sendMessage(message);
-	            } catch (DiscordException e){
-	            	e.printStackTrace ( Logging.getPrintWrite() );
-	            }
-	        });
+			String guildsBotMessageChannelName = Settings.get("guildsBotMessageChannel"); 
+			if (guildsBotMessageChannelName != null) {
+		        // This might look weird but it'll be explained in another page.
+				List<IChannel> channels = guild.getChannelsByName(guildsBotMessageChannelName);
+				if (!channels.isEmpty()) {
+			        RequestBuffer.request(() -> {
+			            try{
+			            	channels.get( 0 ).sendMessage(message);
+			            } catch (DiscordException e){
+			            	e.printStackTrace ( Logging.getPrintWrite() );
+			            }
+			        });
+				}
+			}
 		} catch ( Exception e ) {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
 	 	}
 	}
 	
 	/**
-	 * Send a object to the audio channel of the guild.
+	 * Send a object to the guilds bot message channel of the guild.
 	 * @param guild The guild.
 	 * @param object The object.
 	 */
 	public final static void sendMessage ( final IGuild guild, final EmbedObject object ) {
 		try {
-	        // This might look weird but it'll be explained in another page.
-	        RequestBuffer.request(() -> {
-	            try{
-	            	guild.getChannelsByName( Settings.audioChannel ).get( 0 ).sendMessage(object);
-	            } catch (DiscordException e){
-	            	e.printStackTrace ( Logging.getPrintWrite() );
-	            }
-	        });
+			String guildsBotMessageChannelName = Settings.get("guildsBotMessageChannel"); 
+			if (guildsBotMessageChannelName != null) {
+				List<IChannel> channels = guild.getChannelsByName(guildsBotMessageChannelName);
+				if (!channels.isEmpty()) {
+			        RequestBuffer.request(() -> {
+			            try{
+			            	channels.get( 0 ).sendMessage(object);
+			            } catch (DiscordException e){
+			            	e.printStackTrace ( Logging.getPrintWrite() );
+			            }
+			        });
+				}
+			}
 		} catch ( Exception e ) {
 	 		e.printStackTrace ( Logging.getPrintWrite() );
 	 	}

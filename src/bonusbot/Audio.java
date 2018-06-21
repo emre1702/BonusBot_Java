@@ -41,8 +41,12 @@ public class Audio {
 		YoutubeAudioSourceManager youtubemanger = new YoutubeAudioSourceManager();
 		
 		playerManager.registerSourceManager(youtubemanger);
-		playerManager.registerSourceManager(new SpotifyAudioSourceManager(
-				Settings.spotifyClientID, Settings.spotifyClientSecret, Settings.youtubeAPIKey, youtubemanger));
+		String spotifyClientID = Settings.get("spotifyClientID");
+		String spotifyClientSecret = Settings.get("spotifyClientSecret");
+		String youtubeAPIKey = Settings.get("youtubeAPIKey");
+		if (spotifyClientID != null && spotifyClientSecret != null && youtubeAPIKey != null) {
+			playerManager.registerSourceManager(new SpotifyAudioSourceManager(spotifyClientID, spotifyClientSecret, youtubeAPIKey, youtubemanger));
+		}
 		playerManager.registerSourceManager(new HttpAudioSourceManager());
 		playerManager.registerSourceManager(new VimeoAudioSourceManager());
 		playerManager.registerSourceManager(new BandcampAudioSourceManager());

@@ -45,7 +45,7 @@ public class Fun {
 					else if ( rnd == 10 )
 						Util.sendMessage( channel, Lang.getLang ( "absolutely", event.getAuthor(), event.getGuild() ) );
 					else if ( rnd == 11 ) {
-						final IEmoji hahaemoji = guildext.getWhatEmoji();
+						final IEmoji hahaemoji = guildext.getEmoji("what");
 						if ( hahaemoji != null ) {
 							Util.sendMessage( channel, Lang.getLang ( "stupid_question", event.getAuthor(), event.getGuild() )+Util.getEmojiString( hahaemoji ) );
 							event.getMessage().addReaction( ReactionEmoji.of( hahaemoji ));
@@ -55,7 +55,7 @@ public class Fun {
 					} else 
 						Util.sendMessage( channel, Lang.getLang ( "ask_again", event.getAuthor(), event.getGuild() ) );		
 				} else {
-					final IEmoji whatemoji = guildext.getWhatEmoji();
+					final IEmoji whatemoji = guildext.getEmoji("what");
 					if ( whatemoji != null ) {
 						Util.sendMessage( channel, Lang.getLang ( "what_is_question", event.getAuthor(), event.getGuild() )+Util.getEmojiString( whatemoji ) );
 						event.getMessage().addReaction( ReactionEmoji.of( whatemoji ));

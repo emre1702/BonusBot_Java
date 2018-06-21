@@ -53,9 +53,8 @@ public class AudioManager {
         			if ( startedTrack != null ) {
 	        			EmbedObject object = AudioInfo.createAudioInfo ( startedTrack.audio, startedTrack.user, guild, startedTrack.date, scheduler );
 	        			final GuildExtends guildext = GuildExtends.get( guild );
-	        			final Long audioInfoChannelID = guildext.getAudioInfoChannelID();
-	        	    	if ( audioInfoChannelID != null ) {
-	        				IChannel musicinfochannel = guild.getChannelByID( audioInfoChannelID );
+	        			IChannel musicinfochannel = guildext.getChannel("audioInfoChannel");
+	        	    	if ( musicinfochannel != null ) {
 	        				MessageHistory msghist = musicinfochannel.getFullMessageHistory();
 	        				RequestBuffer.request(() -> {
         		            	if (msghist.isEmpty()) {

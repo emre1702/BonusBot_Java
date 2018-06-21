@@ -29,25 +29,28 @@ public class Language {
 		final ICommand requestLanguageSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isRolesChannel( event.getChannel().getLongID() ) ) {
+				if ( guildext.isRolesChannel( event.getChannel() ) ) {
 					IRole role = null;
 					switch ( cmd ) {
 						case "deutsch":
 						case "german":
-							Long germanRoleID = guildext.getGermanRoleID();
-							if ( germanRoleID != null )
-								role = event.getGuild().getRoleByID( germanRoleID );
+							IRole germanRole = guildext.getRole("germanRole");
+							if ( germanRole != null ) {
+								role = germanRole;
+							}
 							break;
 						case "türkce":
 						case "turkish":
-							Long turkishRoleID = guildext.getTurkishRoleID();
-							if ( turkishRoleID != null )
-								role = event.getGuild().getRoleByID( turkishRoleID );
+							IRole turkishRole = guildext.getRole("turkishRole");
+							if ( turkishRole != null ) {
+								role = turkishRole;
+							}
 							break;
 						case "english":
-							Long englishRoleID = guildext.getEnglishRoleID();
-							if ( englishRoleID != null )
-								role = event.getGuild().getRoleByID( englishRoleID );
+							IRole englishRole = guildext.getRole("englishRole");
+							if ( englishRole != null ) {
+								role = englishRole;
+							}
 							break;
 					}
 					if ( role != null )

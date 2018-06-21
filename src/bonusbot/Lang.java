@@ -1,6 +1,5 @@
 package bonusbot;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -192,17 +191,16 @@ public class Lang {
 	 * @param replaces The optional strings to replace {1}, {2} ...
 	 * @return The string for the users language.
 	 */
-	public final static String getLang ( final String str, final IUser user, final IGuild guild, String... replaces ) {
+	public static String getLang ( final String str, final IUser user, final IGuild guild, String... replaces ) {
 		String language = "english";
-		final List<IRole> roles = user.getRolesForGuild( guild );
-		final GuildExtends guildext = GuildExtends.get( guild );
-		final Long germanRoleID = guildext.getGermanRoleID(); 
+		GuildExtends guildext = GuildExtends.get( guild );
+		IRole germanRole = guildext.getRole("germanRole"); 
 		
-		if ( germanRoleID != null && roles.contains( guild.getRoleByID( germanRoleID ) ) ) {
+		if (germanRole != null) {
 			language = "german";
 		} else {
-			final Long turkishRoleID = guildext.getTurkishRoleID(); 
-			if ( turkishRoleID != null && roles.contains( guild.getRoleByID( turkishRoleID ) ) ) {
+			IRole turkishRole = guildext.getRole("turkishRole");
+			if (turkishRole != null) {
 				language = "turkish";
 			} 
 		}

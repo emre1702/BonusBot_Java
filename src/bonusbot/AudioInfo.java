@@ -115,29 +115,29 @@ public class AudioInfo {
 		obj.timestamp = Util.getTimestampForDiscord();
 	}
 	
+	private static void editAudioInfo(IGuild guild, EmbedObject obj) {
+		GuildExtends guildext = GuildExtends.get( guild );
+		IChannel audioinfochannel = guildext.getChannel("audioInfoChannel"); 
+		if ( audioinfochannel != null ) {
+			IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
+			if ( msg != null ) {
+				Util.editMessage( msg, obj );
+			}
+		}
+	}
+	
 	/**
 	 * Change the status in the EmbedObject.
 	 * If the audio-info is available, refresh it there.
 	 * @param guild Guild where you want to change the EmbedObject.
 	 * @param status The new status.
 	 */
-	public final static void changeAudioInfoStatus ( final IGuild guild, final String status ) {
+	public final static void changeAudioInfoStatus (final IGuild guild, final String status) {
 		final EmbedObject obj = getLastAudioInfo ( guild );
 		if ( obj != null && obj.fields.length > 0 ) {
 			obj.fields[0].value = status;
-			refreshLastChangedTimestamp ( obj );
-			
-			final GuildExtends guildext = GuildExtends.get( guild );
-			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
-			if ( audioinfochannelID != null ) {
-				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
-				if ( audioinfochannel != null ) {
-					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
-					if ( msg != null ) {
-						Util.editMessage( msg, obj );
-					}
-				}
-			}
+			refreshLastChangedTimestamp(obj);
+			editAudioInfo(guild, obj);
 		}
 	}
 	
@@ -152,18 +152,7 @@ public class AudioInfo {
 		if ( obj != null && obj.fields.length > 1 ) {
 			obj.fields[1].value = String.valueOf( volume );
 			refreshLastChangedTimestamp ( obj );
-			
-			final GuildExtends guildext = GuildExtends.get( guild );
-			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
-			if ( audioinfochannelID != null ) {
-				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
-				if ( audioinfochannel != null ) {
-					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
-					if ( msg != null ) {
-						Util.editMessage( msg, obj );
-					}
-				}
-			}
+			editAudioInfo(guild, obj);
 		}
 	}
 	
@@ -193,18 +182,7 @@ public class AudioInfo {
 			for ( int i = 0; i < queueinfossize; ++i ) {
 				obj.fields[4+i].value = queueinfos.get( i );
 			}
-
-			final GuildExtends guildext = GuildExtends.get( guild );
-			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
-			if ( audioinfochannelID != null ) {
-				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
-				if ( audioinfochannel != null ) {
-					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
-					if ( msg != null ) {
-						Util.editMessage( msg, obj );
-					}
-				}
-			}
+			editAudioInfo(guild, obj);
 		}
 	}
 	
@@ -214,20 +192,17 @@ public class AudioInfo {
 	 * @param guild The guild whose audio-info we want to retrieve.
 	 * @return The EmbedObject.
 	 */
-	public final static EmbedObject getLastAudioInfo ( IGuild guild ) {
+	public static EmbedObject getLastAudioInfo ( IGuild guild ) {
 		EmbedObject obj = guildlastembed.get( guild.getLongID() );
 		if ( obj == null ) {
-			final GuildExtends guildext = GuildExtends.get( guild );
-			final Long audioinfochannelID = guildext.getAudioInfoChannelID(); 
-			if ( audioinfochannelID != null ) {
-				final IChannel audioinfochannel = guild.getChannelByID( audioinfochannelID );
-				if ( audioinfochannel != null ) {
-					final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
-					if ( msg != null ) {
-						List<IEmbed> embeds = msg.getEmbeds();
-						if ( !embeds.isEmpty() ) {
-							obj = new EmbedObject ( embeds.get( 0 ) );
-						}
+			GuildExtends guildext = GuildExtends.get( guild );
+			IChannel audioinfochannel = guildext.getChannel("audioInfoChannel"); 
+			if ( audioinfochannel != null ) {
+				final IMessage msg = audioinfochannel.getFullMessageHistory().getEarliestMessage();
+				if ( msg != null ) {
+					List<IEmbed> embeds = msg.getEmbeds();
+					if ( !embeds.isEmpty() ) {
+						obj = new EmbedObject ( embeds.get( 0 ) );
 					}
 				}
 			}

@@ -29,18 +29,18 @@ public class OtherGames {
 		final ICommand requestOtherGamesSectionRole = ( String cmd, MessageReceivedEvent event, List<String> args ) -> {
 			try {
 				final GuildExtends guildext = GuildExtends.get( event.getGuild() );
-				if ( guildext.isRolesChannel( event.getChannel().getLongID() ) ) {
+				if ( guildext.isRolesChannel( event.getChannel() ) ) {
 					IRole role = null;
 					switch ( cmd ) {
 						case "pubg":
-							Long pubgRoleID = guildext.getPUBGRoleID();
-							if ( pubgRoleID != null )
-								role = event.getGuild().getRoleByID( pubgRoleID );
+							IRole pubgRole = guildext.getRole("pubgRole");
+							if ( pubgRole != null )
+								role = pubgRole;
 							break;
 						case "rocketleague":
-							Long rocketleagueRoleID = guildext.getRocketLeagueRoleID();
-							if ( rocketleagueRoleID != null )
-								role = event.getGuild().getRoleByID( rocketleagueRoleID );
+							IRole rocketleagueRole = guildext.getRole("rocketleagueRole");
+							if ( rocketleagueRole != null )
+								role = rocketleagueRole;
 							break;
 					}
 					if ( role != null )

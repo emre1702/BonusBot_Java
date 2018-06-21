@@ -51,7 +51,7 @@ public class Handler {
 		            return;
 	
 		        // Check if the first arg (the command) starts with the prefix defined in the utils class
-		        if(!argArray[0].startsWith(Settings.prefix))
+		        if(!argArray[0].startsWith(Settings.get("prefix")))
 		            return;
 	
 		        // Extract the "command" part of the first arg out by just ditching the first character

@@ -92,7 +92,7 @@ public class Admin {
 							Util.sendMessage( channel, amountdeleted + " " + Lang.getLang( "got_deleted", author, guild ) );
 						}
 					} else {
-						Util.sendMessage( channel, Lang.getLang( "usage", author, guild ) + ": "+Settings.prefix+"delete "
+						Util.sendMessage( channel, Lang.getLang( "usage", author, guild ) + ": "+Settings.get("prefix")+"delete "
 								+ " [@"+Lang.getLang( "user", author, guild ) +"]" 
 								+ " ["+Lang.getLang( "amount_messages", author, guild )+" = 100]" );
 					}
@@ -123,7 +123,7 @@ public class Admin {
 					} else 
 						Util.sendMessage( channel, Lang.getLang( "user_not_found", event.getAuthor(), guild ) );
 				} else {
-					Util.sendMessage(channel, Lang.getLang("usage", author, guild) + ": "+Settings.prefix+"ban "
+					Util.sendMessage(channel, Lang.getLang("usage", author, guild) + ": "+Settings.get("prefix")+"ban "
 							+ " [@"+Lang.getLang( "user", author, guild ) +"]" 
 							+ " ["+Lang.getLang( "reason", author, guild )+"]"
 							+ " ["+Lang.getLang("del_messages_for_days", author, guild)+" = 0]");
