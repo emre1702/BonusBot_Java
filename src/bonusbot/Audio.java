@@ -58,6 +58,7 @@ public class Audio {
 
 		AudioSourceManagers.registerRemoteSources(playerManager);
 		AudioSourceManagers.registerLocalSource(playerManager);
+		youtubeSearch = new YoutubeSearchProvider(playerManager.source(YoutubeAudioSourceManager.class));
 	}
 
 	/**
