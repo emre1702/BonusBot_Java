@@ -46,6 +46,13 @@ public class Settings {
 		}
 	}
 
+	/**
+	 * Gets a specific setting from bonusbot.conf. If it's deactivated/removed
+	 * there, checks for default-settings. If it's not in both, return null.
+	 * 
+	 * @param key
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T get(String key) {
 		if (settingsMap.containsKey(key)) {

@@ -78,10 +78,22 @@ public class GuildExtends {
 		return guild;
 	}
 
+	/**
+	 * Check if the channel is the audio-channel.
+	 * 
+	 * @param channel
+	 * @return
+	 */
 	public boolean isAudioChannel(IChannel channel) {
 		return channel.equals(getChannel("audioChannel"));
 	}
 
+	/**
+	 * Check if the channel is the roles-channel.
+	 * 
+	 * @param channel
+	 * @return
+	 */
 	public boolean isRolesChannel(IChannel channel) {
 		return channel.equals(getChannel("audioChannel"));
 	}
@@ -149,6 +161,14 @@ public class GuildExtends {
 		return null;
 	}
 
+	/**
+	 * Getter for a role for the guild. Possible keys are in bonusbot.conf (e.g.
+	 * englishRole).
+	 * 
+	 * @param key
+	 *            Role key (written in bonusbot.conf)
+	 * @return
+	 */
 	public IRole getRole(String key) {
 		String rolename = Settings.get(key);
 		if (rolename != null) {
@@ -160,6 +180,14 @@ public class GuildExtends {
 		return null;
 	}
 
+	/**
+	 * Getter for a emoji for the guild. Possible keys are in bonusbot.conf (e.g.
+	 * whatEmoji).
+	 * 
+	 * @param key
+	 *            Emoji key (written in bonusbot.conf)
+	 * @return
+	 */
 	public IEmoji getEmoji(String key) {
 		String emojiname = Settings.get(key);
 		if (emojiname != null) {

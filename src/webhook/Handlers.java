@@ -23,6 +23,11 @@ import bonusbot.guild.GuildExtends;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.util.EmbedBuilder;
 
+/**
+ * Class to handle data from HTTP.
+ * 
+ * @author EmreKara
+ */
 public class Handlers {
 	public static class RootHandler implements HttpHandler {
 
@@ -37,7 +42,7 @@ public class Handlers {
 		}
 	}
 
-	public static class EchoHeaderHandler implements HttpHandler {
+	/*public static class EchoHeaderHandler implements HttpHandler {
 
 		@Override
 		public void handle(HttpExchange he) throws IOException {
@@ -73,7 +78,7 @@ public class Handlers {
 
 		}
 
-	}
+	}*/
 
 	public static class EchoPostHandler implements HttpHandler {
 
@@ -178,6 +183,7 @@ public class Handlers {
 		return list;
 	}
 
+	/** Don't touch it */
 	@SuppressWarnings("unchecked")
 	public static void parseQuery(String query, Map<String, Object> parameters) throws UnsupportedEncodingException {
 

@@ -2,7 +2,6 @@ package bonusbot;
 
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
-import sx.blah.discord.handle.obj.IUser;
 import webhook.BonusHttpServer;
 
 /**
@@ -33,10 +32,6 @@ public class MainRunner {
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());
 		}
-	}
-
-	public static boolean isBot(IUser user) {
-		return Client.get().getOurUser().equals(user);
 	}
 }
 

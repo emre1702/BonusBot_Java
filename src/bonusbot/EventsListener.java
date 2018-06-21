@@ -132,37 +132,4 @@ class EventsListener {
 			Util.sendMessage(logchannel, msg);
 		}
 	}
-
-	/*
-	 * @EventSubscriber public void onMessageEdited( MessageUpdateEvent event
-	 * ) { if (!MainRunner.isBot(event.getAuthor())) { GuildExtends guildext =
-	 * GuildExtends.get( event.getGuild() ); IChannel logchannel =
-	 * guildext.getMessageUpdateLogChannel(); if (logchannel != null) { String msg =
-	 * "Message got edited by "+event.getAuthor().mention()+" in "+event.getChannel(
-	 * ).mention()+":\n" + event.getOldMessage().getContent();
-	 * Util.sendMessage(logchannel, msg); } } }
-	 * 
-	 * @EventSubscriber public void onMessageDeleted( MessageDeleteEvent event
-	 * ) { GuildExtends guildext = GuildExtends.get( event.getGuild() ); IChannel
-	 * logchannel = guildext.getMessageDeleteLogChannel(); if (logchannel != null) {
-	 * TargetedEntry auditlog =
-	 * event.getGuild().getAuditLog(ActionType.MESSAGE_DELETE).getEntriesByTarget(
-	 * event.getMessageID()).get(0); String msg =
-	 * "Message from "+event.getAuthor().mention()+" got deleted by "+auditlog.
-	 * getResponsibleUser().mention()+" in "+event.getChannel().mention()+":\n" +
-	 * event.getMessage().getContent(); Util.sendMessage(logchannel, msg); } }
-	 * 
-	 * @EventSubscriber public void onWebhookEditRequest(WebhookEvent event) {
-	 * Util.sendMessage(event.getGuild(), event.getWebhook().toString() + " by " +
-	 * event.getWebhook().getDefaultName()); }
-	 * 
-	 * @EventSubscriber public void onWebhookCreate(WebhookCreateEvent event) {
-	 * Util.sendMessage(event.getGuild(), event.getWebhook().toString() + " by " +
-	 * event.getWebhook().getDefaultName()); }
-	 * 
-	 * @EventSubscriber public void onWebhookUpdate(WebhookUpdateEvent event) {
-	 * Util.sendMessage(event.getGuild(), event.getOldWebhook().toString() + " to "
-	 * + event.getNewWebhook().toString() + " by " +
-	 * event.getWebhook().getDefaultName()); }
-	 */
 }

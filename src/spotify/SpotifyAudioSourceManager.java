@@ -1,5 +1,5 @@
 
-/*
+/* FROM:
  * Skybot, a multipurpose discord bot
  *      Copyright (C) 2017 - 2018  Duncan "duncte123" Sterken & Ramid "ramidzkh" Khan & Maurice R S "Sanduhr32"
  *

@@ -2,6 +2,7 @@ package bonusbot;
 
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.DiscordException;
 
 /**
@@ -40,7 +41,22 @@ public class Client {
 		}
 	}
 
+	/**
+	 * Getter for the IDiscordClient of the bot.
+	 * 
+	 * @return
+	 */
 	public static IDiscordClient get() {
 		return client;
+	}
+
+	/**
+	 * Check if the user is this bot.
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public static boolean isBot(IUser user) {
+		return client.getOurUser().equals(user);
 	}
 }

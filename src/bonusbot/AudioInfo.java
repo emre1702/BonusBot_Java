@@ -128,7 +128,13 @@ public class AudioInfo {
 		obj.timestamp = Util.getTimestampForDiscord();
 	}
 
-	private static void editAudioInfo(IGuild guild, EmbedObject obj) {
+	/**
+	 * Replace the audio-info of a guild with a new EmbedObject (or old edited).
+	 * 
+	 * @param guild
+	 * @param obj
+	 */
+	private static void replaceAudioInfo(IGuild guild, EmbedObject obj) {
 		GuildExtends guildext = GuildExtends.get(guild);
 		IChannel audioinfochannel = guildext.getChannel("audioInfoChannel");
 		if (audioinfochannel != null) {
@@ -153,7 +159,7 @@ public class AudioInfo {
 		if (obj != null && obj.fields.length > 0) {
 			obj.fields[0].value = status;
 			refreshLastChangedTimestamp(obj);
-			editAudioInfo(guild, obj);
+			replaceAudioInfo(guild, obj);
 		}
 	}
 
@@ -171,7 +177,7 @@ public class AudioInfo {
 		if (obj != null && obj.fields.length > 1) {
 			obj.fields[1].value = String.valueOf(volume);
 			refreshLastChangedTimestamp(obj);
-			editAudioInfo(guild, obj);
+			replaceAudioInfo(guild, obj);
 		}
 	}
 
@@ -204,7 +210,7 @@ public class AudioInfo {
 			for (int i = 0; i < queueinfossize; ++i) {
 				obj.fields[4 + i].value = queueinfos.get(i);
 			}
-			editAudioInfo(guild, obj);
+			replaceAudioInfo(guild, obj);
 		}
 	}
 
