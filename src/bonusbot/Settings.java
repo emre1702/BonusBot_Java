@@ -20,10 +20,9 @@ public class Settings {
 		defaultSettingsMap.put("prefix", "!");
 		defaultSettingsMap.put("name", "Bonus-Bot");
 		defaultSettingsMap.put("playing", "Bonus-community");
-		defaultSettingsMap.put("httpServerPort", -1);
 		defaultSettingsMap.put("whatEmoji", "what");
 		defaultSettingsMap.put("hahaEmoji", "haha");
-		defaultSettingsMap.put("hahaEmoji", "tada");
+		defaultSettingsMap.put("tadaEmoji", "tada");
 	}
 
 	/**
@@ -37,6 +36,11 @@ public class Settings {
 		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true);
 		try {
 			settingsMap = mapper.readValue(new FileReader("bonusbot.conf"), Map.class);
+			for (Object key : settingsMap.keySet().toArray()) {
+				if (settingsMap.get(key).toString().isEmpty()) {
+					settingsMap.remove(key);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());
 		}

@@ -8,6 +8,7 @@ import java.util.Timer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 
 import bonusbot.Audio;
+import bonusbot.Logging;
 import bonusbot.Settings;
 import bonusbot.Util;
 import lavaplayer.GuildAudioManager;
@@ -27,7 +28,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class GuildExtends {
 
 	/** The object for the specific guild(ID) */
-	private static Map<Long, GuildExtends> guildExtendsObjects = new HashMap<>();
+	private static Map<IGuild, GuildExtends> guildExtendsObjects = new HashMap<>();
 	/** The AudioManager for the guild */
 	private AudioManager audiomanager;
 	/** The guild */
@@ -40,13 +41,13 @@ public class GuildExtends {
 	public Timer pauseresumeAudioTimer = new Timer();
 
 	/**
-	 * Constructor Create AudioManager for the guild.
+	 * Constructor Also creates AudioManager for the guild.
 	 * 
 	 * @param guild
 	 *            The guild.
 	 */
 	public GuildExtends(IGuild guild) {
-		guildExtendsObjects.put(guild.getLongID(), this);
+		guildExtendsObjects.put(guild, this);
 		this.audiomanager = new AudioManager(guild, Audio.getPlayerManager());
 		this.guild = guild;
 	}
@@ -59,8 +60,7 @@ public class GuildExtends {
 	 * @return The GuildExtends object for the guild.
 	 */
 	public synchronized static GuildExtends get(IGuild guild) {
-		long guildId = guild.getLongID();
-		GuildExtends guildext = guildExtendsObjects.get(guildId);
+		GuildExtends guildext = guildExtendsObjects.get(guild);
 
 		if (guildext == null) {
 			guildext = new GuildExtends(guild);
@@ -201,6 +201,7 @@ public class GuildExtends {
 		try {
 			return guild.getUserByID(Long.parseUnsignedLong(mention.replaceAll("[^0-9]", "")));
 		} catch (Exception e) {
+			e.printStackTrace(Logging.getPrintWrite());
 		}
 		return null;
 	}

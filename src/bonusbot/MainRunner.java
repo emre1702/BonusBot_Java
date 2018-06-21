@@ -22,7 +22,7 @@ public class MainRunner {
 	public static void main(String[] args) {
 		try {
 			Settings.loadSettings();
-			if (Settings.get("webhookName") == null && Settings.<Integer>get("httpServerPort") != -1) {
+			if (Settings.get("webhookName") == null && Settings.get("httpServerPort") != null) {
 				new BonusHttpServer(Settings.<Integer>get("httpServerPort"));
 			}
 			IDiscordClient client = Client.createClient(Settings.get("token"), true);
