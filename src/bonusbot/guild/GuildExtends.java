@@ -95,7 +95,7 @@ public class GuildExtends {
 	 * @return
 	 */
 	public boolean isRolesChannel(IChannel channel) {
-		return channel.equals(getChannel("audioChannel"));
+		return channel.equals(getChannel("rolesChannel"));
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class GuildExtends {
 	 * @return if the user got an admin role.
 	 */
 	public boolean isAdmin(IUser user) {
-		String[] adminrolenames = Settings.get("admins");
+		List<String> adminrolenames = Settings.get("admins");
 		if (adminrolenames != null) {
 			List<IRole> roles = guild.getRolesForUser(user);
 			for (String adminrolename : adminrolenames) {
