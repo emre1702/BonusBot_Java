@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"bonusbot"},{"l":"bonusbot.commands"},{"l":"bonusbot.guild"},{"l":"lavaplayer"},{"l":"spotify"},{"l":"webhook"}]
