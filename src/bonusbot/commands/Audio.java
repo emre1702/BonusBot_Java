@@ -76,7 +76,7 @@ public class Audio {
 	 * @param amountfiles
 	 *            The number of the file - used for safety, so you can't load too
 	 *            many files.
-	 * @throws IOException
+	 * @throws IOException error
 	 */
 	private static void playFolderRecursive(String path, MessageReceivedEvent event,
 			AtomicReference<Integer> amountfiles) throws IOException {
@@ -110,9 +110,9 @@ public class Audio {
 	}
 
 	/**
-	 * Stops the music
+	 * Stops the audio
 	 * 
-	 * @param guild
+	 * @param guild Guild where to stop the audio.
 	 */
 	private static void stopAudio(IGuild guild) {
 		GuildExtends.get(guild).stopTheStopAudioTimer();
@@ -123,6 +123,12 @@ public class Audio {
 		AudioInfo.refreshAudioInfoQueue(guild, scheduler);
 	}
 
+	/**
+	 * Pauses or resumes the audio.
+	 * 
+	 * @param guild Guild
+	 * @param paused If it should be paused
+	 */
 	private static void pauseresumeAudio(IGuild guild, boolean paused) {
 		GuildExtends guildext = GuildExtends.get(guild);
 		AudioPlayer player = guildext.getAudioManager().getPlayer();

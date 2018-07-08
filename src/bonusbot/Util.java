@@ -84,7 +84,9 @@ public class Util {
 	 * Edits a message with RequestBuffer.
 	 * 
 	 * @param msg
+	 *            The message to edit.
 	 * @param obj
+	 *            The object to insert into the message.
 	 */
 	public static void editMessage(IMessage msg, EmbedObject obj) {
 		RequestBuffer.request(() -> {
@@ -217,7 +219,8 @@ public class Util {
 	 * Get a users unique name (Name#Discriminator)
 	 * 
 	 * @param user
-	 * @return unique name
+	 *            The user
+	 * @return unique name of the user
 	 */
 	public static String getUniqueName(IUser user) {
 		return String.format("%s#%s", user.getName(), user.getDiscriminator());
@@ -226,9 +229,9 @@ public class Util {
 	/**
 	 * Get a random integer number
 	 * 
-	 * @param min
-	 * @param max
-	 * @return
+	 * @param min min. integer
+	 * @param max max. integer
+	 * @return random number between min and max
 	 */
 	public static int random(int min, int max) {
 		int range = (max - min) + 1;

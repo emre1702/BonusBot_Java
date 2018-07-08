@@ -88,8 +88,10 @@ public class Audio {
 	 *            the author (for language).
 	 * @param trackUrl
 	 *            URL of the audio the author want to have played.
-	 * @param queue
-	 *            If it should be added to the queue or played right now.
+	 * @param isqueue
+	 *            If it will be added to the queue or played right now.
+	 * @param isplaylist
+	 *            If it will be added to the playlist.
 	 */
 	public static void loadAndPlay(MessageReceivedEvent event, String trackUrl, boolean isqueue, boolean isplaylist) {
 		IChannel channel = event.getChannel();
@@ -185,12 +187,16 @@ public class Audio {
 	/**
 	 * Puts the AudioTrack into the queue.
 	 * 
+	 * @param guild
+	 *            The IGuild which added the AudioTrack.
 	 * @param audioManager
 	 *            The GuildAudioManager of the guild.
 	 * @param track
 	 *            AudioTrack the user want to have played.
 	 * @param user
 	 *            User who added the track (used later for language).
+	 * @param refreshAudioInfo
+	 *            If the audio-info should get refreshed.
 	 */
 	public static void queue(IGuild guild, GuildAudioManager audioManager, AudioTrack track, IUser user,
 			boolean refreshAudioInfo) {

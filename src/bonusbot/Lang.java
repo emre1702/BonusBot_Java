@@ -177,9 +177,12 @@ public class Lang {
 	 * Get language-string for a specific language.
 	 * 
 	 * @param str
+	 *            Identificator for the language-string.
 	 * @param language
+	 *            The language for which we want to get the text.
 	 * @param replaces
-	 * @return
+	 *            Optional replacements for {1}, {2} etc.
+	 * @return The language-text.
 	 */
 	private static String getLang(String str, String language, String... replaces) {
 		String result = languageMap.get(language).get(str);
@@ -224,8 +227,10 @@ public class Lang {
 	 * Get language-string in the default language.
 	 * 
 	 * @param str
+	 *            Identificator for language string (key for map).
 	 * @param replaces
-	 * @return
+	 *            Optional replacements for {1}, {2} etc.
+	 * @return language-text
 	 */
 	public static String getLang(String str, String... replaces) {
 		return getLang(str, "english", replaces);

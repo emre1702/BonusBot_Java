@@ -72,7 +72,7 @@ public class GuildExtends {
 	/**
 	 * Getter for the IGuild of a GuildExtends.
 	 * 
-	 * @return
+	 * @return IGuild
 	 */
 	public IGuild getGuild() {
 		return guild;
@@ -82,7 +82,8 @@ public class GuildExtends {
 	 * Check if the channel is the audio-channel.
 	 * 
 	 * @param channel
-	 * @return
+	 *            The channel.
+	 * @return If the channel is the audio-channel.
 	 */
 	public boolean isAudioChannel(IChannel channel) {
 		return channel.equals(getChannel("audioChannel"));
@@ -92,7 +93,8 @@ public class GuildExtends {
 	 * Check if the channel is the roles-channel.
 	 * 
 	 * @param channel
-	 * @return
+	 *            The channel.
+	 * @return If the channel is the roles-channel.
 	 */
 	public boolean isRolesChannel(IChannel channel) {
 		return channel.equals(getChannel("rolesChannel"));
@@ -148,7 +150,7 @@ public class GuildExtends {
 	 * 
 	 * @param key
 	 *            Channel key (written in bonusbot.conf)
-	 * @return
+	 * @return the channel
 	 */
 	public IChannel getChannel(String key) {
 		String channelname = Settings.get(key);
@@ -167,7 +169,7 @@ public class GuildExtends {
 	 * 
 	 * @param key
 	 *            Role key (written in bonusbot.conf)
-	 * @return
+	 * @return the IRole
 	 */
 	public IRole getRole(String key) {
 		String rolename = Settings.get(key);
@@ -186,7 +188,7 @@ public class GuildExtends {
 	 * 
 	 * @param key
 	 *            Emoji key (written in bonusbot.conf)
-	 * @return
+	 * @return the IEmoji
 	 */
 	public IEmoji getEmoji(String key) {
 		String emojiname = Settings.get(key);
@@ -198,8 +200,6 @@ public class GuildExtends {
 
 	/**
 	 * Stops the stop-audio-timer.
-	 * 
-	 * @return
 	 */
 	public void stopTheStopAudioTimer() {
 		stopAudioTimer.cancel();
@@ -209,8 +209,6 @@ public class GuildExtends {
 
 	/**
 	 * Stops the pause/resume-audio-timer.
-	 * 
-	 * @return
 	 */
 	public void stopThePauseResumeAudioTimer() {
 		pauseresumeAudioTimer.cancel();
@@ -237,7 +235,8 @@ public class GuildExtends {
 	/**
 	 * Send the webhook info embed object to all guild
 	 * 
-	 * @param obj
+	 * @param objs
+	 *            List of EmbedObjects
 	 */
 	public static void sendWebhookInfosToAllGuilds(List<EmbedObject> objs) {
 		for (GuildExtends guildext : guildExtendsObjects.values()) {

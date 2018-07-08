@@ -22,6 +22,8 @@ public class GuildAudioManager {
 	 * 
 	 * @param manager
 	 *            Audio player manager to use for creating the player.
+	 * @param guild
+	 *            Guild for the GuildAudioManager
 	 */
 	public GuildAudioManager(AudioPlayerManager manager, IGuild guild) {
 		player = manager.createPlayer();

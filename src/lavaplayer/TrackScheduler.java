@@ -28,6 +28,8 @@ public class TrackScheduler {
 	 * 
 	 * @param player
 	 *            AudioPlayer for the TrackScheduler
+	 * @param guild
+	 *            For which guild.
 	 */
 	public TrackScheduler(AudioPlayer player, IGuild guild) {
 		// Because we will be removing from the "head" of the queue frequently, a
@@ -44,7 +46,9 @@ public class TrackScheduler {
 	 * Plays a track.
 	 * 
 	 * @param track
+	 *            the track
 	 * @param user
+	 *            added from the user
 	 */
 	public synchronized void play(AudioTrack track, IUser user) {
 		queue.add(new Track(track, user, Util.getLocalDateTime()));
@@ -55,8 +59,10 @@ public class TrackScheduler {
 	/**
 	 * Add the next track to queue or play right away if nothing is in the queue.
 	 *
-	 * @param track
-	 *            The track to play or add to queue.
+	 * @param audio
+	 *            The AudioTrack to play or add to queue.
+	 * @param user
+	 *            Added from the user.
 	 * @return If the track was started.
 	 */
 	public synchronized boolean queue(AudioTrack audio, IUser user) {
@@ -74,7 +80,7 @@ public class TrackScheduler {
 	/**
 	 * Removes a Track from queue.
 	 * 
-	 * @param audio
+	 * @param audio The AudioTrack to remove.
 	 */
 	public synchronized void remove(AudioTrack audio) {
 		for (int i = queue.size() - 1; i >= 0; --i) {
@@ -86,8 +92,8 @@ public class TrackScheduler {
 	/**
 	 * Removes a Track from queue.
 	 * 
-	 * @param index
-	 * @return
+	 * @param index The index.
+	 * @return The removed Track.
 	 */
 	public synchronized Track remove(int index) {
 		if (queue.size() <= index)
@@ -145,9 +151,9 @@ public class TrackScheduler {
 	}
 
 	/**
-	 * Return the current Track.
+	 * Return the current Track and remove it from the queue.
 	 * 
-	 * @return
+	 * @return Current track.
 	 */
 	public Track getCurrent() {
 		if (queue.size() > 0) {
@@ -157,9 +163,9 @@ public class TrackScheduler {
 	}
 
 	/**
-	 * Get the next Track.
+	 * Get the next Track and remove it from queue.
 	 * 
-	 * @return
+	 * @return The next Track.
 	 */
 	public Track getNext() {
 		if (queue.size() > 0) {

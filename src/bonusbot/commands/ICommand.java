@@ -8,7 +8,16 @@ import java.util.List;
  */
 interface ICommand {
 
-	/** Interface for a command to be implemented in the command map */
+	/**
+	 * Interface for commands.
+	 * 
+	 * @param commandName
+	 *            Name of the command
+	 * @param event
+	 *            MessageReceivedEvent
+	 * @param args
+	 *            Arguments used at command-use
+	 */
 	void runCommand(String commandName, MessageReceivedEvent event, List<String> args);
 
 }

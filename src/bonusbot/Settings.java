@@ -50,8 +50,11 @@ public class Settings {
 	 * Gets a specific setting from bonusbot.conf. If it's deactivated/removed
 	 * there, checks for default-settings. If it's not in both, return null.
 	 * 
+	 * @param <T>
+	 *            The return type.
 	 * @param key
-	 * @return
+	 *            The key of the setting.
+	 * @return The value (setting).
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T get(String key) {

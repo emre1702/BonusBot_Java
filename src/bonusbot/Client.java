@@ -44,7 +44,7 @@ public class Client {
 	/**
 	 * Getter for the IDiscordClient of the bot.
 	 * 
-	 * @return
+	 * @return IDiscordClient of the bot.
 	 */
 	public static IDiscordClient get() {
 		return client;
@@ -54,7 +54,8 @@ public class Client {
 	 * Check if the user is this bot.
 	 * 
 	 * @param user
-	 * @return
+	 *            The user to check.
+	 * @return If this user is the bot.
 	 */
 	public static boolean isBot(IUser user) {
 		return client.getOurUser().equals(user);

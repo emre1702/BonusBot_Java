@@ -32,7 +32,8 @@ public class AudioManager {
 	 * 
 	 * @param guild
 	 *            The guild of which we want to get the GuildMusicManager.
-	 * @return The GuildMusicManager of the guild.
+	 * @param playerManager
+	 *            playerManager of the guild
 	 */
 	AudioManager(IGuild guild, AudioPlayerManager playerManager) {
 		manager = new GuildAudioManager(playerManager, guild);

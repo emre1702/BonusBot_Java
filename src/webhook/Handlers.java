@@ -39,43 +39,32 @@ public class Handlers {
 		}
 	}
 
-	/*public static class EchoHeaderHandler implements HttpHandler {
-
-		@Override
-		public void handle(HttpExchange he) throws IOException {
-			Headers headers = he.getRequestHeaders();
-			Set<Map.Entry<String, List<String>>> entries = headers.entrySet();
-			String response = "";
-			for (Map.Entry<String, List<String>> entry : entries)
-				response += entry.toString() + "\n";
-			he.sendResponseHeaders(200, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
-		}
-	}
-
-	public static class EchoGetHandler implements HttpHandler {
-
-		@Override
-		public void handle(HttpExchange he) throws IOException {
-			// parse request
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			URI requestedUri = he.getRequestURI();
-			String query = requestedUri.getRawQuery();
-			parseQuery(query, parameters);
-			// send response
-			String response = "";
-			for (String key : parameters.keySet())
-				response += key + " = " + parameters.get(key) + "\n";
-			he.sendResponseHeaders(200, response.length());
-			OutputStream os = he.getResponseBody();
-			os.write(response.toString().getBytes());
-			os.close();
-
-		}
-
-	}*/
+	/*
+	 * public static class EchoHeaderHandler implements HttpHandler {
+	 * 
+	 * @Override public void handle(HttpExchange he) throws IOException { Headers
+	 * headers = he.getRequestHeaders(); Set<Map.Entry<String, List<String>>>
+	 * entries = headers.entrySet(); String response = ""; for (Map.Entry<String,
+	 * List<String>> entry : entries) response += entry.toString() + "\n";
+	 * he.sendResponseHeaders(200, response.length()); OutputStream os =
+	 * he.getResponseBody(); os.write(response.toString().getBytes()); os.close(); }
+	 * }
+	 * 
+	 * public static class EchoGetHandler implements HttpHandler {
+	 * 
+	 * @Override public void handle(HttpExchange he) throws IOException { // parse
+	 * request Map<String, Object> parameters = new HashMap<String, Object>(); URI
+	 * requestedUri = he.getRequestURI(); String query = requestedUri.getRawQuery();
+	 * parseQuery(query, parameters); // send response String response = ""; for
+	 * (String key : parameters.keySet()) response += key + " = " +
+	 * parameters.get(key) + "\n"; he.sendResponseHeaders(200, response.length());
+	 * OutputStream os = he.getResponseBody();
+	 * os.write(response.toString().getBytes()); os.close();
+	 * 
+	 * }
+	 * 
+	 * }
+	 */
 
 	public static class EchoPostHandler implements HttpHandler {
 
@@ -140,7 +129,8 @@ public class Handlers {
 	 * Used to create the EmbedObject from the informations.
 	 * 
 	 * @param parameters
-	 * @return
+	 *            The informations
+	 * @return List of EmbedObjects to add.
 	 */
 	public static List<EmbedObject> getEmbedObject(Map<String, Object> parameters) {
 		List<EmbedObject> list = new ArrayList<EmbedObject>();
@@ -180,7 +170,16 @@ public class Handlers {
 		return list;
 	}
 
-	/** Don't touch it */
+	/**
+	 * Parse query and add it to parameters
+	 * 
+	 * @param query
+	 *            string query
+	 * @param parameters
+	 *            Map of parameters
+	 * @throws UnsupportedEncodingException
+	 *             error
+	 */
 	@SuppressWarnings("unchecked")
 	public static void parseQuery(String query, Map<String, Object> parameters) throws UnsupportedEncodingException {
 

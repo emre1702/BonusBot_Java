@@ -32,10 +32,11 @@ public class AudioInfo {
 	private static Map<Long, EmbedObject> guildlastembed = new HashMap<Long, EmbedObject>();
 
 	/**
-	 * Add queue infos to the embedbuilder
+	 * Get queue infos to display.
 	 * 
 	 * @param queue
-	 * @param builder
+	 *            The queue where we want to get the infos from.
+	 * @return List of String for queue-display.
 	 */
 	private static List<String> getQueueInfos(List<Track> queue) {
 		List<String> queuestrlist = new ArrayList<String>();
@@ -69,6 +70,9 @@ public class AudioInfo {
 	 *            Guild where all happenes.
 	 * @param dateadded
 	 *            Date when the audio got added.
+	 * @param scheduler
+	 *            The TrackScheduler to get the queue from.
+	 * 
 	 * @return EmbedObject with infos for the audio-info channel.
 	 */
 	public static EmbedObject createAudioInfo(AudioTrack audiotrack, IUser user, IGuild guild, LocalDateTime dateadded,
@@ -131,8 +135,8 @@ public class AudioInfo {
 	/**
 	 * Replace the audio-info of a guild with a new EmbedObject (or old edited).
 	 * 
-	 * @param guild
-	 * @param obj
+	 * @param guild At which guild.
+	 * @param obj The new EmbedObject to add.
 	 */
 	private static void replaceAudioInfo(IGuild guild, EmbedObject obj) {
 		GuildExtends guildext = GuildExtends.get(guild);
