@@ -3,7 +3,6 @@ package bonusbot.commands;
 import java.util.List;
 
 import bonusbot.Logging;
-import bonusbot.Util;
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
