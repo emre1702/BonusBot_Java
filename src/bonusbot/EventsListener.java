@@ -3,6 +3,7 @@ package bonusbot;
 import java.util.List;
 
 import bonusbot.guild.GuildExtends;
+import bonusbot.guild.InactivesKicker;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.audit.ActionType;
 import sx.blah.discord.handle.audit.entry.TargetedEntry;
@@ -65,6 +66,8 @@ class EventsListener {
 				if (webhookname != null) {
 					checkGuildWebhook(guildext, webhookname);
 				}
+				
+				new InactivesKicker(guild, Settings.<Integer>get("kickAfterDaysOfInactivity"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace(Logging.getPrintWrite());
