@@ -1,5 +1,7 @@
 package bonusbot;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -17,9 +19,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import bonusbot.guild.GuildExtends;
-import lavaplayer.GuildAudioManager;
-import lavaplayer.TrackScheduler;
-import spotify.SpotifyAudioSourceManager;
+import bonusbot.lavaplayer.GuildAudioManager;
+import bonusbot.lavaplayer.TrackScheduler;
+import bonusbot.spotify.SpotifyAudioSourceManager;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
@@ -180,7 +182,7 @@ public class Audio {
 			TrackScheduler scheduler = audioManager.getScheduler();
 			scheduler.play(track, user);
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 
@@ -206,7 +208,7 @@ public class Audio {
 			if (refreshAudioInfo)
 				AudioInfo.refreshAudioInfoQueue(guild, scheduler);
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 

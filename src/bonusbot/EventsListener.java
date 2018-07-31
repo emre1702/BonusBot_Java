@@ -2,6 +2,8 @@ package bonusbot;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+
 import bonusbot.guild.GuildExtends;
 import bonusbot.guild.InactivesKicker;
 import sx.blah.discord.api.events.EventSubscriber;
@@ -70,7 +72,7 @@ class EventsListener {
 				new InactivesKicker(guild, Settings.<Integer>get("kickAfterDaysOfInactivity"));
 			}
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 
 	}

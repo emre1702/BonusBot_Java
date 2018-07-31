@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,7 +44,7 @@ public class Settings {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 

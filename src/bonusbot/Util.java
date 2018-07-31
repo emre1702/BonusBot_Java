@@ -6,6 +6,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
@@ -75,7 +77,7 @@ public class Util {
 			try {
 				channel.sendMessage(message);
 			} catch (DiscordException e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		});
 	}
@@ -93,7 +95,7 @@ public class Util {
 			try {
 				msg.edit(obj);
 			} catch (DiscordException e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		});
 	}
@@ -113,11 +115,11 @@ public class Util {
 				try {
 					channel.sendMessage(object);
 				} catch (DiscordException e) {
-					e.printStackTrace(Logging.getPrintWrite());
+					LogManager.getLogger().error(e);
 				}
 			});
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 
@@ -140,13 +142,13 @@ public class Util {
 						try {
 							channels.get(0).sendMessage(message);
 						} catch (DiscordException e) {
-							e.printStackTrace(Logging.getPrintWrite());
+							LogManager.getLogger().error(e);
 						}
 					});
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 
@@ -168,13 +170,13 @@ public class Util {
 						try {
 							channels.get(0).sendMessage(object);
 						} catch (DiscordException e) {
-							e.printStackTrace(Logging.getPrintWrite());
+							LogManager.getLogger().error(e);
 						}
 					});
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 

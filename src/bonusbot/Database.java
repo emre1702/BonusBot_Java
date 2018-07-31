@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.apache.logging.log4j.LogManager;
+
 public class Database {
 	
 	private static String connectionString;
@@ -13,7 +15,7 @@ public class Database {
 			try {
 				Class.forName("org.mariadb.jdbc.Driver");
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 			String dbhost = Settings.get("mariaDBHost");
 			int dbport = Settings.get("mariaDBPort");
@@ -33,7 +35,7 @@ public class Database {
 			Connection conn = DriverManager.getConnection(connectionString);
 			return conn;
 		} catch (SQLException e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 			return null;
 		}
 	}

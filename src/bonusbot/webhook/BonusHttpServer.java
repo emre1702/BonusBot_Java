@@ -1,11 +1,11 @@
-package webhook;
+package bonusbot.webhook;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import com.sun.net.httpserver.HttpServer;
+import org.apache.logging.log4j.LogManager;
 
-import bonusbot.Logging;
+import com.sun.net.httpserver.HttpServer;
 
 /**
  * Class to create our HTTP server
@@ -25,7 +25,7 @@ public class BonusHttpServer {
 			server.setExecutor(null);
 			server.start();
 		} catch (IOException e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 

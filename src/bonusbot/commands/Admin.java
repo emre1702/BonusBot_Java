@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
 
 import bonusbot.Lang;
-import bonusbot.Logging;
 import bonusbot.Settings;
 import bonusbot.Util;
 import bonusbot.guild.GuildExtends;
@@ -109,7 +109,7 @@ public class Admin {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("delmsg", deleteLastMessagesOfUserInChannel);

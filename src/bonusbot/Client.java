@@ -1,5 +1,7 @@
 package bonusbot;
 
+import org.apache.logging.log4j.LogManager;
+
 import sx.blah.discord.api.ClientBuilder;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IUser;
@@ -36,7 +38,7 @@ public class Client {
 				return client;
 			}
 		} catch (DiscordException e) { // This is thrown if there was a problem building the client
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 			return null;
 		}
 	}

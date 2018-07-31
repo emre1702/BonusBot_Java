@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import bonusbot.guild.GuildExtends;
-import lavaplayer.Track;
-import lavaplayer.TrackScheduler;
+import bonusbot.lavaplayer.Track;
+import bonusbot.lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.api.internal.json.objects.EmbedObject.EmbedFieldObject;
 import sx.blah.discord.handle.obj.IChannel;
@@ -117,7 +119,7 @@ public class AudioInfo {
 
 			return obj;
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 			return null;
 		}
 	}
@@ -303,7 +305,7 @@ public class AudioInfo {
 
 			return obj;
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 			return null;
 		}
 	}

@@ -1,5 +1,7 @@
 package bonusbot.guild;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
@@ -7,10 +9,9 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 
 import bonusbot.AudioInfo;
-import bonusbot.Logging;
-import lavaplayer.GuildAudioManager;
-import lavaplayer.Track;
-import lavaplayer.TrackScheduler;
+import bonusbot.lavaplayer.GuildAudioManager;
+import bonusbot.lavaplayer.Track;
+import bonusbot.lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
@@ -72,7 +73,7 @@ public class AudioManager {
 						AudioInfo.changeAudioInfoStatus(guild, "playing");
 					}
 				} catch (Exception e) {
-					e.printStackTrace(Logging.getPrintWrite());
+					LogManager.getLogger().error(e);
 				}
 			}
 

@@ -1,7 +1,5 @@
 package bonusbot.commands;
 
-import lavaplayer.Track;
-import lavaplayer.TrackScheduler;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
@@ -18,12 +16,16 @@ import java.util.Map;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 
 import bonusbot.*;
 import bonusbot.guild.GuildExtends;
+import bonusbot.lavaplayer.Track;
+import bonusbot.lavaplayer.TrackScheduler;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
@@ -105,7 +107,7 @@ public class Audio {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 
@@ -179,7 +181,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("join", joinChannel);
@@ -215,7 +217,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("leave", leaveChannel);
@@ -243,7 +245,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("play", playAudio);
@@ -272,7 +274,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("playplaylist", playAudioPlaylist);
@@ -311,7 +313,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("playfolder", playAudioFolder);
@@ -375,7 +377,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("pause", pauseResumePlayer);
@@ -436,7 +438,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("stop", stopPlayer);
@@ -485,7 +487,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("delqueue", removeFromQueue);
@@ -502,7 +504,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("skip", skipAudio);
@@ -538,7 +540,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("volume", setVolume);
@@ -554,7 +556,7 @@ public class Audio {
 							Lang.getLang("not_played_audio_so_far", event.getAuthor(), event.getGuild()));
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("playing", showPlaying);
@@ -583,7 +585,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("position", setAudioPosition);
@@ -612,7 +614,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("ytsearch", searchYoutube);
@@ -653,7 +655,7 @@ public class Audio {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("ytplay", playQueueYoutube);

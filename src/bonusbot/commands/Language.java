@@ -2,7 +2,8 @@ package bonusbot.commands;
 
 import java.util.List;
 
-import bonusbot.Logging;
+import org.apache.logging.log4j.LogManager;
+
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -57,7 +58,7 @@ public class Language {
 						event.getAuthor().addRole(role);
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("deutsch", requestLanguageSectionRole);

@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import org.apache.logging.log4j.LogManager;
+
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 
 import bonusbot.Audio;
-import bonusbot.Logging;
 import bonusbot.Settings;
 import bonusbot.Util;
-import lavaplayer.GuildAudioManager;
+import bonusbot.lavaplayer.GuildAudioManager;
 import sx.blah.discord.api.internal.json.objects.EmbedObject;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IEmoji;
@@ -227,7 +228,7 @@ public class GuildExtends {
 		try {
 			return guild.getUserByID(Long.parseUnsignedLong(mention.replaceAll("[^0-9]", "")));
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 		return null;
 	}

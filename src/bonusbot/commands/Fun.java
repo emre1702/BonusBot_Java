@@ -3,8 +3,9 @@ package bonusbot.commands;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.logging.log4j.LogManager;
+
 import bonusbot.Lang;
-import bonusbot.Logging;
 import bonusbot.Util;
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.impl.obj.ReactionEmoji;
@@ -70,7 +71,7 @@ public class Fun {
 
 				}
 			} catch (Exception e) {
-				e.printStackTrace(Logging.getPrintWrite());
+				LogManager.getLogger().error(e);
 			}
 		};
 		Handler.commandMap.put("8ball", askTheBot);

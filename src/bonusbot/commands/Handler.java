@@ -2,7 +2,8 @@ package bonusbot.commands;
 
 import java.util.*;
 
-import bonusbot.Logging;
+import org.apache.logging.log4j.LogManager;
+
 import bonusbot.Settings;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
@@ -77,7 +78,7 @@ public class Handler {
 			if (commandMap.containsKey(commandStr))
 				commandMap.get(commandStr).runCommand(commandStr, event, argsList);
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 
 	}

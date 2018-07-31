@@ -1,4 +1,4 @@
-package lavaplayer;
+package bonusbot.lavaplayer;
 
 import java.time.LocalDateTime;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package spotify;
+package bonusbot.spotify;
 
 import java.util.List;
 import java.io.DataInput;
@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.logging.log4j.LogManager;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -62,8 +63,6 @@ import com.wrapper.spotify.model_objects.specification.TrackSimplified;
 import com.wrapper.spotify.requests.authorization.client_credentials.ClientCredentialsRequest;
 
 import org.apache.http.client.config.RequestConfig;
-
-import bonusbot.Logging;
 
 public class SpotifyAudioSourceManager implements AudioSourceManager, HttpConfigurable {
 
@@ -106,7 +105,7 @@ public class SpotifyAudioSourceManager implements AudioSourceManager, HttpConfig
 					JacksonFactory.getDefaultInstance(), (unused) -> {
 					}).setApplicationName("SkyBot-youtube-search").build();
 		} catch (GeneralSecurityException | IOException e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 			return null;
 		}
 	}
@@ -299,7 +298,7 @@ public class SpotifyAudioSourceManager implements AudioSourceManager, HttpConfig
 			ClientCredentials clientCredentials = clientCredentialsFuture.get();
 			api.setAccessToken(clientCredentials.getAccessToken());
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 

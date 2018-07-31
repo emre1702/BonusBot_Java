@@ -2,9 +2,11 @@ package bonusbot;
 
 import java.sql.Connection;
 
+import org.apache.logging.log4j.LogManager;
+
+import bonusbot.webhook.BonusHttpServer;
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
-import webhook.BonusHttpServer;
 
 /**
  * Main-method
@@ -13,13 +15,14 @@ import webhook.BonusHttpServer;
  *
  */
 public class MainRunner {
-	
+
 	private static void tryDatabase() {
 		try (Connection conn = Database.get()) {
 			if (conn != null) {
-				System.out.println("[INFO] Connecting to database works!");
+				LogManager.getLogger().info("Connecting to database works!");
 			}
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 	}
 
 	/**
@@ -41,7 +44,7 @@ public class MainRunner {
 			dispatcher.registerListener(new bonusbot.commands.Handler());
 			dispatcher.registerListener(new EventsListener());
 		} catch (Exception e) {
-			e.printStackTrace(Logging.getPrintWrite());
+			LogManager.getLogger().error(e);
 		}
 	}
 }
