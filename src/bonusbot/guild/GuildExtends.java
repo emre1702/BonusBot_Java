@@ -101,7 +101,10 @@ public class GuildExtends {
 	 * @return If the channel is the audio-channel.
 	 */
 	public boolean isAudioChannel(IChannel channel) {
-		return channel.equals(getChannel("audioChannel"));
+		IChannel audiochannel = getChannel("audioChannel");
+		if (audiochannel == null)
+			return true;
+		return channel.equals(audiochannel);
 	}
 
 	/**
