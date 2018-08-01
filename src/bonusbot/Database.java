@@ -151,7 +151,7 @@ public class Database {
 		try (Connection conn = get(); Statement statement = conn.createStatement()) {
 			try (ResultSet result = statement.executeQuery(selectquery)) {
 				while (result.next()) {
-					long guildid = result.getLong("guild");
+					long guildid = result.getLong("guildid");
 					GuildExtends guildextds = GuildExtends.get(guildid);
 					if (guildextds != null) {
 						long userid = result.getLong("id");
