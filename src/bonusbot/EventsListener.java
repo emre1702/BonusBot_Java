@@ -112,8 +112,7 @@ class EventsListener {
 			String msg = user.mention() + " (" + Util.getUniqueName(user) + ") has left the guild.";
 			Util.sendMessage(logchannel, msg);
 		}
-		Database.updateUserRoles(user, guild);
-		Database.updateUserLastTimeInGuild(user, guild);
+		Database.saveUserDataOnGuildLeave(user, guild);
 	}
 
 	@EventSubscriber

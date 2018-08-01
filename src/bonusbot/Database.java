@@ -60,7 +60,7 @@ public class Database {
 		}
 	}
 	
-	public static void updateUserRoles(IUser user, IGuild guild) {
+	private static void updateUserRoles(IUser user, IGuild guild) {
 		List<IRole> roles = guild.getRolesForUser(user);
 		Long[] rolesarray = new Long[roles.size()];	
 		int i = 0;
@@ -80,7 +80,7 @@ public class Database {
 		}
 	}
 	
-	public static void updateUserLastTimeInGuild(IUser user, IGuild guild) {
+	private static void updateUserLastTimeInGuild(IUser user, IGuild guild) {
 		// only update because the function gets called after updateUserRoles
 		String query = "UPDATE user SET lasttimeinguild = NOW() WHERE id = ? AND guildid = ?";
 		try (Connection conn = get(); PreparedStatement statement = conn.prepareStatement(query)) {
@@ -119,6 +119,11 @@ public class Database {
 		} catch (Exception e) {
 			LogManager.getLogger().error(e);
 		}
+	}
+	
+	public static void saveUserDataOnGuildLeave(IUser user, IGuild guild) {
+		updateUserRoles(user, guild);
+		updateUserLastTimeInGuild(user, guild);
 	}
 	
 	public static void saveUserMute(IUser user, IGuild guild, long mutetime) {
