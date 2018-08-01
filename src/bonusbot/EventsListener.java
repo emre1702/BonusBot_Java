@@ -98,18 +98,22 @@ class EventsListener {
 			if (channel != null)
 				welcomemsg += "\nPlease read " + channel.mention() + " in 'important' category!";
 			Util.sendMessage(greetUserChannel, welcomemsg);
+			Database.loadUserDataOnGuildJoin(event.getUser(), guildext);
 		}
 	}
 
 	@EventSubscriber
 	public void onUserLeaveGuild(UserLeaveEvent event) {
-		GuildExtends guildext = GuildExtends.get(event.getGuild());
+		IUser user = event.getUser();
+		IGuild guild = event.getGuild();
+		GuildExtends guildext = GuildExtends.get(guild);
 		IChannel logchannel = guildext.getChannel("userLeaveLogChannel");
 		if (logchannel != null) {
-			IUser user = event.getUser();
 			String msg = user.mention() + " (" + Util.getUniqueName(user) + ") has left the guild.";
 			Util.sendMessage(logchannel, msg);
 		}
+		Database.updateUserRoles(user, guild);
+		Database.updateUserLastTimeInGuild(user, guild);
 	}
 
 	@EventSubscriber
