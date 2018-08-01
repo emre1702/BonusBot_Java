@@ -39,6 +39,16 @@ Oh and there is the command "8ball", just test it out.
 Don't forget to use the prefix (default: "!") before the command!  
 See "Settings" for more infos.
 
+#### admin
+Usable everywhere, only with admin roles (setted in bonusbot.conf).  
+
+- ban [@User] [?delMessagesForDays = 0] [Reason...]  
+  - Bans a user. DelMessagesForDays is optional and only used if you use a number as second argument.  
+- mute [@User] [Minutes] [Reason...]  
+  - Mutes a user.  
+- delmsg [@User] [?AmountMessages = 100]  
+  - Deletes the last messages of a user.
+
 #### language-roles  
 Only usable in languageChannel, not usable when it's deactivated.  
 
