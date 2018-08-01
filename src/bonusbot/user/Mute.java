@@ -9,7 +9,7 @@ import sx.blah.discord.handle.obj.IUser;
 public class Mute {
 	
 	public static void setUserMute(IUser user, GuildExtends guildext, long mutetime, boolean saveindb) {
-		IRole muterole = guildext.getRole(Settings.get("muteRole"));
+		IRole muterole = guildext.getRole("muteRole");
 		if (muterole != null) {
 			boolean userhasrole = user.hasRole(muterole);
 			if (mutetime != 0 && !userhasrole) {
