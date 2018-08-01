@@ -131,7 +131,7 @@ public class Database {
 		if (mutetime != 0) {
 			String mutetimequery = mutetime == -1 ? "0" : "1";
 			String muteendquery = "DATE_ADD(NOW(), INTERVAL "+mutetime+" MINUTE)" ;
-			query = "INSERT INTO user (id, guildid, mutetime, muteend) VALUES (?, ?, "+mutetimequery+", "+mutetimequery+") ON DUPLICATE KEY UPDATE mutetime = "+mutetimequery+", muteend = "+muteendquery;
+			query = "INSERT INTO user (id, guildid, mutetime, muteend) VALUES (?, ?, "+mutetimequery+", "+muteendquery+") ON DUPLICATE KEY UPDATE mutetime = "+mutetimequery+", muteend = "+muteendquery;
 		} else {
 			query = "UPDATE user SET mutetime = 0, muteend = NULL WHERE id = ? AND guildid = ?";
 		}
