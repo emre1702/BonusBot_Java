@@ -1,7 +1,6 @@
 package bonusbot.user;
 
 import bonusbot.Database;
-import bonusbot.Settings;
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IRole;
 import sx.blah.discord.handle.obj.IUser;
