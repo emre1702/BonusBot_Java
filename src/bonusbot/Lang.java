@@ -119,6 +119,8 @@ public class Lang {
 		german.put("index_not_in_queue", "Der Index ist nicht in der Warteschlange!");
 		german.put("shuffle_mode_on", "Shuffle-Modus ist nun an");
 		german.put("shuffle_mode_off", "Shuffle-Modus deaktiviert");
+		german.put("add_webhook_to_service",
+				"Bitte den Webhook zu deinem Service hinzufügen, um den Webhooker nutzen zu können.\nID: {1}\nToken: {2}\nFür GitHub: {3}");
 		german.put("minutes", "Minuten");
 
 		Map<String, String> turkish = new HashMap<String, String>();
@@ -168,6 +170,8 @@ public class Lang {
 		turkish.put("index_not_in_queue", "Numara kuyrukta degil!");
 		turkish.put("shuffle_mode_on", "Shuffle acildi");
 		turkish.put("shuffle_mode_off", "Shuffle kapatildi");
+		turkish.put("add_webhook_to_service",
+				"Lütfen Webhooker'i kullanmak icin Webhook'u servisine ekle.\nID: {1}\nToken: {2}\nGitHub icin: {3}");
 		turkish.put("minutes", "dakika");
 
 		languageMap.put("english", english);
