@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -139,6 +140,32 @@ public class Database {
 			statement.setLong(1, user.getLongID());
 			statement.setLong(2, guild.getLongID());
 			statement.execute();
+		} catch (Exception e) {
+			LogManager.getLogger().error(e);
+		}
+	}
+	
+	public static void updateMutes() {
+		String selectquery = "SELECT id, guildid FROM user WHERE mutetime > 0 AND muteend < NOW()";
+		String updatequery = "UPDATE user SET mutetime = 0 AND muteend = NULL WHERE mutetime > 0 AND muteend < NOW()";
+		try (Connection conn = get(); Statement statement = conn.createStatement()) {
+			try (ResultSet result = statement.executeQuery(selectquery)) {
+				while (result.next()) {
+					long guildid = result.getLong("guild");
+					GuildExtends guildextds = GuildExtends.get(guildid);
+					if (guildextds != null) {
+						long userid = result.getLong("id");
+						IRole role = guildextds.getRole("muteRole");
+						if (role != null) {
+							IUser user = guildextds.getGuild().getUserByID(userid);
+							if (user != null && user.hasRole(role)) {
+								user.removeRole(role);
+							}
+						}
+					}
+				}
+			}
+			statement.execute(updatequery);
 		} catch (Exception e) {
 			LogManager.getLogger().error(e);
 		}

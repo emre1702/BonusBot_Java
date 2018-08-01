@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 
 import bonusbot.guild.GuildExtends;
 import bonusbot.guild.InactivesKicker;
+import bonusbot.user.Mute;
 import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.handle.audit.ActionType;
 import sx.blah.discord.handle.audit.entry.TargetedEntry;
@@ -71,6 +72,8 @@ class EventsListener {
 				
 				new InactivesKicker(guild, Settings.<Integer>get("kickAfterDaysOfInactivity"));
 			}
+			Mute.startMuteUpdater();
+			
 		} catch (Exception e) {
 			LogManager.getLogger().error(e);
 		}
