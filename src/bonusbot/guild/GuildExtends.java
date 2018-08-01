@@ -28,8 +28,10 @@ import sx.blah.discord.handle.obj.IUser;
  */
 public class GuildExtends {
 
-	/** The object for the specific guild(ID) */
+	/** The object for the specific guild */
 	private static Map<IGuild, GuildExtends> guildExtendsObjects = new HashMap<>();
+	/** The object for the specific guildID */
+	private static Map<Long, GuildExtends> guildExtendsObjectsForID = new HashMap<>();
 	/** The AudioManager for the guild */
 	private AudioManager audiomanager;
 	/** The guild */
@@ -49,6 +51,7 @@ public class GuildExtends {
 	 */
 	public GuildExtends(IGuild guild) {
 		guildExtendsObjects.put(guild, this);
+		guildExtendsObjectsForID.put(guild.getLongID(), this);
 		this.audiomanager = new AudioManager(guild, Audio.getPlayerManager());
 		this.guild = guild;
 	}
@@ -68,6 +71,17 @@ public class GuildExtends {
 		}
 
 		return guildext;
+	}
+	
+	/**
+	 * Get the object for the specific guild.
+	 * 
+	 * @param guildID
+	 *            The guildID whose object we want to retrieve.
+	 * @return The GuildExtends object for the guild or null if not exists.
+	 */
+	public synchronized static GuildExtends get(long guildID) {
+		return guildExtendsObjectsForID.get(guildID);
 	}
 
 	/**
