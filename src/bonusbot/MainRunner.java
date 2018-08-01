@@ -1,7 +1,5 @@
 package bonusbot;
 
-import java.sql.Connection;
-
 import org.apache.logging.log4j.LogManager;
 
 import bonusbot.webhook.BonusHttpServer;
@@ -16,15 +14,6 @@ import sx.blah.discord.api.events.EventDispatcher;
  */
 public class MainRunner {
 
-	private static void tryDatabase() {
-		try (Connection conn = Database.get()) {
-			if (conn != null) {
-				LogManager.getLogger().info("Connecting to database works!");
-			}
-		} catch (Exception e) {
-		}
-	}
-
 	/**
 	 * static void main
 	 * 
@@ -34,7 +23,7 @@ public class MainRunner {
 	public static void main(String[] args) {
 		try {
 			Settings.loadSettings();
-			tryDatabase();
+			Database.check();
 			if (Settings.get("webhookName") == null && Settings.get("httpServerPort") != null) {
 				new BonusHttpServer(Settings.<Integer>get("httpServerPort"));
 			}
