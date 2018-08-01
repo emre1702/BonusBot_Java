@@ -122,13 +122,19 @@ public class Admin {
 				IGuild guild = event.getGuild();
 				IChannel channel = event.getChannel();
 				if (args.size() > 1) {
-					int deletemessagesfordays = 0;
-					if (args.size() > 2 && StringUtils.isNumeric(args.get(2))) {
-						deletemessagesfordays = Integer.parseInt(args.get(2));
-					}
 					IUser user = guildext.getUserFromMention(args.get(0));
 					if (user != null) {
-						String reason = args.get(1);
+						int deletemessagesfordays = 0;
+						int reasonstartindex = 2;
+						if (StringUtils.isNumeric(args.get(1))) {
+							deletemessagesfordays = Integer.parseInt(args.get(1));
+						} else {
+							--reasonstartindex;
+						}
+						String reason = args.get(reasonstartindex);
+						for (int i = reasonstartindex+1; i < args.size(); ++i) {
+							reason += " " + args.get(i);
+						}
 						String adminname = Util.getUniqueName(author);
 						user.getOrCreatePMChannel().sendMessage(
 								"You got banned by " + adminname + " from " + guild.getName() + ". Reason: " + reason);
@@ -139,8 +145,8 @@ public class Admin {
 					Util.sendMessage(channel,
 							Lang.getLang("usage", author, guild) + ": " + Settings.get("prefix") + "ban " + " [@"
 									+ Lang.getLang("user", author, guild) + "]" + " ["
-									+ Lang.getLang("reason", author, guild) + "]" + " ["
-									+ Lang.getLang("del_messages_for_days", author, guild) + " = 0]");
+									+ Lang.getLang("del_messages_for_days", author, guild) + " = 0]" + " ["
+									+ Lang.getLang("reason", author, guild)+"]");
 				}
 			}
 		};
@@ -170,7 +176,12 @@ public class Admin {
 										"You got muted by " + adminname + " from " + guild.getName() + " for "+mutetime+" minutes. Reason: " + reason);
 							}
 							Mute.setUserMute(user, guildext, mutetime, true);
-						}
+						} else 
+							Util.sendMessage(channel,
+									Lang.getLang("usage", author, guild) + ": " + Settings.get("prefix") + "mute " + " [@"
+											+ Lang.getLang("user", author, guild) + "]" + " ["
+											+ Lang.getLang("minutes", author, guild) + "]" + " ["
+											+ Lang.getLang("reason", author, guild) + "]");
 					} else
 						Util.sendMessage(channel, Lang.getLang("user_not_found", event.getAuthor(), guild));
 				} else
