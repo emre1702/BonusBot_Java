@@ -11,6 +11,7 @@ import bonusbot.Lang;
 import bonusbot.Settings;
 import bonusbot.Util;
 import bonusbot.guild.GuildExtends;
+import bonusbot.user.Mute;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IGuild;
@@ -144,6 +145,43 @@ public class Admin {
 			}
 		};
 		Handler.commandMap.put("ban", banUser);
+		
+		ICommand muteUser = (String cmd, MessageReceivedEvent event, List<String> args) -> {
+			IGuild guild = event.getGuild();
+			GuildExtends guildext = GuildExtends.get(guild);
+			IUser author = event.getAuthor();
+			if (guildext.isAdmin(author)) {
+				IChannel channel = event.getChannel();
+				if (args.size() > 2) {
+					IUser user = guildext.getUserFromMention(args.get(0));
+					if (user != null) {
+						if (StringUtils.isNumeric(args.get(1))) {
+							long mutetime = Long.parseLong(args.get(1));
+							String adminname = Util.getUniqueName(author);
+							String reason = args.get(2);
+							for (int i = 3; i < args.size(); ++i) {
+								reason += " " + args.get(i); 
+							}
+							if (mutetime == -1) {
+								user.getOrCreatePMChannel().sendMessage(
+										"You got permanently muted by " + adminname + " from " + guild.getName() + ". Reason: " + reason);
+							} else {
+								user.getOrCreatePMChannel().sendMessage(
+										"You got muted by " + adminname + " from " + guild.getName() + " for "+mutetime+" minutes. Reason: " + reason);
+							}
+							Mute.setUserMute(user, guildext, mutetime, true);
+						}
+					} else
+						Util.sendMessage(channel, Lang.getLang("user_not_found", event.getAuthor(), guild));
+				} else
+					Util.sendMessage(channel,
+							Lang.getLang("usage", author, guild) + ": " + Settings.get("prefix") + "mute " + " [@"
+									+ Lang.getLang("user", author, guild) + "]" + " ["
+									+ Lang.getLang("minutes", author, guild) + "]" + " ["
+									+ Lang.getLang("reason", author, guild) + "]");
+			}
+		};
+		Handler.commandMap.put("mute", muteUser);
 	}
 
 }
