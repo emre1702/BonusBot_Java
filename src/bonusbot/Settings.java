@@ -60,11 +60,13 @@ public class Settings {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T get(String key) {
-		if (settingsMap.containsKey(key)) {
-			return (T) settingsMap.get(key);
-		}
-		if (defaultSettingsMap.containsKey(key)) {
-			return (T) defaultSettingsMap.get(key);
+		if (key != null) {
+			if (settingsMap.containsKey(key)) {
+				return (T) settingsMap.get(key);
+			}
+			if (defaultSettingsMap.containsKey(key)) {
+				return (T) defaultSettingsMap.get(key);
+			}
 		}
 		return null;
 	}
