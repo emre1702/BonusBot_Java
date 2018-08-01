@@ -170,10 +170,13 @@ public class Admin {
 							}
 							if (mutetime == -1) {
 								user.getOrCreatePMChannel().sendMessage(
-										"You got permanently muted by " + adminname + " from " + guild.getName() + ". Reason: " + reason);
+										"You got permanently muted by " + adminname + " in " + guild.getName() + ". Reason: " + reason);
+							} else if (mutetime == 0) {
+								user.getOrCreatePMChannel().sendMessage(
+										"You got unmuted by " + adminname + " in " + guild.getName() + ". Reason: " + reason);
 							} else {
 								user.getOrCreatePMChannel().sendMessage(
-										"You got muted by " + adminname + " from " + guild.getName() + " for "+mutetime+" minutes. Reason: " + reason);
+										"You got muted by " + adminname + " in " + guild.getName() + " for "+mutetime+" minutes. Reason: " + reason);
 							}
 							Mute.setUserMute(user, guildext, mutetime, true);
 						} else 
