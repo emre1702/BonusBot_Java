@@ -73,6 +73,9 @@ public class TrackScheduler {
 		// track goes to the queue instead.
 		queue.add(new Track(audio, user, Util.getLocalDateTime()));
 		boolean playing = player.startTrack(audio, true);
+		if (playing) {
+			AudioInfo.changeAudioInfoStatus(guild, "playing");
+		}
 
 		return playing;
 	}
@@ -131,8 +134,15 @@ public class TrackScheduler {
 			// giving null to startTrack, which is a valid argument and will simply stop the
 			// player.
 			player.startTrack(nextTrack.audio, false);
-		} else
+			if (currentTrack == null) {
+				AudioInfo.changeAudioInfoStatus(guild, "playing");
+			}
+		} else {
 			player.startTrack(null, false);
+			if (currentTrack != null) {
+				AudioInfo.changeAudioInfoStatus(guild, "stopped");
+			}
+		}
 		return currentTrack;
 	}
 
