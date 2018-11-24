@@ -122,8 +122,8 @@ But DON'T delete "token" and the "EmojiID" settings, these are important.
 ## How can I use it?
 
 ### Requirements  
-* Java 10 Runtime  
-  * You can use "apt-get install oracle-java10-installer
+* Java Runtime  
+  * You can use "apt-get install default-jre"
 * Bot in Discord  
   * Create one here: https://discordapp.com/developers/applications/  
 
