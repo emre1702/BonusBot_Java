@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
-import org.apache.logging.log4j.LogManager;
-
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 
 import bonusbot.Audio;
@@ -42,6 +40,7 @@ public class GuildExtends {
 	public Timer stopAudioTimer = new Timer();
 	/** Timer to pause/resume the audio on e.g. !pause 5 */
 	public Timer pauseresumeAudioTimer = new Timer();
+	private IRole muteRole;
 
 	/**
 	 * Constructor Also creates AudioManager for the guild.
@@ -54,6 +53,10 @@ public class GuildExtends {
 		guildExtendsObjectsForID.put(guild.getLongID(), this);
 		this.audiomanager = new AudioManager(guild, Audio.getPlayerManager());
 		this.guild = guild;
+		
+		List<IRole> roles = guild.getRolesByName("muted");
+		if (!roles.isEmpty())
+			this.muteRole = roles.get(0);
 	}
 
 	/**
@@ -199,6 +202,28 @@ public class GuildExtends {
 		}
 		return null;
 	}
+	
+	/**
+	 * Getter for a language role for the guild. Possible keys are in bonusbot.conf (e.g.
+	 * englishRole).
+	 * This method checks for mute and gives [Name]Muted role on mute instead.
+	 * 
+	 * @param key
+	 *            Role key (written in bonusbot.conf)
+	 * @return the IRole
+	 */
+	public IRole getLanguageRole(String key, IUser user) {
+		String rolename = Settings.get(key);
+		if (rolename != null) {
+			if (muteRole != null && user.hasRole(muteRole))
+				rolename += "Muted";
+			List<IRole> roles = guild.getRolesByName(rolename);
+			if (!roles.isEmpty()) {
+				return roles.get(0);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Getter for a emoji for the guild. Possible keys are in bonusbot.conf (e.g.
@@ -232,22 +257,6 @@ public class GuildExtends {
 		pauseresumeAudioTimer.cancel();
 		pauseresumeAudioTimer.purge();
 		pauseresumeAudioTimer = new Timer();
-	}
-
-	/**
-	 * Get the user from a mention string
-	 * 
-	 * @param mention
-	 *            The mention
-	 * @return IUser The user
-	 */
-	public IUser getUserFromMention(String mention) {
-		try {
-			return guild.getUserByID(Long.parseUnsignedLong(mention.replaceAll("[^0-9]", "")));
-		} catch (Exception e) {
-			LogManager.getLogger().error(e);
-		}
-		return null;
 	}
 
 	/**

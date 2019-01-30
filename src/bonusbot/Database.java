@@ -159,7 +159,7 @@ public class Database {
 						if (role != null) {
 							IUser user = guildextds.getGuild().getUserByID(userid);
 							if (user != null && user.hasRole(role)) {
-								user.removeRole(role);
+								Mute.setUserMute(user, guildextds, 0, false);
 							}
 						}
 					}

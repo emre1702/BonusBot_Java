@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 
 import bonusbot.guild.GuildExtends;
 import sx.blah.discord.handle.obj.IRole;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedEvent;
 
 /**
@@ -32,30 +33,31 @@ public class Language {
 				GuildExtends guildext = GuildExtends.get(event.getGuild());
 				if (guildext.isRolesChannel(event.getChannel())) {
 					IRole role = null;
+					IUser user = event.getAuthor();
 					switch (cmd) {
 					case "deutsch":
 					case "german":
-						IRole germanRole = guildext.getRole("germanRole");
+						IRole germanRole = guildext.getLanguageRole("germanRole", user);
 						if (germanRole != null) {
 							role = germanRole;
 						}
 						break;
 					case "türkce":
 					case "turkish":
-						IRole turkishRole = guildext.getRole("turkishRole");
+						IRole turkishRole = guildext.getLanguageRole("turkishRole", user);
 						if (turkishRole != null) {
 							role = turkishRole;
 						}
 						break;
 					case "english":
-						IRole englishRole = guildext.getRole("englishRole");
+						IRole englishRole = guildext.getLanguageRole("englishRole", user);
 						if (englishRole != null) {
 							role = englishRole;
 						}
 						break;
 					}
 					if (role != null)
-						event.getAuthor().addRole(role);
+						user.addRole(role);
 				}
 			} catch (Exception e) {
 				LogManager.getLogger().error(e);

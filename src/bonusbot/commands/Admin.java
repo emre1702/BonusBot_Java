@@ -138,7 +138,7 @@ public class Admin {
 		});
 		return amountdeleted[0];
 	}
-
+	
 	/**
 	 * Create the admins-commands.
 	 */
@@ -163,21 +163,24 @@ public class Admin {
 						if (args.size() > 1) {
 							if (StringUtils.isNumeric(args.get(1)))
 								deleteamount = Integer.parseInt(args.get(1));
-							IUser user = guildext.getUserFromMention(args.get(0));
-							if (user != null) {
-								int amountdeleted;
-								if (cmd.equals("delmsgall")) {
-									amountdeleted = deleteAllMessages(guild, user, reqbuilder);
-									reqbuilder.andThen(() -> {
+							List<IUser> users = event.getMessage().getMentions();
+							if (!users.isEmpty()) {
+								IUser user = users.get(0);
+								if (user != null) {
+									int amountdeleted;
+									if (cmd.equals("delmsgall")) {
+										amountdeleted = deleteAllMessages(guild, user, reqbuilder);
+										reqbuilder.andThen(() -> {
+											Util.sendMessage(channel,
+													amountdeleted + " " + Lang.getLang("got_deleted", author, guild));
+											return true;
+										});
+										reqbuilder.execute();
+									} else {
+										amountdeleted = deleteLastMessages(channel, user, deleteamount);
 										Util.sendMessage(channel,
 												amountdeleted + " " + Lang.getLang("got_deleted", author, guild));
-										return true;
-									});
-									reqbuilder.execute();
-								} else {
-									amountdeleted = deleteLastMessages(channel, user, deleteamount);
-									Util.sendMessage(channel,
-											amountdeleted + " " + Lang.getLang("got_deleted", author, guild));
+									}
 								}
 								
 							} else
@@ -187,8 +190,9 @@ public class Admin {
 							int amountdeleted = deleteLastMessages(channel, deleteamount);
 							Util.sendMessage(channel, amountdeleted + " " + Lang.getLang("got_deleted", author, guild));
 						} else {
-							IUser user = guildext.getUserFromMention(args.get(0));
-							if (user != null) {
+							List<IUser> users = event.getMessage().getMentions();
+							if (!users.isEmpty()) {
+								IUser user = users.get(0);
 								int amountdeleted;
 								if (cmd.equals("delmsgall")) {
 									amountdeleted = deleteAllMessages(guild, user, reqbuilder);
@@ -224,8 +228,9 @@ public class Admin {
 				IGuild guild = event.getGuild();
 				IChannel channel = event.getChannel();
 				if (args.size() > 1) {
-					IUser user = guildext.getUserFromMention(args.get(0));
-					if (user != null) {
+					List<IUser> users = event.getMessage().getMentions();
+					if (!users.isEmpty()) {
+						IUser user = users.get(0);
 						int deletemessagesfordays = 0;
 						int reasonstartindex = 2;
 						if (StringUtils.isNumeric(args.get(1))) {
@@ -261,8 +266,9 @@ public class Admin {
 			if (guildext.isAdmin(author)) {
 				IChannel channel = event.getChannel();
 				if (args.size() > 2) {
-					IUser user = guildext.getUserFromMention(args.get(0));
-					if (user != null) {
+					List<IUser> users = event.getMessage().getMentions();
+					if (!users.isEmpty()) {
+						IUser user = users.get(0);
 						if (StringUtils.isNumeric(args.get(1))) {
 							long mutetime = Long.parseLong(args.get(1));
 							String adminname = Util.getUniqueName(author);
