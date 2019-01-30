@@ -169,7 +169,7 @@ public class SpotifyAudioSourceManager implements AudioSourceManager, HttpConfig
 				try {
 					List<AudioTrack> finalPlaylist = new ArrayList<>();
 					Playlist spotifyPlaylist = (Playlist) api
-							.getPlaylist(res.group(res.groupCount() - 1), res.group(res.groupCount())).build()
+							.getPlaylist(res.group(res.groupCount())).build()
 							.executeAsync().get();
 					for (PlaylistTrack playlistTrack : spotifyPlaylist.getTracks().getItems()) {
 						List<SearchResult> results = searchYoutube(playlistTrack.getTrack().getArtists()[0].getName()
