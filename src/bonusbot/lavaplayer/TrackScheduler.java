@@ -22,6 +22,7 @@ public class TrackScheduler {
 	private AudioPlayer player;
 	private IGuild guild;
 	private boolean shuffle = true;
+	private Track previousTrack;
 
 	/**
 	 * Constructor for TrackScheduler
@@ -51,7 +52,7 @@ public class TrackScheduler {
 	 *            added from the user
 	 */
 	public synchronized void play(AudioTrack track, IUser user) {
-		queue.add(new Track(track, user, Util.getLocalDateTime()));
+		queue.add(0, new Track(track, user, Util.getLocalDateTime()));
 		AudioInfo.changeAudioInfoStatus(guild, "loading");
 		player.playTrack(track);
 	}
@@ -193,5 +194,16 @@ public class TrackScheduler {
 	public boolean toggleShuffle() {
 		shuffle = !shuffle;
 		return shuffle;
+	}
+	
+	public boolean replay() {
+		if (previousTrack == null) {
+			return false;
+		}
+		Track current = getCurrent();
+		current.audio = current.audio.makeClone();
+		queue.add(current);
+		queue.add(0, previousTrack);
+		return true;
 	}
 }
